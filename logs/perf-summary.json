@@ -1,0 +1,14 @@
+[
+  {
+    "concurrencyLevel": 1,
+    "runtime": 6
+  },
+  {
+    "concurrencyLevel": 4,
+    "runtime": 3
+  },
+  {
+    "concurrencyLevel": 8,
+    "runtime": 3
+  }
+]

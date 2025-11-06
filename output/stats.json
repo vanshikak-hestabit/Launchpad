@@ -1,0 +1,48 @@
+{
+  "total Words": 122646,
+  "unique Words": 38,
+  "longest Word": "reprehenderit",
+  "shortest Word": "minim",
+  "top repeated Words": [
+    [
+      "labore",
+      3343
+    ],
+    [
+      "cupidatat",
+      3306
+    ],
+    [
+      "aliqua",
+      3303
+    ],
+    [
+      "lorem",
+      3294
+    ],
+    [
+      "adipisicing",
+      3293
+    ],
+    [
+      "nulla",
+      3285
+    ],
+    [
+      "dolore",
+      3274
+    ],
+    [
+      "laborum",
+      3270
+    ],
+    [
+      "reprehenderit",
+      3269
+    ],
+    [
+      "veniam",
+      3264
+    ]
+  ]
+}
