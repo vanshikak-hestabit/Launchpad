@@ -1,0 +1,35 @@
+Script started on 2025-11-07 09:15:44+05:30 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="80" LINES="24"]
+[?2004h]0;vanshikakhandelwal@hestabit-Latitude-3450: ~/day-3[01;32mvanshikakhandelwal@hestabit-Latitude-3450[00m:[01;34m~/day-3[00m$ touch[K[K[K[K[Kecho "this is a te[K[Kpractice file  for stash workflow" > stash.txt
+[?2004l[?2004h]0;vanshikakhandelwal@hestabit-Latitude-3450: ~/day-3[01;32mvanshikakhandelwal@hestabit-Latitude-3450[00m:[01;34m~/day-3[00m$ git status
+[?2004lOn branch main
+Your branch is up to date with 'origin/main'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	[31mscript.txt[m
+	[31mstash-session.txt[m
+	[31mstash.txt[m
+
+nothing added to commit but untracked files present (use "git add" to track)
+[?2004h]0;vanshikakhandelwal@hestabit-Latitude-3450: ~/day-3[01;32mvanshikakhandelwal@hestabit-Latitude-3450[00m:[01;34m~/day-3[00m$ git add stash.txt
+[?2004l[?2004h]0;vanshikakhandelwal@hestabit-Latitude-3450: ~/day-3[01;32mvanshikakhandelwal@hestabit-Latitude-3450[00m:[01;34m~/day-3[00m$ git stash
+[?2004lSaved working directory and index state WIP on main: 2e9741e bisect-session.txt commited
+[?2004h]0;vanshikakhandelwal@hestabit-Latitude-3450: ~/day-3[01;32mvanshikakhandelwal@hestabit-Latitude-3450[00m:[01;34m~/day-3[00m$ git pull
+[?2004lAlready up to date.
+[?2004h]0;vanshikakhandelwal@hestabit-Latitude-3450: ~/day-3[01;32mvanshikakhandelwal@hestabit-Latitude-3450[00m:[01;34m~/day-3[00m$ git stash apply
+[?2004lOn branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	[32mnew file:   stash.txt[m
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	[31mscript.txt[m
+	[31mstash-session.txt[m
+
+[?2004h]0;vanshikakhandelwal@hestabit-Latitude-3450: ~/day-3[01;32mvanshikakhandelwal@hestabit-Latitude-3450[00m:[01;34m~/day-3[00m$ exit
+[?2004lexit
+
+Script done on 2025-11-07 09:18:10+05:30 [COMMAND_EXIT_CODE="0"]
