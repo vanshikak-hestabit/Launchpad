@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <meta charset = "UTF-8">
+        <meta name = "viewport" content="width=device-width, initial-scale=1.0">
+        <title>Navbar toggle + Dropdown</title>
+        <link rel = "stylesheet" href="DOM.css">
+    </head>
+    <body>
+        <nav>
+            <h1>MySite</h1>
+            <!-- NAVBAR TOGGLE -->
+            <button id = "menu-btn">☰</button>
+            <ul id = "menu">
+                <li>Home</li>
+                <li>About</li>
+                <li>Join us</li>
+                <li>Contact</li>
+            </ul>
+            
+            <!-- DROPDOWN -->
+            <div class = "dropdown">
+                <button id = "drop-btn">Menu ▼</button>
+                <div class = "dropdown-content">
+                    <a href = "#">Profile</a>
+                    <a href = "#">Setting</a>
+                    <a href = "#">Logout</a>
+                </div>
+            </div>
+
+            <!-- MODAL -->
+            <button id ="open-modal">Open Modal</button>
+            <div id="modal" class="modal">
+            <div class="modal-content">
+                <span id="close-modal" class = "close">&times;</span>
+                <h2>THIS IS MODAL</h2>
+                <p>This is a simple modal popup.</p>
+            </div>
+            </div>
+        </nav>
+        <script src = "DOM.js"></script>
+    </body>
+</html>
