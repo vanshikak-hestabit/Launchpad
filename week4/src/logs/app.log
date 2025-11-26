@@ -1,0 +1,20 @@
+[2025-11-26T08:01:18.059Z] info: Loaded env file: .env.local
+[2025-11-26T08:01:18.075Z] info: Database connected
+[2025-11-26T08:01:18.076Z] info: Middlewares loaded: 1
+[2025-11-26T08:01:18.076Z] info: Database connected
+[2025-11-26T08:01:18.076Z] info: Routes mounted: 1
+[2025-11-26T08:01:18.078Z] info: Server started at port 5000
+[2025-11-26T09:34:11.414Z] info: Loaded env file: .env.local
+[2025-11-26T09:34:11.430Z] info: Database connected
+[2025-11-26T09:34:11.431Z] info: Middlewares loaded: 1
+[2025-11-26T09:34:11.432Z] info: Database connected
+[2025-11-26T09:34:11.432Z] info: Router mounted at path /api, internal routes: 5
+[2025-11-26T09:34:11.432Z] info: Total routes mounted: 5
+[2025-11-26T09:34:11.434Z] info: Server started at port 5000
+[2025-11-26T09:34:34.344Z] info: Loaded env file: .env.local
+[2025-11-26T09:34:34.360Z] info: Database connected
+[2025-11-26T09:34:34.361Z] info: Middlewares loaded: 1
+[2025-11-26T09:34:34.361Z] info: Database connected
+[2025-11-26T09:34:34.361Z] info: Router mounted at path /api, internal routes: 4
+[2025-11-26T09:34:34.361Z] info: Total routes mounted: 4
+[2025-11-26T09:34:34.363Z] info: Server started at port 5000
