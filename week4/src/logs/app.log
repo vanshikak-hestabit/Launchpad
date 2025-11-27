@@ -18,3 +18,78 @@
 [2025-11-26T09:34:34.361Z] info: Router mounted at path /api, internal routes: 4
 [2025-11-26T09:34:34.361Z] info: Total routes mounted: 4
 [2025-11-26T09:34:34.363Z] info: Server started at port 5000
+[2025-11-26T12:49:43.827Z] info: Loaded env file: null
+[2025-11-26T12:49:43.830Z] error: DB connection failed: The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+[2025-11-26T12:49:43.830Z] error: Startup failed: The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+[2025-11-26T12:49:53.073Z] info: Loaded env file: null
+[2025-11-26T12:49:53.076Z] error: DB connection failed: The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+[2025-11-26T12:49:53.076Z] error: Startup failed: The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+[2025-11-26T12:51:51.060Z] info: Loaded env file: null
+[2025-11-26T12:51:51.063Z] error: DB connection failed: The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+[2025-11-26T12:51:51.063Z] error: Startup failed: The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+[2025-11-26T12:52:36.206Z] info: Loaded env file: .env.local
+[2025-11-26T12:52:36.244Z] info: Database connected
+[2025-11-26T12:52:36.246Z] info: Middlewares loaded: 1
+[2025-11-26T12:52:36.246Z] info: Database connected
+[2025-11-26T12:52:36.247Z] info: Routes mounted: 1
+[2025-11-26T12:52:36.249Z] info: Server started at port 3000
+[2025-11-26T13:02:20.359Z] info: Loaded env file: .env.local
+[2025-11-26T13:02:20.401Z] info: Database connected
+[2025-11-26T13:02:20.403Z] info: Middlewares loaded: 1
+[2025-11-26T13:02:20.403Z] info: Database connected
+[2025-11-26T13:02:20.404Z] info: Routes mounted: 2
+[2025-11-26T13:02:20.406Z] info: Server started at port 3000
+[2025-11-26T14:11:16.227Z] info: Loaded env file: .env.local
+[2025-11-26T14:11:16.247Z] info: Database connected
+[2025-11-26T14:11:16.248Z] info: Middlewares loaded: 1
+[2025-11-26T14:11:16.248Z] info: Database connected
+[2025-11-26T14:11:16.248Z] info: Routes mounted: 3
+[2025-11-26T14:11:16.250Z] info: Server started at port 3000
+[2025-11-26T14:15:40.949Z] info: Loaded env file: .env.local
+[2025-11-26T14:15:40.972Z] info: Database connected
+[2025-11-26T14:15:40.973Z] info: Middlewares loaded: 1
+[2025-11-26T14:15:40.974Z] info: Database connected
+[2025-11-26T14:15:40.974Z] info: Routes mounted: 3
+[2025-11-26T14:15:40.975Z] info: Server started at port 3000
+[2025-11-26T14:23:56.951Z] info: Loaded env file: .env.local
+[2025-11-26T14:23:56.976Z] info: Database connected
+[2025-11-26T14:23:56.977Z] info: Middlewares loaded: 1
+[2025-11-26T14:23:56.978Z] info: Database connected
+[2025-11-26T14:23:56.978Z] info: Routes mounted: 3
+[2025-11-26T14:23:56.979Z] info: Server started at port 3000
+[2025-11-26T14:27:28.753Z] info: Loaded env file: .env.local
+[2025-11-26T14:27:28.773Z] info: Database connected
+[2025-11-26T14:27:28.773Z] info: Middlewares loaded: 1
+[2025-11-26T14:27:28.774Z] info: Database connected
+[2025-11-26T14:27:28.774Z] info: Routes mounted: 3
+[2025-11-26T14:27:28.775Z] info: Server started at port 3000
+[2025-11-26T14:29:42.092Z] info: Loaded env file: .env.local
+[2025-11-26T14:29:42.112Z] info: Database connected
+[2025-11-26T14:29:42.113Z] info: Middlewares loaded: 1
+[2025-11-26T14:29:42.113Z] info: Database connected
+[2025-11-26T14:29:42.113Z] info: Routes mounted: 3
+[2025-11-26T14:29:42.115Z] info: Server started at port 3000
+[2025-11-27T05:46:20.801Z] info: Loaded env file: .env.local
+[2025-11-27T05:46:20.845Z] info: Database connected
+[2025-11-27T05:46:20.847Z] info: Middlewares loaded: 1
+[2025-11-27T05:46:20.848Z] info: Database connected
+[2025-11-27T05:46:20.848Z] info: Routes mounted: 3
+[2025-11-27T05:46:20.851Z] info: Server started at port 3000
+[2025-11-27T08:57:26.159Z] info: Loaded env file: .env.local
+[2025-11-27T08:57:26.206Z] info: Database connected
+[2025-11-27T08:57:26.208Z] info: Middlewares loaded: 1
+[2025-11-27T08:57:26.209Z] info: Database connected
+[2025-11-27T08:57:26.209Z] info: Routes mounted: 3
+[2025-11-27T08:57:26.213Z] info: Server started at port 3000
+[2025-11-27T09:07:14.965Z] info: Loaded env file: .env.local
+[2025-11-27T09:07:15.004Z] info: Database connected
+[2025-11-27T09:07:15.006Z] info: Middlewares loaded: 1
+[2025-11-27T09:07:15.006Z] info: Database connected
+[2025-11-27T09:07:15.007Z] info: Routes mounted: 3
+[2025-11-27T09:07:15.010Z] info: Server started at port 3000
+[2025-11-27T09:23:33.827Z] info: Loaded env file: .env.local
+[2025-11-27T09:23:33.873Z] info: Database connected
+[2025-11-27T09:23:33.876Z] info: Middlewares loaded: 1
+[2025-11-27T09:23:33.877Z] info: Database connected
+[2025-11-27T09:23:33.878Z] info: Routes mounted: 4
+[2025-11-27T09:23:33.882Z] info: Server started at port 3000
