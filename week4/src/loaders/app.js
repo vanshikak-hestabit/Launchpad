@@ -1,6 +1,7 @@
 const express = require('express');
 const logger = require('../utils/logger');
 const connectDB = require('./db');
+const errorHandler = require('../middlewares/error.middleware'); 
 
 async function loadApp({ routes = [], middlewares = [] } = {}) {
   const app = express();
@@ -19,6 +20,8 @@ async function loadApp({ routes = [], middlewares = [] } = {}) {
     count++;
   });
   logger.info('Routes mounted: ' + count);
+
+   app.use(errorHandler);
 
   return app;
 }

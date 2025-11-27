@@ -12,6 +12,10 @@ const productSchema = new mongoose.Schema({
     required: true,
     min: 0 // price cannot be negative
   },
+  tags: {
+    type: [String], // array of strings
+    default: []
+  },
   rating: {
     type: Number,
     default: 0,
@@ -26,7 +30,16 @@ const productSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false
+  },
+  deletedAt: {
+    type: Date,
+    default: null
+  },
+
 });
 
 // Virtual field: discountedPrice (example: 10% off)

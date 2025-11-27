@@ -93,3 +93,69 @@
 [2025-11-27T09:23:33.877Z] info: Database connected
 [2025-11-27T09:23:33.878Z] info: Routes mounted: 4
 [2025-11-27T09:23:33.882Z] info: Server started at port 3000
+[2025-11-27T11:33:23.467Z] info: Loaded env file: .env.local
+[2025-11-27T11:33:23.486Z] info: Database connected
+[2025-11-27T11:33:23.486Z] info: Middlewares loaded: 1
+[2025-11-27T11:33:23.487Z] info: Database connected
+[2025-11-27T11:33:23.487Z] info: Routes mounted: 3
+[2025-11-27T11:33:23.488Z] info: Server started at port 3000
+[2025-11-27T11:59:40.681Z] info: Loaded env file: .env.local
+[2025-11-27T11:59:40.722Z] info: Database connected
+[2025-11-27T11:59:40.724Z] info: Middlewares loaded: 1
+[2025-11-27T11:59:40.724Z] info: Database connected
+[2025-11-27T11:59:40.725Z] info: Routes mounted: 3
+[2025-11-27T11:59:40.728Z] info: Server started at port 3000
+[2025-11-27T12:00:09.945Z] info: Loaded env file: .env.local
+[2025-11-27T12:00:09.986Z] info: Database connected
+[2025-11-27T12:00:09.988Z] info: Middlewares loaded: 1
+[2025-11-27T12:00:09.989Z] info: Database connected
+[2025-11-27T12:00:09.989Z] info: Routes mounted: 3
+[2025-11-27T12:00:09.993Z] info: Server started at port 3000
+[2025-11-27T12:03:28.515Z] info: Loaded env file: .env.local
+[2025-11-27T12:03:28.559Z] info: Database connected
+[2025-11-27T12:03:28.562Z] info: Middlewares loaded: 1
+[2025-11-27T12:03:28.563Z] info: Database connected
+[2025-11-27T12:03:28.563Z] info: Routes mounted: 3
+[2025-11-27T12:03:28.567Z] info: Server started at port 3000
+[2025-11-27T12:26:23.101Z] info: Loaded env file: .env.local
+[2025-11-27T12:26:23.146Z] info: Database connected
+[2025-11-27T12:26:23.148Z] info: Middlewares loaded: 1
+[2025-11-27T12:26:23.149Z] info: Database connected
+[2025-11-27T12:26:23.150Z] info: Routes mounted: 3
+[2025-11-27T12:26:23.155Z] info: Server started at port 3000
+[2025-11-27T12:27:40.645Z] info: Loaded env file: .env.local
+[2025-11-27T12:27:40.687Z] info: Database connected
+[2025-11-27T12:27:40.689Z] info: Middlewares loaded: 1
+[2025-11-27T12:27:40.690Z] info: Database connected
+[2025-11-27T12:27:40.690Z] info: Routes mounted: 3
+[2025-11-27T12:27:40.693Z] info: Server started at port 3000
+[2025-11-27T12:39:37.013Z] info: Loaded env file: .env.local
+[2025-11-27T12:39:37.068Z] info: Database connected
+[2025-11-27T12:39:37.071Z] info: Middlewares loaded: 1
+[2025-11-27T12:39:37.071Z] info: Database connected
+[2025-11-27T12:39:37.071Z] info: Routes mounted: 3
+[2025-11-27T12:39:37.074Z] info: Server started at port 3000
+[2025-11-27T12:43:12.126Z] info: Loaded env file: .env.local
+[2025-11-27T12:43:12.170Z] info: Database connected
+[2025-11-27T12:43:12.171Z] info: Middlewares loaded: 1
+[2025-11-27T12:43:12.172Z] info: Database connected
+[2025-11-27T12:43:12.172Z] info: Routes mounted: 3
+[2025-11-27T12:43:12.175Z] info: Server started at port 3000
+[2025-11-27T13:56:17.306Z] info: Loaded env file: .env.local
+[2025-11-27T13:56:17.349Z] info: Database connected
+[2025-11-27T13:56:17.352Z] info: Middlewares loaded: 1
+[2025-11-27T13:56:17.354Z] info: Database connected
+[2025-11-27T13:56:17.354Z] info: Routes mounted: 3
+[2025-11-27T13:56:17.358Z] info: Server started at port 3000
+[2025-11-27T14:08:00.933Z] info: Loaded env file: .env.local
+[2025-11-27T14:08:00.974Z] info: Database connected
+[2025-11-27T14:08:00.976Z] info: Middlewares loaded: 1
+[2025-11-27T14:08:00.976Z] info: Database connected
+[2025-11-27T14:08:00.977Z] info: Routes mounted: 3
+[2025-11-27T14:08:00.980Z] info: Server started at port 3000
+[2025-11-27T14:19:12.596Z] info: Loaded env file: .env.local
+[2025-11-27T14:19:12.642Z] info: Database connected
+[2025-11-27T14:19:12.644Z] info: Middlewares loaded: 1
+[2025-11-27T14:19:12.644Z] info: Database connected
+[2025-11-27T14:19:12.645Z] info: Routes mounted: 3
+[2025-11-27T14:19:12.648Z] info: Server started at port 3000

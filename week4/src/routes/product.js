@@ -1,20 +1,23 @@
 const express = require('express');
-const ProductRepository = require('../repositories/product.repository');
-
 const router = express.Router();
+const ProductController = require('../controllers/product.controller');
 
-// POST /api/products → create a new product
-router.post('/', async (req, res) => {
-  try {
-    const data = req.body;
-    const product = await ProductRepository.create(data);
-    res.json({
-      message: 'Product created successfully!',
-      product
-    });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+// GET all products (with filters, pagination, sorting)
+router.get('/', ProductController.getAll);
+
+// GET single product by ID
+router.get('/:id', ProductController.getById);
+
+// POST - create a new product
+router.post('/', ProductController.create);
+
+// PUT - update product by ID
+router.put('/:id', ProductController.update);
+
+// DELETE - soft delete product by ID
+router.delete('/:id', ProductController.remove);
 
 module.exports = router;
+
+ //This file (product.js) tells your server which URLs (endpoints) are
+ //  available for products and what should happen when someone tries to access those URLs.

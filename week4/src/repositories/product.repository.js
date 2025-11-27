@@ -12,11 +12,17 @@ class ProductRepository {
     return Product.findById(id);
   }
 
-  // Paginated products
-  static async findPaginated(page = 1, limit = 10) {
-    const skip = (page - 1) * limit;
-    const products = await Product.find().skip(skip).limit(limit);
-    return products;
+  // Dynamic query with filters, sort, pagination
+  static async findWithQuery(filters = {}, sortObj = {}, skip = 0, limit = 10, tags = []) {
+    const query = {...filters};
+
+    if (tags.length > 0){
+      query.tags = { $in: tags};
+    }
+    return Product.find(query)
+      .sort(sortObj)
+      .skip(skip)
+      .limit(limit);
   }
 
   // Update product
@@ -24,9 +30,9 @@ class ProductRepository {
     return Product.findByIdAndUpdate(id, updateData, { new: true });
   }
 
-  // Delete product
-  static async delete(id) {
-    return Product.findByIdAndDelete(id);
+  // Soft delete: mark deletedAt timestamp
+  static async softDelete(id) {
+    return Product.findByIdAndUpdate(id, { deletedAt: new Date() }, { new: true });
   }
 }
 
