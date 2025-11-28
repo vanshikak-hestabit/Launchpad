@@ -159,3 +159,9 @@
 [2025-11-27T14:19:12.644Z] info: Database connected
 [2025-11-27T14:19:12.645Z] info: Routes mounted: 3
 [2025-11-27T14:19:12.648Z] info: Server started at port 3000
+[2025-11-28T06:13:53.450Z] info: Loaded env file: .env.local
+[2025-11-28T06:13:53.492Z] info: Database connected
+[2025-11-28T06:13:53.494Z] info: Middlewares loaded: 1
+[2025-11-28T06:13:53.495Z] info: Database connected
+[2025-11-28T06:13:53.495Z] info: Routes mounted: 3
+[2025-11-28T06:13:53.499Z] info: Server started at port 3000
