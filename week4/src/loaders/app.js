@@ -3,6 +3,7 @@ const logger = require('../utils/logger');
 const connectDB = require('./db');
 const errorHandler = require('../middlewares/error.middleware'); 
 
+
 async function loadApp({ routes = [], middlewares = [] } = {}) {
   const app = express();
 

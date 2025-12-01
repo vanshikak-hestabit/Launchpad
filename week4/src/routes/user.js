@@ -1,20 +1,14 @@
 const express = require('express');
-const UserRepository = require('../repositories/user.repository');
+const validate = require('../middlewares/validate');
+const { createUserSchema } = require('../models/user.schema');
+const UserController = require('../controllers/user.controller');
 
 const router = express.Router();
 
-// POST /api/users → create a new user
-router.post('/', async (req, res) => {
-  try {
-    const data = req.body;
-    const user = await UserRepository.create(data);
-    res.json({
-      message: 'User created successfully!',
-      user
-    });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+router.get('/', UserController.getAll);
+router.get('/:id', UserController.getById);
+router.post('/', validate(createUserSchema), UserController.create);
+router.put('/:id', UserController.update);
+router.delete('/:id', UserController.remove);
 
 module.exports = router;

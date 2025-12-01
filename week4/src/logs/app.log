@@ -165,3 +165,267 @@
 [2025-11-28T06:13:53.495Z] info: Database connected
 [2025-11-28T06:13:53.495Z] info: Routes mounted: 3
 [2025-11-28T06:13:53.499Z] info: Server started at port 3000
+[2025-11-28T08:47:14.102Z] info: Loaded env file: .env.local
+[2025-11-28T08:47:14.122Z] info: Database connected
+[2025-11-28T08:47:14.123Z] info: Middlewares loaded: 2
+[2025-11-28T08:47:14.123Z] info: Database connected
+[2025-11-28T08:47:14.123Z] info: Routes mounted: 3
+[2025-11-28T08:47:14.125Z] error: Startup failed: express is not defined
+[2025-11-28T08:54:37.355Z] info: Loaded env file: .env.local
+[2025-11-28T08:54:37.374Z] info: Database connected
+[2025-11-28T08:54:37.375Z] info: Middlewares loaded: 1
+[2025-11-28T08:54:37.375Z] info: Database connected
+[2025-11-28T08:54:37.376Z] info: Routes mounted: 3
+[2025-11-28T08:54:37.377Z] error: Startup failed: express is not defined
+[2025-11-28T08:55:41.670Z] info: Loaded env file: .env.local
+[2025-11-28T08:55:41.690Z] info: Database connected
+[2025-11-28T08:55:41.691Z] info: Middlewares loaded: 1
+[2025-11-28T08:55:41.691Z] info: Database connected
+[2025-11-28T08:55:41.691Z] info: Routes mounted: 3
+[2025-11-28T08:55:41.694Z] info: Server started at port 3000
+[2025-11-28T08:57:33.960Z] info: Loaded env file: .env.local
+[2025-11-28T08:57:33.981Z] info: Database connected
+[2025-11-28T08:57:33.982Z] info: Middlewares loaded: 1
+[2025-11-28T08:57:33.982Z] info: Database connected
+[2025-11-28T08:57:33.982Z] info: Routes mounted: 3
+[2025-11-28T08:57:33.985Z] info: Server started at port 3000
+[2025-11-28T08:59:12.370Z] info: Loaded env file: .env.local
+[2025-11-28T08:59:12.390Z] info: Database connected
+[2025-11-28T08:59:12.391Z] info: Middlewares loaded: 1
+[2025-11-28T08:59:12.391Z] info: Database connected
+[2025-11-28T08:59:12.392Z] info: Routes mounted: 3
+[2025-11-28T08:59:12.394Z] info: Server started at port 3000
+[2025-11-28T09:07:54.983Z] info: Loaded env file: .env.local
+[2025-11-28T09:07:55.009Z] info: Database connected
+[2025-11-28T09:07:55.014Z] info: Middlewares loaded: 1
+[2025-11-28T09:07:55.015Z] info: Database connected
+[2025-11-28T09:07:55.015Z] info: Routes mounted: 3
+[2025-11-28T09:07:55.018Z] info: Server started at port 3000
+[2025-11-28T09:10:11.915Z] info: Loaded env file: .env.local
+[2025-11-28T09:10:11.934Z] info: Database connected
+[2025-11-28T09:10:11.936Z] info: Middlewares loaded: 1
+[2025-11-28T09:10:11.937Z] info: Database connected
+[2025-11-28T09:10:11.937Z] info: Routes mounted: 3
+[2025-11-28T09:10:11.939Z] info: Server started at port 3000
+[2025-11-28T09:19:06.647Z] info: Loaded env file: .env.local
+[2025-11-28T09:19:06.668Z] info: Database connected
+[2025-11-28T09:19:06.669Z] info: Middlewares loaded: 1
+[2025-11-28T09:19:06.670Z] info: Database connected
+[2025-11-28T09:19:06.670Z] info: Routes mounted: 3
+[2025-11-28T09:19:06.671Z] error: Startup failed: express is not defined
+[2025-11-28T09:20:14.189Z] info: Loaded env file: .env.local
+[2025-11-28T09:20:14.208Z] info: Database connected
+[2025-11-28T09:20:14.209Z] info: Middlewares loaded: 1
+[2025-11-28T09:20:14.210Z] info: Database connected
+[2025-11-28T09:20:14.210Z] info: Routes mounted: 3
+[2025-11-28T09:20:14.211Z] error: Startup failed: express is not defined
+[2025-11-28T09:23:33.878Z] info: Loaded env file: .env.local
+[2025-11-28T09:23:33.898Z] info: Database connected
+[2025-11-28T09:23:33.899Z] info: Middlewares loaded: 1
+[2025-11-28T09:23:33.899Z] info: Database connected
+[2025-11-28T09:23:33.900Z] info: Routes mounted: 3
+[2025-11-28T09:23:33.903Z] info: Server started at port 3000
+[2025-11-28T09:25:38.743Z] info: Loaded env file: .env.local
+[2025-11-28T09:25:38.762Z] info: Database connected
+[2025-11-28T09:25:38.763Z] info: Middlewares loaded: 1
+[2025-11-28T09:25:38.763Z] info: Database connected
+[2025-11-28T09:25:38.763Z] info: Routes mounted: 3
+[2025-11-28T09:25:38.766Z] info: Server started at port 3000
+[2025-11-28T09:35:35.966Z] info: Loaded env file: .env.local
+[2025-11-28T09:35:35.986Z] info: Database connected
+[2025-11-28T09:35:35.987Z] info: Middlewares loaded: 1
+[2025-11-28T09:35:35.988Z] info: Database connected
+[2025-11-28T09:35:35.988Z] info: Routes mounted: 3
+[2025-11-28T09:35:35.990Z] info: Server started at port 3000
+[2025-11-28T09:40:49.201Z] info: Loaded env file: .env.local
+[2025-11-28T09:40:49.221Z] info: Database connected
+[2025-11-28T09:40:49.222Z] info: Middlewares loaded: 1
+[2025-11-28T09:40:49.222Z] info: Database connected
+[2025-11-28T09:40:49.223Z] info: Routes mounted: 3
+[2025-11-28T09:40:49.226Z] info: Server started at port 3000
+[2025-11-28T09:42:55.985Z] info: Loaded env file: .env.local
+[2025-11-28T09:42:56.009Z] info: Database connected
+[2025-11-28T09:42:56.010Z] info: Middlewares loaded: 1
+[2025-11-28T09:42:56.011Z] info: Database connected
+[2025-11-28T09:42:56.011Z] info: Routes mounted: 3
+[2025-11-28T09:42:56.016Z] info: Server started at port 3000
+[2025-11-28T09:44:32.829Z] info: Loaded env file: .env.local
+[2025-11-28T09:44:32.849Z] info: Database connected
+[2025-11-28T09:44:32.851Z] info: Middlewares loaded: 1
+[2025-11-28T09:44:32.851Z] info: Database connected
+[2025-11-28T09:44:32.851Z] info: Routes mounted: 3
+[2025-11-28T09:44:32.857Z] info: Server started at port 3000
+[2025-11-28T09:55:14.170Z] info: Loaded env file: .env.local
+[2025-11-28T09:55:14.189Z] info: Database connected
+[2025-11-28T09:55:14.190Z] info: Middlewares loaded: 1
+[2025-11-28T09:55:14.191Z] info: Database connected
+[2025-11-28T09:55:14.191Z] info: Routes mounted: 3
+[2025-11-28T09:55:14.194Z] info: Server started at port 3000
+[2025-11-28T10:01:23.166Z] info: Loaded env file: .env.local
+[2025-11-28T10:01:23.185Z] info: Database connected
+[2025-11-28T10:01:23.186Z] info: Middlewares loaded: 1
+[2025-11-28T10:01:23.186Z] info: Database connected
+[2025-11-28T10:01:23.186Z] info: Routes mounted: 3
+[2025-11-28T10:01:23.189Z] info: Server started at port 3000
+[2025-11-28T10:08:00.457Z] info: Env loaded
+[2025-11-28T10:08:00.477Z] info: Database connected
+[2025-11-28T10:08:00.479Z] error: Startup failed: express is not defined
+[2025-11-28T10:08:04.383Z] info: Env loaded
+[2025-11-28T10:08:04.403Z] info: Database connected
+[2025-11-28T10:08:04.405Z] error: Startup failed: express is not defined
+[2025-11-28T10:09:45.329Z] info: Env loaded
+[2025-11-28T10:09:45.350Z] info: Database connected
+[2025-11-28T10:09:45.354Z] error: Startup failed: express is not defined
+[2025-11-28T10:10:27.188Z] info: Env loaded
+[2025-11-28T10:10:27.239Z] info: Database connected
+[2025-11-28T10:10:27.243Z] error: Startup failed: express is not defined
+[2025-11-28T10:18:33.052Z] info: Env loaded
+[2025-11-28T10:18:33.071Z] info: Database connected
+[2025-11-28T10:18:33.073Z] error: Startup failed: express is not defined
+[2025-11-28T10:18:42.948Z] info: Env loaded
+[2025-11-28T10:18:42.969Z] info: Database connected
+[2025-11-28T10:18:42.971Z] error: Startup failed: express is not defined
+[2025-11-28T10:19:43.627Z] info: Env loaded
+[2025-11-28T10:19:43.646Z] info: Database connected
+[2025-11-28T10:19:43.650Z] info: Server started at port 3000
+[2025-11-28T10:20:27.152Z] info: Env loaded
+[2025-11-28T10:20:27.172Z] info: Database connected
+[2025-11-28T10:20:27.179Z] info: Server started at port 3000
+[2025-11-28T10:23:02.758Z] info: Env loaded
+[2025-11-28T10:23:02.777Z] info: Database connected
+[2025-11-28T10:23:02.781Z] info: Server started at port 3000
+[2025-11-28T10:52:54.449Z] info: Env loaded
+[2025-11-28T10:52:54.469Z] info: Database connected
+[2025-11-28T10:52:54.473Z] info: Server started at port 3000
+[2025-11-28T10:55:40.118Z] info: Env loaded
+[2025-11-28T10:55:40.137Z] info: Database connected
+[2025-11-28T10:55:40.138Z] error: Startup failed: aapp is not defined
+[2025-11-28T10:56:08.740Z] info: Env loaded
+[2025-11-28T10:56:08.759Z] info: Database connected
+[2025-11-28T10:56:08.763Z] info: Server started at port 3000
+[2025-11-28T10:58:11.929Z] info: Env loaded
+[2025-11-28T10:58:11.949Z] info: Database connected
+[2025-11-28T10:58:11.953Z] info: Server started at port 3000
+[2025-11-28T11:08:32.714Z] info: Env loaded
+[2025-11-28T11:08:32.734Z] info: Database connected
+[2025-11-28T11:08:32.738Z] info: Server started at port 3000
+[2025-11-28T11:30:38.859Z] info: Env loaded
+[2025-11-28T11:30:38.900Z] info: Database connected
+[2025-11-28T11:30:38.907Z] info: Server started at port 3000
+[2025-11-28T11:35:24.447Z] info: Env loaded
+[2025-11-28T11:35:24.489Z] info: Database connected
+[2025-11-28T11:35:24.496Z] info: Server started at port 3000
+[2025-11-28T11:48:42.117Z] info: Env loaded
+[2025-11-28T11:48:42.156Z] info: Database connected
+[2025-11-28T11:48:42.164Z] info: Server started at port 3000
+[2025-11-28T11:50:33.491Z] info: Env loaded
+[2025-11-28T11:50:33.537Z] info: Database connected
+[2025-11-28T11:50:33.545Z] info: Server started at port 3000
+[2025-11-28T11:54:40.427Z] info: Env loaded
+[2025-11-28T11:54:40.470Z] info: Database connected
+[2025-11-28T11:54:40.485Z] info: Server started at port 3000
+[2025-11-28T11:56:58.830Z] info: Env loaded
+[2025-11-28T11:56:58.870Z] info: Database connected
+[2025-11-28T11:56:58.877Z] info: Server started at port 3000
+[2025-11-28T12:07:04.200Z] info: Env loaded
+[2025-11-28T12:07:04.239Z] info: Database connected
+[2025-11-28T12:07:04.247Z] info: Server started at port 3000
+[2025-11-28T12:13:31.159Z] info: Env loaded
+[2025-11-28T12:13:31.204Z] info: Database connected
+[2025-11-28T12:13:31.212Z] info: Server started at port 3000
+[2025-11-28T12:17:34.959Z] info: Env loaded
+[2025-11-28T12:17:34.998Z] info: Database connected
+[2025-11-28T12:17:35.006Z] info: Server started at port 3000
+[2025-11-28T12:18:25.255Z] info: Env loaded
+[2025-11-28T12:18:25.300Z] info: Database connected
+[2025-11-28T12:18:25.308Z] info: Server started at port 3000
+[2025-11-28T12:35:06.085Z] info: Env loaded
+[2025-11-28T12:35:06.124Z] info: Database connected
+[2025-11-28T12:35:06.132Z] info: Server started at port 3000
+[2025-11-28T12:47:32.945Z] info: Env loaded
+[2025-11-28T12:47:32.984Z] info: Database connected
+[2025-11-28T12:47:32.991Z] info: Server started at port 3000
+[2025-11-28T13:44:37.998Z] info: Env loaded
+[2025-11-28T13:44:38.041Z] info: Database connected
+[2025-11-28T13:44:38.056Z] info: Server started at port 3000
+[2025-11-28T14:02:19.775Z] info: Env loaded
+[2025-11-28T14:02:19.819Z] info: Database connected
+[2025-11-28T14:02:19.829Z] info: Server started at port 3000
+[2025-11-28T14:05:32.208Z] info: Env loaded
+[2025-11-28T14:05:32.290Z] info: Database connected
+[2025-11-28T14:05:32.310Z] info: Server started at port 3000
+[2025-11-28T14:14:01.305Z] info: Env loaded
+[2025-11-28T14:14:01.344Z] info: Database connected
+[2025-11-28T14:14:01.351Z] info: Server started at port 3000
+[2025-11-28T14:16:59.857Z] info: Env loaded
+[2025-11-28T14:16:59.896Z] info: Database connected
+[2025-11-28T14:16:59.904Z] info: Server started at port 3000
+[2025-11-28T14:19:13.780Z] info: Env loaded
+[2025-11-28T14:19:13.826Z] info: Database connected
+[2025-11-28T14:19:13.836Z] info: Server started at port 3000
+[2025-11-28T14:19:37.571Z] info: Env loaded
+[2025-11-28T14:19:37.610Z] info: Database connected
+[2025-11-28T14:19:37.617Z] info: Server started at port 3000
+[2025-11-28T14:24:48.983Z] info: Env loaded
+[2025-11-28T14:24:49.022Z] info: Database connected
+[2025-11-28T14:24:49.030Z] info: Server started at port 3000
+[2025-11-28T14:27:43.320Z] info: Env loaded
+[2025-11-28T14:27:43.359Z] info: Database connected
+[2025-11-28T14:27:43.361Z] error: Startup failed: app.use() requires a middleware function
+[2025-11-28T14:28:51.187Z] info: Env loaded
+[2025-11-28T14:28:51.208Z] info: Database connected
+[2025-11-28T14:28:51.208Z] error: Startup failed: app.use() requires a middleware function
+[2025-11-28T14:29:56.569Z] info: Env loaded
+[2025-11-28T14:29:56.588Z] info: Database connected
+[2025-11-28T14:29:56.589Z] error: Startup failed: app.use() requires a middleware function
+[2025-11-28T14:31:27.434Z] info: Env loaded
+[2025-11-28T14:31:27.454Z] info: Database connected
+[2025-11-28T14:31:27.455Z] error: Startup failed: app.use() requires a middleware function
+[2025-11-28T14:32:20.456Z] info: Env loaded
+[2025-11-28T14:32:20.474Z] info: Database connected
+[2025-11-28T14:32:20.478Z] info: Server started at port 3000
+[2025-11-30T14:33:35.819Z] info: Env loaded
+[2025-11-30T14:33:35.857Z] info: Database connected
+[2025-11-30T14:33:35.865Z] info: Server started at port 3000
+[2025-11-30T14:34:33.104Z] info: Env loaded
+[2025-11-30T14:34:33.164Z] info: Database connected
+[2025-11-30T14:34:33.178Z] info: Server started at port 3000
+[2025-11-30T14:48:06.528Z] info: Env loaded
+[2025-11-30T14:48:06.568Z] info: Database connected
+[2025-11-30T14:48:06.572Z] error: Startup failed: express is not defined
+[2025-11-30T14:49:30.329Z] info: Env loaded
+[2025-11-30T14:49:30.367Z] info: Database connected
+[2025-11-30T14:49:30.375Z] info: Server started at port 3000
+[2025-11-30T14:50:23.781Z] info: Env loaded
+[2025-11-30T14:50:23.819Z] info: Database connected
+[2025-11-30T14:50:23.827Z] info: Server started at port 3000
+[2025-11-30T15:00:06.375Z] info: Env loaded
+[2025-11-30T15:00:06.414Z] info: Database connected
+[2025-11-30T15:00:06.422Z] info: Server started at port 3000
+[2025-11-30T15:04:35.913Z] info: Env loaded
+[2025-11-30T15:04:35.951Z] info: Database connected
+[2025-11-30T15:04:35.959Z] info: Server started at port 3000
+[2025-11-30T15:06:24.492Z] info: Env loaded
+[2025-11-30T15:06:24.531Z] info: Database connected
+[2025-11-30T15:06:24.539Z] info: Server started at port 3000
+[2025-11-30T15:15:31.674Z] info: Env loaded
+[2025-11-30T15:15:31.712Z] info: Database connected
+[2025-11-30T15:15:31.720Z] info: Server started at port 3000
+[2025-11-30T15:20:12.533Z] info: Env loaded
+[2025-11-30T15:20:12.573Z] info: Database connected
+[2025-11-30T15:20:12.580Z] info: Server started at port 3000
+[2025-12-01T05:41:59.454Z] info: Env loaded
+[2025-12-01T05:41:59.565Z] info: Database connected
+[2025-12-01T05:41:59.582Z] info: Server started at port 3000
+[2025-12-01T05:43:46.464Z] info: Env loaded
+[2025-12-01T05:43:46.503Z] info: Database connected
+[2025-12-01T05:43:46.510Z] info: Server started at port 3000
+[2025-12-01T05:44:41.440Z] info: Env loaded
+[2025-12-01T05:44:41.500Z] info: Database connected
+[2025-12-01T05:44:41.504Z] error: Startup failed: security is not a function
+[2025-12-01T05:45:22.358Z] info: Env loaded
+[2025-12-01T05:45:22.398Z] info: Database connected
+[2025-12-01T05:45:22.404Z] info: Server started at port 3000
+[2025-12-01T05:55:04.821Z] info: Env loaded
+[2025-12-01T05:55:04.862Z] info: Database connected
+[2025-12-01T05:55:04.870Z] info: Server started at port 3000

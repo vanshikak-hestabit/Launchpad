@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const validate = require("../middlewares/validate");
+const productSchema = require("../validators/product.validation");
 const ProductController = require('../controllers/product.controller');
 
 // GET all products (with filters, pagination, sorting)
@@ -9,7 +11,9 @@ router.get('/', ProductController.getAll);
 router.get('/:id', ProductController.getById);
 
 // POST - create a new product
-router.post('/', ProductController.create);
+// router.post('/', ProductController.create);
+router.post("/", validate(productSchema), ProductController.create);
+
 
 // PUT - update product by ID
 router.put('/:id', ProductController.update);

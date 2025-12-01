@@ -5,7 +5,8 @@ const ProductService = require('../services/product.service');
 async function getAll(req, res, next) {
   try {
     // read query params and pass to service (service will parse/validate)
-    const result = await ProductService.findAll(req.query);
+    const query = { ...req.query };
+    const result = await ProductService.findAll(query);
     res.json({ success: true, data: result });
   } catch (err) {
     next(err); // pass to centralized error middleware

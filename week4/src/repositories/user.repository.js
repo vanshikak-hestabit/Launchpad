@@ -7,6 +7,10 @@ class UserRepository {
     return user.save();
   }
 
+  static async findAll() {
+    return User.find().select('-password'); // exclude password
+  }
+
   // Find user by ID
   static async findById(id) {
     return User.findById(id);
