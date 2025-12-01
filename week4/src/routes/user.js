@@ -3,6 +3,7 @@ const validate = require('../middlewares/validate');
 const { createUserSchema } = require('../models/user.schema');
 const UserController = require('../controllers/user.controller');
 
+
 const router = express.Router();
 
 router.get('/', UserController.getAll);

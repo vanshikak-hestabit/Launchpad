@@ -7,9 +7,11 @@ const hpp = require("hpp");
 
 
 function security(app) {
-  // Security headers
+  
+  //payload size limit
   app.use(express.json({ limit: "10kb" }));
 
+    // Security headers
   app.use(helmet());
 
   // CORS

@@ -477,3 +477,187 @@
 [2025-12-01T09:30:29.997Z] info: Env loaded
 [2025-12-01T09:30:30.016Z] info: Database connected
 [2025-12-01T09:30:30.020Z] info: Server started at port 3000
+[2025-12-01T11:07:07.539Z] info: Env loaded 
+[2025-12-01T11:07:07.578Z] info: Database connected 
+[2025-12-01T11:07:07.583Z] error: Startup failed: app.use() requires a middleware function 
+[2025-12-01T11:08:34.399Z] info: Env loaded 
+[2025-12-01T11:08:34.441Z] info: Database connected 
+[2025-12-01T11:08:34.458Z] info: Server started at port 3000 
+[2025-12-01T11:14:38.047Z] info: Env loaded 
+[2025-12-01T11:14:38.085Z] info: Database connected 
+[2025-12-01T11:14:38.093Z] info: Server started at port 3000 
+[2025-12-01T11:16:41.797Z] info: Env loaded 
+[2025-12-01T11:16:41.841Z] info: Database connected 
+[2025-12-01T11:16:41.850Z] info: Server started at port 3000 
+[2025-12-01T11:24:58.117Z] info: Env loaded 
+[2025-12-01T11:24:58.156Z] info: Database connected 
+[2025-12-01T11:24:58.163Z] info: Server started at port 3000 
+[2025-12-01T11:25:02.377Z] info: c3af509d-2f4a-4808-b76f-a1d8afeeec60 - Fetching all users 
+[2025-12-01T11:25:02.400Z] info: c3af509d-2f4a-4808-b76f-a1d8afeeec60 - Users fetched successfully 
+[2025-12-01T11:25:03.816Z] info: a69a1fe7-0b77-4ffd-9818-5293f57317ce - Fetching all users 
+[2025-12-01T11:25:03.822Z] info: a69a1fe7-0b77-4ffd-9818-5293f57317ce - Users fetched successfully 
+[2025-12-01T11:40:29.429Z] info: Env loaded 
+[2025-12-01T11:40:29.482Z] info: Database connected 
+[2025-12-01T11:40:29.491Z] info: Server started at port 3000 
+[2025-12-01T11:40:43.674Z] info: Env loaded 
+[2025-12-01T11:40:43.723Z] info: Database connected 
+[2025-12-01T11:40:43.730Z] info: Server started at port 3000 
+[2025-12-01T11:43:41.509Z] info: Env loaded 
+[2025-12-01T11:43:41.581Z] info: Database connected 
+[2025-12-01T11:43:41.590Z] info: Server started at port 3000 
+[2025-12-01T11:43:44.294Z] info: cf59a44c-b053-4f0b-86cf-6bac2560a781 - Fetching all users 
+[2025-12-01T11:43:44.308Z] info: cf59a44c-b053-4f0b-86cf-6bac2560a781 - Users fetched successfully 
+[2025-12-01T11:50:02.233Z] info: Env loaded 
+[2025-12-01T11:50:02.307Z] info: Database connected 
+[2025-12-01T11:50:02.319Z] info: Server started at port 3000 
+[2025-12-01T11:51:28.571Z] info: 279b0b44-5a70-4bcb-9dac-f7366bf43002 - Fetching all users 
+[2025-12-01T11:51:28.588Z] info: 279b0b44-5a70-4bcb-9dac-f7366bf43002 - Users fetched successfully 
+[2025-12-01T11:54:13.037Z] info: Env loaded 
+[2025-12-01T11:54:13.096Z] info: Database connected 
+[2025-12-01T11:54:13.106Z] info: Server started at port 3000 
+[2025-12-01T11:55:19.763Z] info: 90b2f0ed-9a33-4c3d-9aee-cb527b8dba1f - Creating user 
+[2025-12-01T11:55:19.918Z] info: [1] Processing email to vanshikavk.khandelwal@gmail.com 
+[2025-12-01T11:55:20.922Z] info: [1] Email sent to vanshikavk.khandelwal@gmail.com with subject: Welcome! 
+[2025-12-01T11:55:20.928Z] info: [1] Job completed 
+[2025-12-01T12:19:24.410Z] info: Env loaded 
+[2025-12-01T12:19:24.482Z] info: Database connected 
+[2025-12-01T12:19:24.495Z] info: Server started at port 3000 
+[2025-12-01T12:20:02.374Z] info: a4bf5742-197e-4f53-899f-3b15cf4a2b24 - Creating user 
+[2025-12-01T12:21:38.108Z] info: e03e8931-fc1a-4c5d-9206-e0220628a6e1 - Fetching all users 
+[2025-12-01T12:21:38.139Z] info: e03e8931-fc1a-4c5d-9206-e0220628a6e1 - Users fetched successfully 
+[2025-12-01T12:22:02.075Z] info: df8537ba-f9fb-408b-a477-1a634739ec93 - Fetching user with id=692d8227d7546f8c5d26e3bd 
+[2025-12-01T12:22:14.160Z] info: 9f293534-7cac-4bca-b2d0-e3845d027dd1 - Fetching user with id=692d8227d7546f8c5d26e3bd 
+[2025-12-01T12:22:27.793Z] info: 2fbaa37e-087f-4d6b-a43e-d234ff6e7102 - Deleting user id=692d8227d7546f8c5d26e3bd 
+[2025-12-01T12:22:42.257Z] info: 81960bc3-6b69-41f8-9c0a-e42dada0e114 - Fetching all users 
+[2025-12-01T12:22:42.268Z] info: 81960bc3-6b69-41f8-9c0a-e42dada0e114 - Users fetched successfully 
+[2025-12-01T12:23:20.306Z] info: 76ff77dc-e00a-4e22-ae3e-492b78c047cb - Creating user 
+[2025-12-01T12:23:20.414Z] info: [2] Processing email to vanshikavk.khandelwal@gmail.com 
+[2025-12-01T12:23:20.432Z] error: [2] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T12:23:25.501Z] info: [2] Processing email to vanshikavk.khandelwal@gmail.com 
+[2025-12-01T12:23:25.507Z] error: [2] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T12:23:30.523Z] info: [2] Processing email to vanshikavk.khandelwal@gmail.com 
+[2025-12-01T12:23:30.530Z] error: [2] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T12:26:35.199Z] info: Env loaded 
+[2025-12-01T12:26:35.266Z] info: Database connected 
+[2025-12-01T12:26:35.276Z] info: Server started at port 3000 
+[2025-12-01T12:27:22.294Z] info: 52b8ae54-811b-41a7-bf14-a6e4a2b56498 - Fetching all users 
+[2025-12-01T12:27:22.310Z] info: 52b8ae54-811b-41a7-bf14-a6e4a2b56498 - Users fetched successfully 
+[2025-12-01T12:27:31.945Z] info: 568326a9-4de0-4429-85ab-c61fdd5592ff - Fetching user with id=692d88b8252740b53fe8b230 
+[2025-12-01T12:27:59.798Z] info: 34075dbb-d3e8-4e26-b9a8-fd07c74739c5 - Deleting user id=692d88b8252740b53fe8b230 
+[2025-12-01T12:28:07.390Z] info: 698cbf14-b1ea-42ee-975e-4a2e94b47573 - Fetching all users 
+[2025-12-01T12:28:07.398Z] info: 698cbf14-b1ea-42ee-975e-4a2e94b47573 - Users fetched successfully 
+[2025-12-01T12:28:22.924Z] info: 20f96b0f-5461-4089-9925-0f9b6bd5d162 - Creating user 
+[2025-12-01T12:28:23.050Z] info: [3] Processing email to vanshikavk.khandelwal@gmail.com 
+[2025-12-01T12:28:23.069Z] error: [3] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T12:28:28.151Z] info: [3] Processing email to vanshikavk.khandelwal@gmail.com 
+[2025-12-01T12:28:28.159Z] error: [3] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T12:28:33.179Z] info: [3] Processing email to vanshikavk.khandelwal@gmail.com 
+[2025-12-01T12:28:33.187Z] error: [3] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T12:31:06.715Z] info: Env loaded 
+[2025-12-01T12:31:06.788Z] info: Database connected 
+[2025-12-01T12:31:06.798Z] info: Server started at port 3000 
+[2025-12-01T12:31:46.915Z] info: f2b1c5d0-da95-47b7-bb19-ce65b81417e1 - Creating user 
+[2025-12-01T12:32:15.751Z] info: 6da7a2a5-7177-4da8-8655-769497571cb7 - Deleting user id=692d88b8252740b53fe8b230 
+[2025-12-01T12:33:06.130Z] info: 051e9224-fe9f-4c0e-829d-6f623da4fc89 - Creating user 
+[2025-12-01T12:33:40.004Z] info: a801d386-07d9-41b9-9e0f-a977a566dd0a - Deleting user id=692d8227d7546f8c5d26e3bd 
+[2025-12-01T12:33:47.529Z] info: ac4da3dd-9a11-4b6a-a9be-d368a15db6b6 - Fetching all users 
+[2025-12-01T12:33:47.541Z] info: ac4da3dd-9a11-4b6a-a9be-d368a15db6b6 - Users fetched successfully 
+[2025-12-01T12:34:07.865Z] info: f4ab7fb8-efde-486c-95ee-d94c545a1719 - Deleting user id=692d8227d7546f8c5d26e3bd 
+[2025-12-01T12:34:15.330Z] info: acebb47f-d764-49d3-a604-9d81d46a73f6 - Fetching all users 
+[2025-12-01T12:34:15.337Z] info: acebb47f-d764-49d3-a604-9d81d46a73f6 - Users fetched successfully 
+[2025-12-01T12:34:56.640Z] info: 7f3c100f-5a5a-4878-86fc-f0dda79a4596 - Fetching all users 
+[2025-12-01T12:34:56.650Z] info: 7f3c100f-5a5a-4878-86fc-f0dda79a4596 - Users fetched successfully 
+[2025-12-01T12:35:26.307Z] info: e1399b5c-164f-4ff8-8d7e-74d1aced4a17 - Deleting user id=692d89e68984149db57ad71b 
+[2025-12-01T12:35:34.807Z] info: 8d0227f5-5df2-4eae-a4bc-0b028263bfdd - Fetching all users 
+[2025-12-01T12:35:34.813Z] info: 8d0227f5-5df2-4eae-a4bc-0b028263bfdd - Users fetched successfully 
+[2025-12-01T12:36:16.857Z] info: 26f8c1d3-3f2b-4c63-b019-61ef985d4bb1 - Creating user 
+[2025-12-01T12:36:16.971Z] info: [4] Processing email to vanshikavk.khandelwal@gmail.com 
+[2025-12-01T12:36:17.011Z] error: [4] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T12:36:22.025Z] info: [4] Processing email to vanshikavk.khandelwal@gmail.com 
+[2025-12-01T12:36:22.031Z] error: [4] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T12:36:27.046Z] info: [4] Processing email to vanshikavk.khandelwal@gmail.com 
+[2025-12-01T12:36:27.051Z] error: [4] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T12:46:20.213Z] info: Env loaded 
+[2025-12-01T12:46:20.263Z] info: Database connected 
+[2025-12-01T12:46:20.270Z] info: Server started at port 3000 
+[2025-12-01T12:46:51.658Z] info: bcc9a85d-09f3-4d9a-946f-fe94997bae0d - Deleting user id=692d8bc06ca69551bd3ef2ea 
+[2025-12-01T12:51:29.349Z] info: 1c7214c3-af53-4407-8093-4ea052547f21 - Creating user 
+[2025-12-01T12:51:29.491Z] info: [5] Processing email to vanshikavk.khandelwal@gmail.com 
+[2025-12-01T12:51:29.510Z] error: [5] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T12:51:34.587Z] info: [5] Processing email to vanshikavk.khandelwal@gmail.com 
+[2025-12-01T12:51:34.593Z] error: [5] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T12:51:39.611Z] info: [5] Processing email to vanshikavk.khandelwal@gmail.com 
+[2025-12-01T12:51:39.617Z] error: [5] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T12:52:28.095Z] info: b3b65d60-8e5b-4e12-8cbc-7630883f2595 - Creating user 
+[2025-12-01T12:52:28.199Z] info: [6] Processing email to vanshikavk2.khandelwal@gmail.com 
+[2025-12-01T12:52:28.204Z] error: [6] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T12:52:33.251Z] info: [6] Processing email to vanshikavk2.khandelwal@gmail.com 
+[2025-12-01T12:52:33.254Z] error: [6] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T12:52:38.273Z] info: [6] Processing email to vanshikavk2.khandelwal@gmail.com 
+[2025-12-01T12:52:38.277Z] error: [6] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T12:56:00.417Z] info: Env loaded 
+[2025-12-01T12:56:00.467Z] info: Database connected 
+[2025-12-01T12:56:00.474Z] info: Server started at port 3000 
+[2025-12-01T13:01:17.584Z] info: Env loaded 
+[2025-12-01T13:01:17.635Z] info: Database connected 
+[2025-12-01T13:01:17.642Z] info: Server started at port 3000 
+[2025-12-01T13:01:34.384Z] info: 228186c9-c4d4-49bb-b159-012e4d44a03c - Creating user 
+[2025-12-01T13:01:34.544Z] info: [7] Processing email to vanshikavk3.khandelwal@gmail.com 
+[2025-12-01T13:01:34.590Z] error: [7] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T13:01:34.594Z] info: [8] Processing email to vanshikavk3.khandelwal@gmail.com 
+[2025-12-01T13:01:34.608Z] error: [8] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T13:01:39.656Z] info: [7] Processing email to vanshikavk3.khandelwal@gmail.com 
+[2025-12-01T13:01:39.659Z] error: [7] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T13:01:39.660Z] info: [8] Processing email to vanshikavk3.khandelwal@gmail.com 
+[2025-12-01T13:01:39.663Z] error: [8] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T13:01:44.678Z] info: [7] Processing email to vanshikavk3.khandelwal@gmail.com 
+[2025-12-01T13:01:44.684Z] error: [7] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T13:01:44.685Z] info: [8] Processing email to vanshikavk3.khandelwal@gmail.com 
+[2025-12-01T13:01:44.689Z] error: [8] Job failed: connect ECONNREFUSED 127.0.0.1:587 
+[2025-12-01T13:08:39.359Z] info: 7ad1f33a-599d-475c-9ed1-93940a81b6a4 - Creating user 
+[2025-12-01T13:08:39.481Z] info: [9] Processing email to vanshikav3.khandelwal@gmail.com 
+[2025-12-01T13:08:40.366Z] error: [9] Job failed: Missing credentials for "PLAIN" 
+[2025-12-01T13:08:40.369Z] info: [10] Processing email to vanshikav3.khandelwal@gmail.com 
+[2025-12-01T13:08:41.788Z] error: [10] Job failed: Missing credentials for "PLAIN" 
+[2025-12-01T13:08:45.373Z] info: [9] Processing email to vanshikav3.khandelwal@gmail.com 
+[2025-12-01T13:08:46.090Z] error: [9] Job failed: Missing credentials for "PLAIN" 
+[2025-12-01T13:08:46.882Z] info: [10] Processing email to vanshikav3.khandelwal@gmail.com 
+[2025-12-01T13:08:48.341Z] error: [10] Job failed: Missing credentials for "PLAIN" 
+[2025-12-01T13:08:51.100Z] info: [9] Processing email to vanshikav3.khandelwal@gmail.com 
+[2025-12-01T13:08:52.848Z] error: [9] Job failed: Missing credentials for "PLAIN" 
+[2025-12-01T13:08:53.410Z] info: [10] Processing email to vanshikav3.khandelwal@gmail.com 
+[2025-12-01T13:08:54.043Z] error: [10] Job failed: Missing credentials for "PLAIN" 
+[2025-12-01T13:12:05.873Z] info: 1978b4ec-62b1-4939-88ab-67b1eaf3f2ec - Creating user 
+[2025-12-01T13:12:15.272Z] info: faf92445-d6c9-4d7b-8573-016e6429e2a6 - Creating user 
+[2025-12-01T13:12:15.369Z] info: [11] Processing email to vanshikav3.khandelwal12@gmail.com 
+[2025-12-01T13:12:16.726Z] error: [11] Job failed: Missing credentials for "PLAIN" 
+[2025-12-01T13:12:16.729Z] info: [12] Processing email to vanshikav3.khandelwal12@gmail.com 
+[2025-12-01T13:12:17.479Z] error: [12] Job failed: Missing credentials for "PLAIN" 
+[2025-12-01T13:12:21.743Z] info: [11] Processing email to vanshikav3.khandelwal12@gmail.com 
+[2025-12-01T13:12:22.564Z] error: [11] Job failed: Missing credentials for "PLAIN" 
+[2025-12-01T13:12:22.566Z] info: [12] Processing email to vanshikav3.khandelwal12@gmail.com 
+[2025-12-01T13:12:23.281Z] error: [12] Job failed: Missing credentials for "PLAIN" 
+[2025-12-01T13:12:27.574Z] info: [11] Processing email to vanshikav3.khandelwal12@gmail.com 
+[2025-12-01T13:12:28.402Z] error: [11] Job failed: Missing credentials for "PLAIN" 
+[2025-12-01T13:12:28.402Z] info: [12] Processing email to vanshikav3.khandelwal12@gmail.com 
+[2025-12-01T13:12:29.218Z] error: [12] Job failed: Missing credentials for "PLAIN" 
+[2025-12-01T13:15:02.696Z] info: Env loaded 
+[2025-12-01T13:15:02.748Z] info: Database connected 
+[2025-12-01T13:15:02.755Z] info: Server started at port 3000 
+[2025-12-01T13:15:38.883Z] info: 943a84b5-5bcb-4043-8713-c30d499774d0 - Creating user 
+[2025-12-01T13:15:39.038Z] info: [13] Processing email to vanshikv3.khandelwal12@gmail.com 
+[2025-12-01T13:15:42.346Z] info: [13] Email sent to vanshikv3.khandelwal12@gmail.com with subject: Welcome! 
+[2025-12-01T13:15:42.351Z] info: [13] Job completed 
+[2025-12-01T13:15:42.352Z] info: [14] Processing email to vanshikv3.khandelwal12@gmail.com 
+[2025-12-01T13:15:45.622Z] info: [14] Email sent to vanshikv3.khandelwal12@gmail.com with subject: Welcome to our app! 
+[2025-12-01T13:15:45.627Z] info: [14] Job completed 
+[2025-12-01T13:18:57.195Z] info: Env loaded 
+[2025-12-01T13:18:57.272Z] info: Database connected 
+[2025-12-01T13:18:57.286Z] info: Server started at port 3000 
+[2025-12-01T13:19:31.391Z] info: f322bb2b-04d5-4872-87d8-a86c21d4e5a3 - Creating user 
+[2025-12-01T13:19:31.588Z] info: [15] Processing email to vanshikv3.kh12@gmail.com 
+[2025-12-01T13:19:37.049Z] info: [15] Email sent to vanshikv3.kh12@gmail.com with subject: Welcome! 
+[2025-12-01T13:19:37.054Z] info: [15] Job completed 
+[2025-12-01T13:19:37.055Z] info: [16] Processing email to vanshikv3.kh12@gmail.com 
+[2025-12-01T13:19:41.758Z] info: [16] Email sent to vanshikv3.kh12@gmail.com with subject: Welcome to our app! 
+[2025-12-01T13:19:41.763Z] info: [16] Job completed 

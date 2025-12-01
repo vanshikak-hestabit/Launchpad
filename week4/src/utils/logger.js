@@ -7,8 +7,8 @@ const logger = createLogger({
   level: 'info',
   format: format.combine(
     format.timestamp(),
-    format.printf(({ timestamp, level, message }) => {
-      return `[${timestamp}] ${level}: ${message}`;
+    format.printf(({ timestamp, level, message, requestId }) => {
+      return `[${timestamp}] ${level}: ${message} ${requestId ? `(reqId=${requestId})` : ''}`;
     })
   ),
   transports: [

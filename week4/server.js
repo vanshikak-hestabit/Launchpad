@@ -8,6 +8,8 @@ const connectDB = require('./src/loaders/db');
 const security = require('./src/middlewares/security');
 const sanitize = require('./src/middlewares/sanitize');   
 const errorHandler = require('./src/middlewares/error.middleware');
+const tracing = require('./src/utils/tracing');
+const requestId = require('./src/middlewares/requestId');
 
 loadEnv();
 logger.info('Env loaded');
@@ -27,7 +29,9 @@ async function start() {
     // 1️⃣ Apply core middlewares
      security(app); 
      app.use(sanitize)          // helmet, cors, rateLimit etc.
-    
+
+    app.use(requestId);
+
     // 2️⃣ Mount routes
     app.use('/api', sampleRouter);
     app.use('/api/user', userRouter);
