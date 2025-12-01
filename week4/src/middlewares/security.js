@@ -1,17 +1,19 @@
+const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
 const rateLimit = require("express-rate-limit");
 //const mongoSanitize = require("express-mongo-sanitize");
-
 const hpp = require("hpp");
-const express = require("express");
+
 
 function security(app) {
   // Security headers
+  app.use(express.json({ limit: "10kb" }));
+
   app.use(helmet());
 
   // CORS
-  app.use(cors({ origin: "*" }));
+  app.use(cors({ origin: "http://127.0.0.1:5500" }));
 
   // Rate limiter
   const limiter = rateLimit({
@@ -21,11 +23,7 @@ function security(app) {
   });
   app.use(limiter);
 
-  // Prevent JSON payload bombs
-  app.use(express.json({ limit: "10kb" }));
-
-
-
+  
 
   // Parameter pollution
   app.use(hpp());
