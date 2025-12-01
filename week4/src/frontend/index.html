@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Products API Test</title>
+</head>
+<body>
+  <h1>Test Products API</h1>
+
+  <button id="getProducts">Get All Products</button>
+  <button id="createProduct">Create Product</button>
+
+  <pre id="output"></pre>
+
+  <script>
+    const output = document.getElementById('output');
+
+    // Helper function to show results
+    function showResult(result) {
+      output.textContent = JSON.stringify(result, null, 2);
+    }
+
+    // 1️⃣ Fetch all products
+    document.getElementById('getProducts').addEventListener('click', async () => {
+      try {
+        const res = await fetch('http://localhost:3000/api/products');
+        const data = await res.json();
+        showResult(data);
+      } catch (err) {
+        showResult({ error: err.message });
+      }
+    });
+
+    // 2️⃣ Create a new product
+    document.getElementById('createProduct').addEventListener('click', async () => {
+      try {
+        const res = await fetch('http://localhost:3000/api/products', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: 'Test Product',
+            price: 100,
+            status: 'available',
+            rating: 4.5
+          })
+        });
+        const data = await res.json();
+        showResult(data);
+      } catch (err) {
+        showResult({ error: err.message });
+      }
+    });
+  </script>
+</body>
+</html>
