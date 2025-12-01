@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Blocked Frontend Test</title>
+</head>
+<body>
+  <h1>Blocked CORS Test</h1>
+  <button id="testBlocked">Test Products API</button>
+  <pre id="output"></pre>
+
+  <script>
+    const output = document.getElementById('output');
+    document.getElementById('testBlocked').addEventListener('click', async () => {
+      try {
+        const res = await fetch('http://localhost:3000/api/products');
+        const data = await res.json();
+        output.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        output.textContent = 'Error: ' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
