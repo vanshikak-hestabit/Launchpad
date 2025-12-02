@@ -1,6 +1,7 @@
 const ProductRepository = require('../repositories/product.repository');
 
 class ProductService {
+  
   // Create a new product
   static async create(data) {
     return ProductRepository.create(data);
