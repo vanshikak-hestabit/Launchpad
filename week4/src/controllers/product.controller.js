@@ -70,3 +70,5 @@ module.exports = {
 //it handles the HTTP req from clients(postman, browser)
 // it calls the service layer to perform actions and then sends the 
 //response back to client
+// it takes the request-> do logic-> return response
+// uses repository to get data from DB

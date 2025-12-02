@@ -36,7 +36,9 @@ async function create(req, res, next) {
   try {
     logger.info(`${req.requestId} - Creating user`);
     const user = await UserRepository.create(req.body);
-    await addEmailJob(user.email, 'Welcome!', 'Your account has been created.');
+
+    // call addEmailJob,add the job in queue -> email.job puts the job in queue-> email.worker see the job and sends the real email
+    //await addEmailJob(user.email, 'Welcome!', 'Your account has been created.');
     res.status(201).json({ success: true, message: 'User created successfully!', user });
 
       await addEmailJob(
@@ -81,3 +83,6 @@ module.exports = {
   update,
   remove
 };
+
+// it takes the request-> do logic-> return response
+// uses repository to get data from DB
