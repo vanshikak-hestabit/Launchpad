@@ -55,3 +55,5 @@ userSchema.index({ status: 1, createdAt: -1 });
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
+
+// This defines how a User is stored in MongoDB.
