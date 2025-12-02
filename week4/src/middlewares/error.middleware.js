@@ -13,6 +13,8 @@ function errorHandler(err, req, res,next) {
 
 module.exports = errorHandler;
 
+//If any route or middleware throws an error, Express sends the error here.
+//if any route throws error, or you call next(err), Express automatically jumps to this middleware because it has 4 parameters(err,req,res,next)
 //centralized error handling so you dont have to repeat try/catch in every route
 //can format errors consistently for API responses
 //like success : false, msg...
