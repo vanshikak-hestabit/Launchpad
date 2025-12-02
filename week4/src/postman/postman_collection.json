@@ -1,0 +1,215 @@
+{
+	"info": {
+		"_postman_id": "daf3e4e4-11c4-4409-a93c-33b09712838e",
+		"name": "launchpad-week4",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49856953",
+		"_collection_link": "https://vanshikak-hestabit-8272401.postman.co/workspace/vanshika-khandelwal's-Workspace~d83a737a-3fcf-4b1d-8743-3506b4afc753/collection/49856953-daf3e4e4-11c4-4409-a93c-33b09712838e?action=share&source=collection_link&creator=49856953"
+	},
+	"item": [
+		{
+			"name": "get all products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/products",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/user",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/user/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "69270edae4965604aa8dfd5f"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add a user or product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/user/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "69270edae4965604aa8dfd5f"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/user/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"user",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "69270edae4965604aa8dfd5f"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get product by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/products/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"products",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "69270c1aedcc32de4874b77c"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update a product",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/products/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"products",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "69270c1aedcc32de4874b77c"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete a product",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/products/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"products",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "69270c1aedcc32de4874b77c"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
