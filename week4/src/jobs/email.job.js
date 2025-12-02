@@ -8,9 +8,13 @@ const emailQueue = new Queue('emailQueue', {
 
 function addEmailJob(to, subject, body) {
   return emailQueue.add('sendEmail', { to, subject, body }, {
-    attempts: 1,         // retry 3 times
+    attempts: 2,         // retry 2 times
     backoff: 5000,       // wait 5s before retry
   });
 }
 
 module.exports = { emailQueue, addEmailJob };
+
+// this files pushes jobs into queue
+// it does not send mails it just creates a job and puts it inside redis queue
+// maked a function addEmailJob so that app can use and send email
