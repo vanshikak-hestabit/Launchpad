@@ -61,3 +61,7 @@ includeDeleted=false:-
 ## COMBINED QUERY
 
 -> search + min/max price + tags + sorting + pagination + soft deleted
+
+## POSTMAN SCREENSHOT
+
+-> ![postman](./adv-query.png)
