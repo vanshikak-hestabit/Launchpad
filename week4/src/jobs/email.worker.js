@@ -1,15 +1,16 @@
 const { Worker } = require('bullmq');
 const logger = require('../utils/logger');
 const nodemailer = require('nodemailer');
-require('dotenv').config(); // make sure env is loaded
+require('dotenv').config(); 
 
 console.log(process.env.EMAIL_USER)
 
+// connect worker to redis
 const connection = {
   host: '127.0.0.1',
-  port: 6379,
-  maxRetriesRequest:null,
-  enableReadyCheck:false
+  port: 6379,  // redis port
+  // maxRetriesRequest:null,
+  // enableReadyCheck:false
 };
 
 // Create nodemailer transporter using env
@@ -21,6 +22,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// create a worker (worker name=queue name)
 const worker = new Worker(
   'emailQueue',
   async job => {
@@ -47,3 +49,5 @@ worker.on('failed', (job, err) => {
 });
 
 console.log('Email worker started and listening for jobs...');
+
+// this file picks the jobs from queue made by email.job.js and executes them
