@@ -1,4 +1,3 @@
-// models/product.schema.js
 const Joi = require('joi');
 
 const createProductSchema = Joi.object({
@@ -10,3 +9,11 @@ const createProductSchema = Joi.object({
 });
 
 module.exports = { createProductSchema };
+
+// This file checks the product data before saving it.
+
+// ->name → string, required
+// ->price → number ≥ 0, required
+// ->tags → optional array of strings
+// ->rating → optional number (0–5)
+// ->status → optional, must be "available" or "out_of_stock"

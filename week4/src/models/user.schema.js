@@ -9,3 +9,16 @@ const createUserSchema = Joi.object({
 });
 
 module.exports = { createUserSchema };
+
+// This file checks the incoming request body before creating a user.
+// validates input from client
+
+// ->firstName must be a string, at least 2 letters
+
+// ->lastName must be a string, at least 2 letters
+
+// ->email must be in correct email format
+
+// ->password must be minimum 6 characters
+
+// ->status can only be “active” or “inactive”
