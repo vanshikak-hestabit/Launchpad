@@ -37,3 +37,6 @@ class ProductRepository {
 }
 
 module.exports = ProductRepository;
+
+// controller asks to perform operation on DB -> this file interacts with DB -> returns to controller
+// middle layer between controller and DB
