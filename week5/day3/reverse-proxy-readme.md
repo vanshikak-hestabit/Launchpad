@@ -30,4 +30,4 @@ This project demonstrates how to configure an NGINX reverse proxy with round-rob
 
 ## SYSTEM DIAGRAM
 
--> [!SYSTEM DIAGRAM](structure.png)
+-> ![SYSTEM DIAGRAM](structure.png)
