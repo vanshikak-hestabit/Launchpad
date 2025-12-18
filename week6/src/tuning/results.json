@@ -1,0 +1,9 @@
+{
+    "model": "LogisticRegression",
+    "best_params": {
+        "C": 0.1,
+        "penalty": "l2",
+        "solver": "lbfgs"
+    },
+    "best_roc_auc": 0.8591261887477704
+}
