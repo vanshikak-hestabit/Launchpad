@@ -56,3 +56,11 @@ joblib.dump(best_model, "src/models/best_model.pkl")
 
 print("Best model:", best_model_name)
 print("Model and metrics saved")
+
+
+# ready-to-run pipeline that:
+# Loads your prepared features
+# Trains 3 models with cross-validation
+# Calculates metrics for each
+# Picks the best model automatically
+# Saves everything for later use
