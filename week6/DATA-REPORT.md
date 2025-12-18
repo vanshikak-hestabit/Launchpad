@@ -1,4 +1,4 @@
-# Titanic Dataset - Dara Report
+# Titanic Dataset - Data Report
 
 ## 1. Sataset Overview
 - Rows: 891
