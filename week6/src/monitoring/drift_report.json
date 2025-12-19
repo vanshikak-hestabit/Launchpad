@@ -1,0 +1,137 @@
+{
+    "FamilySize": {
+        "statistic": 0.30252808988764046,
+        "p_value": 0.26846024418080383,
+        "drift_detected": false
+    },
+    "IsAlone": {
+        "statistic": 0.5,
+        "p_value": 0.008379839983974879,
+        "drift_detected": true
+    },
+    "AgeFilled": {
+        "statistic": 0.23595505617977527,
+        "p_value": 0.5645127047365228,
+        "drift_detected": false
+    },
+    "FareFilled": {
+        "statistic": 0.23370786516853934,
+        "p_value": 0.576470857667561,
+        "drift_detected": false
+    },
+    "FarePerPerson": {
+        "statistic": 0.30842696629213484,
+        "p_value": 0.24895842820302963,
+        "drift_detected": false
+    },
+    "IsChild": {
+        "statistic": 0.6030898876404495,
+        "p_value": 0.0005861213251217792,
+        "drift_detected": true
+    },
+    "IsFemale": {
+        "statistic": 0.5,
+        "p_value": 0.008379839983974879,
+        "drift_detected": true
+    },
+    "HasCabin": {
+        "statistic": 0.6,
+        "p_value": 0.000636287213973926,
+        "drift_detected": true
+    },
+    "EmbarkedFilled_Q": {
+        "statistic": 0.6,
+        "p_value": 0.000636287213973926,
+        "drift_detected": true
+    },
+    "EmbarkedFilled_S": {
+        "statistic": 0.43735955056179776,
+        "p_value": 0.0312033899075123,
+        "drift_detected": true
+    },
+    "EmbarkedFilled_Unknown": {
+        "statistic": 0.6,
+        "p_value": 0.000636287213973926,
+        "drift_detected": true
+    },
+    "Title_Col": {
+        "statistic": 0.6,
+        "p_value": 0.000636287213973926,
+        "drift_detected": true
+    },
+    "Title_Countess": {
+        "statistic": 0.5985955056179775,
+        "p_value": 0.0006628163164257793,
+        "drift_detected": true
+    },
+    "Title_Don": {
+        "statistic": 0.6,
+        "p_value": 0.000636287213973926,
+        "drift_detected": true
+    },
+    "Title_Dr": {
+        "statistic": 0.6,
+        "p_value": 0.000636287213973926,
+        "drift_detected": true
+    },
+    "Title_Jonkheer": {
+        "statistic": 0.5,
+        "p_value": 0.008379839983974879,
+        "drift_detected": true
+    },
+    "Title_Lady": {
+        "statistic": 0.5985955056179775,
+        "p_value": 0.0006628163164257793,
+        "drift_detected": true
+    },
+    "Title_Major": {
+        "statistic": 0.6971910112359551,
+        "p_value": 2.598094392901149e-05,
+        "drift_detected": true
+    },
+    "Title_Master": {
+        "statistic": 0.7536516853932584,
+        "p_value": 2.6750200920614622e-06,
+        "drift_detected": true
+    },
+    "Title_Miss": {
+        "statistic": 0.5,
+        "p_value": 0.008379839983974879,
+        "drift_detected": true
+    },
+    "Title_Mlle": {
+        "statistic": 0.5,
+        "p_value": 0.008379839983974879,
+        "drift_detected": true
+    },
+    "Title_Mme": {
+        "statistic": 0.5,
+        "p_value": 0.008379839983974879,
+        "drift_detected": true
+    },
+    "Title_Mr": {
+        "statistic": 0.38848314606741574,
+        "p_value": 0.07526306134123913,
+        "drift_detected": false
+    },
+    "Title_Mrs": {
+        "statistic": 0.4651685393258427,
+        "p_value": 0.017858945349625985,
+        "drift_detected": true
+    },
+    "Title_Ms": {
+        "statistic": 0.5,
+        "p_value": 0.008379839983974879,
+        "drift_detected": true
+    },
+    "Title_Rev": {
+        "statistic": 0.7929775280898876,
+        "p_value": 4.223367474674081e-07,
+        "drift_detected": true
+    },
+    "Title_Sir": {
+        "statistic": 0.6,
+        "p_value": 0.000636287213973926,
+        "drift_detected": true
+    }
+}
