@@ -661,3 +661,58 @@
 [2025-12-01T13:19:37.055Z] info: [16] Processing email to vanshikv3.kh12@gmail.com 
 [2025-12-01T13:19:41.758Z] info: [16] Email sent to vanshikv3.kh12@gmail.com with subject: Welcome to our app! 
 [2025-12-01T13:19:41.763Z] info: [16] Job completed 
+[2025-12-01T14:24:35.059Z] info: Env loaded 
+[2025-12-01T14:24:35.087Z] info: Database connected 
+[2025-12-01T14:24:35.091Z] info: Server started at port 3000 
+[2025-12-01T14:25:09.660Z] info: 5987c51e-6ace-4856-b2a6-6fa3b946b845 - Fetching all users 
+[2025-12-01T14:25:09.679Z] info: 5987c51e-6ace-4856-b2a6-6fa3b946b845 - Users fetched successfully 
+[2025-12-01T14:25:52.200Z] info: db2170b2-107c-421c-bc64-61da5325e2d0 - Fetching all users 
+[2025-12-01T14:25:52.202Z] info: db2170b2-107c-421c-bc64-61da5325e2d0 - Users fetched successfully 
+[2025-12-02T05:46:48.084Z] info: Env loaded 
+[2025-12-02T05:46:48.137Z] info: Database connected 
+[2025-12-02T05:46:48.146Z] info: Server started at port 3000 
+[2025-12-02T05:46:51.924Z] info: 86da50d4-a6af-4a8e-8247-de9d956e8866 - Fetching all users 
+[2025-12-02T05:46:51.948Z] info: 86da50d4-a6af-4a8e-8247-de9d956e8866 - Users fetched successfully 
+[2025-12-02T05:47:17.842Z] info: d95ed3fe-5b69-4352-b920-3dcad825be15 - Fetching user with id=69270edae4965604aa8dfd5f 
+[2025-12-02T11:17:51.619Z] info: Env loaded 
+[2025-12-02T11:17:51.688Z] info: Database connected 
+[2025-12-02T11:17:51.700Z] info: Server started at port 3000 
+[2025-12-02T11:27:07.722Z] info: 485cc3f9-e0d7-4a20-84bb-26136b39aad5 - Creating user 
+[2025-12-02T11:27:07.924Z] info: [17] Processing email to minosa@gmail.com 
+[2025-12-02T11:27:11.401Z] info: [17] Email sent to minosa@gmail.com with subject: Welcome! 
+[2025-12-02T11:27:11.406Z] info: [17] Job completed 
+[2025-12-02T11:27:11.407Z] info: [18] Processing email to minosa@gmail.com 
+[2025-12-02T11:27:14.774Z] info: [18] Email sent to minosa@gmail.com with subject: Welcome to our app! 
+[2025-12-02T11:27:14.778Z] info: [18] Job completed 
+[2025-12-02T11:29:41.995Z] info: Env loaded 
+[2025-12-02T11:29:42.058Z] info: Database connected 
+[2025-12-02T11:29:42.068Z] info: Server started at port 3000 
+[2025-12-02T11:30:46.223Z] info: f11c2506-4592-45d0-a00a-97d52a690558 - Creating user 
+[2025-12-02T11:30:46.356Z] info: [19] Processing email to stellaa@gmail.com 
+[2025-12-02T11:30:49.611Z] info: [19] Email sent to stellaa@gmail.com with subject: Welcome to our app! 
+[2025-12-02T11:30:49.616Z] info: [19] Job completed 
+[2025-12-02T11:33:20.335Z] info: Env loaded 
+[2025-12-02T11:33:20.409Z] info: Database connected 
+[2025-12-02T11:33:20.425Z] info: Server started at port 3000 
+[2025-12-02T11:33:47.231Z] info: faeb0240-c8b2-4fd4-a870-5a1f0ccd68a0 - Creating user 
+[2025-12-02T11:33:47.384Z] info: [20] Processing email to stkllaa@gmail.com 
+[2025-12-02T11:33:51.068Z] info: [20] Email sent to stkllaa@gmail.com with subject: Welcome to our app! 
+[2025-12-02T11:33:51.072Z] info: [20] Job completed 
+[2025-12-02T11:35:11.338Z] info: e90dd829-90b5-42d5-8248-35a6a6d9b807 - Fetching all users 
+[2025-12-02T11:35:11.357Z] info: e90dd829-90b5-42d5-8248-35a6a6d9b807 - Users fetched successfully 
+[2025-12-02T11:35:29.080Z] info: 72f2f902-b51f-4bdb-9159-8bb04de6cbdb - Deleting user id=692ecde66caa7b8e3ac37db6 
+[2025-12-02T11:35:37.494Z] info: 76254e63-9f8f-4fa4-bd47-3d6113351bdf - Fetching all users 
+[2025-12-02T11:35:37.500Z] info: 76254e63-9f8f-4fa4-bd47-3d6113351bdf - Users fetched successfully 
+[2025-12-02T11:36:41.853Z] info: Env loaded 
+[2025-12-02T11:36:41.914Z] info: Database connected 
+[2025-12-02T11:36:41.922Z] info: Server started at port 3000 
+[2025-12-02T11:37:13.007Z] info: b89894a7-23ab-4061-abb4-bd1f8d9b42a1 - Creating user 
+[2025-12-02T11:37:13.155Z] info: [21] Processing email to stella@gmail.com 
+[2025-12-02T11:37:16.493Z] info: [21] Email sent to stella@gmail.com with subject: Welcome to our app! 
+[2025-12-02T11:37:16.504Z] info: [21] Job completed 
+[2025-12-02T13:58:27.043Z] info: Env loaded 
+[2025-12-02T13:58:27.097Z] info: Database connected 
+[2025-12-02T13:58:27.104Z] info: Server started at port 3000 
+[2025-12-02T14:09:47.263Z] info: Env loaded 
+[2025-12-02T14:09:47.318Z] info: Database connected 
+[2025-12-02T14:09:47.325Z] info: Server started at port 3000 
