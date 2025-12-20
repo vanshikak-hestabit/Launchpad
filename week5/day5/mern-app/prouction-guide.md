@@ -16,6 +16,7 @@ This guide explains how to deploy the MERN stack application using Docker for pr
 - **Docker Volumes:** Persist MongoDB data.
 - **Docker Networks:** Isolate and connect services.
 - **Health Checks:** Ensure containers are running.
+- **Logging:** Ensures no over logging
 
 ---
 
