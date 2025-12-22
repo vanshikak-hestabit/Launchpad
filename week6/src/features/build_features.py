@@ -7,7 +7,7 @@ df = pd.read_csv("src/data/raw/train.csv")
 
 TARGET = "Survived"
 
-# ------------------FEATURES CREATION--------------------
+# FEATURES CREATION
 
 # 1. FAMILY SIZE
 df["FamilySize"] = df["SibSp"] + df["Parch"] + 1
@@ -42,7 +42,7 @@ df["HasCabin"] = df["Cabin"].notna().astype(int)
 print("Features created")
 
 
-# ------------------ ENCODING ------------------
+# ENCODING
 
 # One-hot encoding for categorical columns
 df = pd.get_dummies(
@@ -51,7 +51,7 @@ df = pd.get_dummies(
     drop_first=True
 )
 
-# ------------------ FEATURE MATRIX ------------------
+# FEATURE MATRIX 
 
 # Columns to use as input
 FEATURE_COLS = [
@@ -68,7 +68,7 @@ FEATURE_COLS = [
 X = df[FEATURE_COLS]
 y = df[TARGET]
 
-# ------------------ SCALING ------------------
+# SCALING (standardscaler)
 
 scaler = StandardScaler()
 X_scaled = pd.DataFrame(
@@ -77,8 +77,7 @@ X_scaled = pd.DataFrame(
 )
 
 
-# ------------------ TRAIN TEST SPLIT ------------------
-
+#  TRAIN TEST SPLIT
 X_train, X_test, y_train, y_test = train_test_split(
     X_scaled, y, test_size=0.2, random_state=42
 )
