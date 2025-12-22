@@ -18,7 +18,7 @@ def handle_missing_values(df: pd.DataFrame) -> pd.DataFrame:
     # Fill Embarked with most frequent value
     df["Embarked"] = df["Embarked"].fillna(df["Embarked"].mode()[0])
 
-    # Drop Cabin (too many missing)
+    # Drop Cabin (because too many missing)
     df = df.drop(columns=["Cabin"])
 
     print("\nMissing values after:")
@@ -31,7 +31,7 @@ def remove_duplicates(df: pd.DataFrame) -> pd.DataFrame:
     df = df.drop_duplicates()
     after = df.shape[0]
 
-    print(f"Duplicates removed: {before - after}")
+    print(f"\nDuplicates removed: {before - after}")
     return df
 
 def handle_outliers(df: pd.DataFrame, column: str) -> pd.DataFrame:
@@ -43,7 +43,7 @@ def handle_outliers(df: pd.DataFrame, column: str) -> pd.DataFrame:
     upper = Q3 + 1.5 * IQR
 
     outliers = df[(df[column] < lower) | (df[column] > upper)].shape[0]
-    print(f"Outliers in {column}: {outliers}")
+    print(f"\nOutliers in {column}: {outliers}")
 
     df[column] = df[column].clip(lower, upper)
     return df
@@ -51,7 +51,7 @@ def handle_outliers(df: pd.DataFrame, column: str) -> pd.DataFrame:
 def save_processed_data(df: pd.DataFrame, filename: str = "final.csv"):
     output_path = Path("data/processed") / filename
     df.to_csv(output_path, index=False)
-    print(f"Cleaned data saved to {output_path}")
+    print(f"\nCleaned data saved to {output_path}")
 
 
 if __name__ == "__main__":
