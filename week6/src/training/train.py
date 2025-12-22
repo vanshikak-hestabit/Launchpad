@@ -8,11 +8,11 @@ from xgboost import XGBClassifier
 from sklearn.neural_network import MLPClassifier
 
 
-# ---------------- LOAD DATA ----------------
+# LOAD DATA 
 X_train = pd.read_pickle("src/data/processed/X_train.pkl")
 y_train = pd.read_pickle("src/data/processed/y_train.pkl")
 
-# ---------------- MODELS ----------------
+# Choosing 4 MODELS
 models = {
     "LogisticRegression": LogisticRegression(max_iter=1000),
     "RandomForest": RandomForestClassifier(random_state=42),
@@ -30,7 +30,7 @@ models = {
 scoring = ["accuracy", "precision", "recall", "f1", "roc_auc"]
 results = {}
 
-# ---------------- TRAIN + CV ----------------
+# TRAIN + CV 
 for name, model in models.items():
     scores = cross_validate(
         model,
@@ -48,14 +48,14 @@ for name, model in models.items():
         "roc_auc": scores["test_roc_auc"].mean()
     }
 
-# ---------------- SELECT BEST MODEL ----------------
+# SELECT BEST MODEL
 best_model_name = max(results, key=lambda x: results[x]["roc_auc"])
 best_model = models[best_model_name]
 
 # Train best model on full training data
 best_model.fit(X_train, y_train)
 
-# ---------------- SAVE OUTPUTS ----------------
+# SAVE OUTPUTS 
 with open("src/evaluation/metrics.json", "w") as f:
     json.dump(results, f, indent=4)
 
