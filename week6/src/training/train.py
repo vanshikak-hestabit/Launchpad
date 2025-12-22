@@ -5,6 +5,8 @@ from sklearn.model_selection import cross_validate
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
+from sklearn.neural_network import MLPClassifier
+
 
 # ---------------- LOAD DATA ----------------
 X_train = pd.read_pickle("src/data/processed/X_train.pkl")
@@ -17,6 +19,11 @@ models = {
     "XGBoost": XGBClassifier(
         random_state=42,
         eval_metric="logloss"
+    ),
+    "NeuralNetwork": MLPClassifier(
+        hidden_layer_sizes=(64, 32),
+        max_iter=500,
+        random_state=42
     )
 }
 
