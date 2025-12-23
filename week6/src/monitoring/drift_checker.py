@@ -1,4 +1,3 @@
-# monitoring/drift_checker.py
 
 import pandas as pd
 from scipy.stats import ks_2samp
@@ -7,7 +6,7 @@ import os
 
 # Paths
 TRAIN_DATA_PATH = "./data/processed/X_train.pkl"
-NEW_DATA_PATH = "./data/processed/X_new.pkl"  # replace with real incoming data path
+NEW_DATA_PATH = "./data/processed/X_new.pkl"  
 DRIFT_REPORT_PATH = "./monitoring/drift_report.json"
 
 # Load data
