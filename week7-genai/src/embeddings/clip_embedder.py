@@ -8,29 +8,17 @@ from src.pipelines.image_ingest import load_img, OCR, gen_cap
 client = get_QD_client()
 COLLECTION_NAME = "genai-learning"
 
-model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
-processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")          # generates embeddings
+processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")  # prepares img + txt for clip
 
 
 def generate_embeddings(image_path, caption):
-    """
-    Given an image path and caption:
-    - Loads the image
-    - Generates image + text embeddings using CLIP
-    Returns: image_vector, text_vector (as numpy arrays)
-    """
-    # Load image
     image = Image.open(image_path).convert('RGB')
-
-    # Prepare inputs for CLIP
     inputs = processor(text=[caption], images=image, return_tensors="pt", padding=True)
-
-    # Generate embeddings
-    with torch.no_grad():
+    with torch.no_grad():       # not training just calculating
         image_embeds = model.get_image_features(inputs['pixel_values'])
         text_embeds = model.get_text_features(inputs['input_ids'])
 
-    # Convert to numpy
     return image_embeds[0].numpy(), text_embeds[0].numpy()
 
 def embed_storeAll(folder):
