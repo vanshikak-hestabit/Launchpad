@@ -6,3 +6,6 @@ src/pipelines/__pycache__/
 src/retriever/__pycache__/
 src/utils/__pycache__/
 src/vectorstore/__pycache__/
+test.py
+src/data/raw/gi8.png
+sales.db
