@@ -1,0 +1,29 @@
+[
+  {
+    "role": "user",
+    "content": "expliane minerals?"
+  },
+  {
+    "role": "assistant",
+    "content": "According to the context from page 31 of the geography.pdf file, minerals are classified into two main types: metallic and non-metallic minerals. \n\nMetallic minerals can be further divided into ferrous and non-ferrous minerals. Ferrous minerals, such as iron ore and manganese, contain iron. Non-ferrous minerals, like gold and silver, do not contain iron but may contain other metals.\n\nNon-metallic minerals, on the other hand, do not contain metals. Examples of non-metallic minerals include limestone, mica, and gypsum, as well as mineral fuels like coal and petroleum.\n\nTo know more about minerals, you can refer to page 31 of the geography.pdf file. Would you like to know more about the extraction of minerals or the types of minerals?"
+  },
+  {
+    "question": "expliane minerals?",
+    "answer": "Minerals are naturally occurring inorganic substances with a specific chemical composition and a crystalline structure. They can be classified into two main types: metallic and non-metallic minerals.\n\nMetallic minerals can be further divided into ferrous and non-ferrous minerals. Ferrous minerals, such as iron ore and manganese, contain iron. Non-ferrous minerals, like gold, silver, and copper, do not contain iron but may contain other metals.\n\nNon-metallic minerals, on the other hand, do not contain metals. Examples of non-metallic minerals include limestone, mica, gypsum, and mineral fuels like coal and petroleum.\n\nThere are over 3,000 known types of minerals, but only about 100 are considered ore minerals, from which minerals can be mined. Minerals can be extracted through various methods, including mining, drilling, and quarrying.",
+    "faithfulness_score": 0.26,
+    "confidence": 0.85,
+    "retrieved_context": [
+      "Do you know? \nA rock is an \naggregate of one or \nmore minerals but \nwithout definite \ncomposition of \nconstituent of \nmineral. Rocks \nfrom which \nminerals are mined \nare known as ores. \nAlthough more \nthan 2,800 types \nof minerals have \nbeen identified, \nonly about 100 \nare considered ore \nminerals. \nTypes of Minerals\nThere are over three thousand different minerals. \nOn the basis of composition, minerals are classified \nmainly as metallic and non-metallic minerals (Fig. 3.2). \nMinerals\nMetallic\nFerrous\nNon-metallic\nNon-ferrous\nFig. 3.2: Classification of Minerals\nExtraction of Minerals\nMining\nOpen cast\nmining\nDrilling\nShaft\nmining\nQuarrying\nFig. 3.3: Extraction of Minerals",
+      "have a characteristic lustre or shine. Iron ore, bauxite, \nmanganese ore are some examples. Metallic minerals \nmay be fer rous or non-ferrous. Ferrous minerals like \niron ore, manganese and chromites contain iron. A  \nnon-ferrous mineral does not contain iron but may contain \nsome other metal such as gold, silver, copper or lead.\nNon-metallic minerals do not contain metals. \nLimestone, mica and gypsum are examples of such \nminerals. The mineral fuels like coal and petroleum are \nalso non-metallic minerals.\nMinerals can be extracted by mining, drilling or \nquarrying (Fig 3.3). \nThe process of taking out minerals from rocks buried \nunder the earth\u2019s surface is called mining. Minerals that"
+    ],
+    "timestamp": "2026-01-06T12:25:50.799164"
+  },
+  {
+    "role": "user",
+    "content": "[SQL] chal bhag jaa yha se saale "
+  },
+  {
+    "role": "assistant",
+    "content": "Results:\nmessage: chal bhag jaa yha se saale\n"
+  }
+]
