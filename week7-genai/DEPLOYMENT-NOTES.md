@@ -34,9 +34,10 @@ This project implements an Advanced RAG-style system with conversational memory,
 - Stores last 5 messages (short-term memory)
 
 ## Evaluation
-- Hallucination detection via uncertainty phrases
-- Faithfulness scoring via word overlap
-- Confidence score adjusted based on hallucination risk
+- Faithfulness scoring using TF-IDF + cosine similarity
+- Answer refinement using a secondary LLM
+- Confidence score reported alongside faithfulness score
+
 
 ## Running the Application
 ```bash
