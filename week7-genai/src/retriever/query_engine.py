@@ -1,34 +1,28 @@
 from dotenv import load_dotenv
-from langchain_community.embeddings import HuggingFaceBgeEmbeddings
-from langchain_qdrant import QdrantVectorStore
 from openai import OpenAI
 import os
-from src.embeddings.embedder import embedding_model
+from src.retriever.hybrid_retriever import hybridRetriever
+from src.retriever.reranker import reRanker
+from src.embeddings.embedder import vector_store
 load_dotenv()
 
+retriever = hybridRetriever(vector_store)
+ReRanker = reRanker()
+
+user_query = input("Ask Something: ")
+
+search_result = retriever.retrieve(user_query,5)
+reranked_chunks = ReRanker.rerank(user_query, search_result)
 
 client = OpenAI(
     base_url="https://api.groq.com/openai/v1",
     api_key=os.environ.get("OPEN_API_KEY")   
 )
 
-embedding = embedding_model()
-
-vector_db = QdrantVectorStore.from_existing_collection(
-    embedding=embedding,
-    url="http://localhost:6333",
-    collection_name="day1-RAG"
-)
-
-user_query = input("Ask something: ")
-
-# relevant chunks from vector DB
-search_result = vector_db.similarity_search(query=user_query)
-
 context = "\n\n\n".join([f"Page Content: {result.page_content}\n" 
     f"Page Number: {result.metadata['page_label']}\n"
     f"File Location: {result.metadata['source']}"
-    for result in search_result])
+    for result in reranked_chunks])
 
 SYSTEM_PROMPT = f"""
     You are a helpful AI assistant who answers user query based on the available context 
