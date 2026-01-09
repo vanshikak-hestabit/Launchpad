@@ -1,0 +1,100 @@
+{"instruction": "What is asthma?", "input": "", "output": "Asthma is a medical condition that affects the body and requires clinical management."}
+{"instruction": "What is hypertension?", "input": "", "output": "Hypertension is a medical condition that affects the body and requires clinical management."}
+{"instruction": "Extract the diagnosis and medication.", "input": "The patient was diagnosed with tuberculosis and prescribed paracetamol.", "output": "Diagnosis: tuberculosis; Medication: paracetamol"}
+{"instruction": "Extract the diagnosis and medication.", "input": "Clinical notes indicate asthma treated using atorvastatin.", "output": "Diagnosis: asthma; Medication: atorvastatin"}
+{"instruction": "What is arthritis?", "input": "", "output": "Arthritis is a medical condition that affects the body and requires clinical management."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports fever, persistent cough, joint pain.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Extract the diagnosis and medication.", "input": "Diagnosis confirmed as diabetes. Medication initiated: insulin.", "output": "Diagnosis: diabetes; Medication: insulin"}
+{"instruction": "Extract the diagnosis and medication.", "input": "The patient was diagnosed with stroke and prescribed insulin.", "output": "Diagnosis: stroke; Medication: insulin"}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports weight loss, fever, shortness of breath.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Extract the diagnosis and medication.", "input": "Clinical notes indicate arthritis treated using ibuprofen.", "output": "Diagnosis: arthritis; Medication: ibuprofen"}
+{"instruction": "Extract the diagnosis and medication.", "input": "Clinical notes indicate stroke treated using insulin.", "output": "Diagnosis: stroke; Medication: insulin"}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports joint pain, frequent urination, fatigue.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "What is asthma?", "input": "", "output": "Asthma is a medical condition that affects the body and requires clinical management."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports persistent cough, chest pain, joint pain.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Extract the diagnosis and medication.", "input": "Diagnosis confirmed as diabetes. Medication initiated: ibuprofen.", "output": "Diagnosis: diabetes; Medication: ibuprofen"}
+{"instruction": "What is stroke?", "input": "", "output": "Stroke is a medical condition that affects the body and requires clinical management."}
+{"instruction": "Extract the diagnosis and medication.", "input": "Clinical notes indicate covid-19 treated using paracetamol.", "output": "Diagnosis: covid-19; Medication: paracetamol"}
+{"instruction": "What is hypertension?", "input": "", "output": "Hypertension is a medical condition that affects the body and requires clinical management."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports weight loss, chest pain, joint pain.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports fever, persistent cough, fatigue.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Extract the diagnosis and medication.", "input": "The patient was diagnosed with arthritis and prescribed insulin.", "output": "Diagnosis: arthritis; Medication: insulin"}
+{"instruction": "Extract the diagnosis and medication.", "input": "Clinical notes indicate stroke treated using metformin.", "output": "Diagnosis: stroke; Medication: metformin"}
+{"instruction": "Extract the diagnosis and medication.", "input": "Diagnosis confirmed as asthma. Medication initiated: amlodipine.", "output": "Diagnosis: asthma; Medication: amlodipine"}
+{"instruction": "What is asthma?", "input": "", "output": "Asthma is a medical condition that affects the body and requires clinical management."}
+{"instruction": "Extract the diagnosis and medication.", "input": "The patient was diagnosed with covid-19 and prescribed paracetamol.", "output": "Diagnosis: covid-19; Medication: paracetamol"}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports fatigue, fever, frequent urination.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "What is diabetes?", "input": "", "output": "Diabetes is a medical condition that affects the body and requires clinical management."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports persistent cough, fatigue, joint pain.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Extract the diagnosis and medication.", "input": "Clinical notes indicate hypertension treated using metformin.", "output": "Diagnosis: hypertension; Medication: metformin"}
+{"instruction": "Extract the diagnosis and medication.", "input": "Diagnosis confirmed as covid-19. Medication initiated: ibuprofen.", "output": "Diagnosis: covid-19; Medication: ibuprofen"}
+{"instruction": "Extract the diagnosis and medication.", "input": "Diagnosis confirmed as migraine. Medication initiated: paracetamol.", "output": "Diagnosis: migraine; Medication: paracetamol"}
+{"instruction": "Extract the diagnosis and medication.", "input": "The patient was diagnosed with tuberculosis and prescribed amoxicillin.", "output": "Diagnosis: tuberculosis; Medication: amoxicillin"}
+{"instruction": "Extract the diagnosis and medication.", "input": "The patient was diagnosed with covid-19 and prescribed amlodipine.", "output": "Diagnosis: covid-19; Medication: amlodipine"}
+{"instruction": "What is asthma?", "input": "", "output": "Asthma is a medical condition that affects the body and requires clinical management."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports frequent urination, persistent cough, fever.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports persistent cough, weight loss, frequent urination.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "What is covid-19?", "input": "", "output": "Covid-19 is a medical condition that affects the body and requires clinical management."}
+{"instruction": "Extract the diagnosis and medication.", "input": "Clinical notes indicate hypertension treated using amlodipine.", "output": "Diagnosis: hypertension; Medication: amlodipine"}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports chest pain, joint pain, fatigue.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports fever, chest pain, persistent cough.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "What is migraine?", "input": "", "output": "Migraine is a medical condition that affects the body and requires clinical management."}
+{"instruction": "Extract the diagnosis and medication.", "input": "Clinical notes indicate migraine treated using amlodipine.", "output": "Diagnosis: migraine; Medication: amlodipine"}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports shortness of breath, chest pain, joint pain.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Extract the diagnosis and medication.", "input": "Clinical notes indicate diabetes treated using metformin.", "output": "Diagnosis: diabetes; Medication: metformin"}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports joint pain, weight loss, frequent urination.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Extract the diagnosis and medication.", "input": "The patient was diagnosed with asthma and prescribed atorvastatin.", "output": "Diagnosis: asthma; Medication: atorvastatin"}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports fatigue, weight loss, chest pain.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports shortness of breath, frequent urination, chest pain.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Extract the diagnosis and medication.", "input": "The patient was diagnosed with migraine and prescribed paracetamol.", "output": "Diagnosis: migraine; Medication: paracetamol"}
+{"instruction": "Extract the diagnosis and medication.", "input": "The patient was diagnosed with stroke and prescribed atorvastatin.", "output": "Diagnosis: stroke; Medication: atorvastatin"}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports shortness of breath, joint pain, fever.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports weight loss, joint pain, frequent urination.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports shortness of breath, weight loss, frequent urination.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "What is migraine?", "input": "", "output": "Migraine is a medical condition that affects the body and requires clinical management."}
+{"instruction": "Extract the diagnosis and medication.", "input": "Diagnosis confirmed as migraine. Medication initiated: amlodipine.", "output": "Diagnosis: migraine; Medication: amlodipine"}
+{"instruction": "Extract the diagnosis and medication.", "input": "The patient was diagnosed with tuberculosis and prescribed ibuprofen.", "output": "Diagnosis: tuberculosis; Medication: ibuprofen"}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports persistent cough, joint pain, frequent urination.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports frequent urination, joint pain, weight loss.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "What is hypertension?", "input": "", "output": "Hypertension is a medical condition that affects the body and requires clinical management."}
+{"instruction": "What is arthritis?", "input": "", "output": "Arthritis is a medical condition that affects the body and requires clinical management."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports chest pain, persistent cough, fatigue.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Extract the diagnosis and medication.", "input": "Diagnosis confirmed as heart disease. Medication initiated: amoxicillin.", "output": "Diagnosis: heart disease; Medication: amoxicillin"}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports joint pain, fever, weight loss.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "What is hypertension?", "input": "", "output": "Hypertension is a medical condition that affects the body and requires clinical management."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports weight loss, fever, persistent cough.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Extract the diagnosis and medication.", "input": "Clinical notes indicate stroke treated using ibuprofen.", "output": "Diagnosis: stroke; Medication: ibuprofen"}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports weight loss, fatigue, persistent cough.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "What is arthritis?", "input": "", "output": "Arthritis is a medical condition that affects the body and requires clinical management."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports persistent cough, fatigue, frequent urination.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports shortness of breath, fatigue, joint pain.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports joint pain, frequent urination, fatigue.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Extract the diagnosis and medication.", "input": "The patient was diagnosed with migraine and prescribed atorvastatin.", "output": "Diagnosis: migraine; Medication: atorvastatin"}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports chest pain, joint pain, fever.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Extract the diagnosis and medication.", "input": "Clinical notes indicate tuberculosis treated using paracetamol.", "output": "Diagnosis: tuberculosis; Medication: paracetamol"}
+{"instruction": "What is arthritis?", "input": "", "output": "Arthritis is a medical condition that affects the body and requires clinical management."}
+{"instruction": "What is stroke?", "input": "", "output": "Stroke is a medical condition that affects the body and requires clinical management."}
+{"instruction": "What is hypertension?", "input": "", "output": "Hypertension is a medical condition that affects the body and requires clinical management."}
+{"instruction": "What is migraine?", "input": "", "output": "Migraine is a medical condition that affects the body and requires clinical management."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports frequent urination, fever, weight loss.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports joint pain, shortness of breath, frequent urination.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports chest pain, fatigue, frequent urination.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports joint pain, fever, chest pain.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "What is hypertension?", "input": "", "output": "Hypertension is a medical condition that affects the body and requires clinical management."}
+{"instruction": "What is anemia?", "input": "", "output": "Anemia is a medical condition that affects the body and requires clinical management."}
+{"instruction": "Extract the diagnosis and medication.", "input": "Diagnosis confirmed as hypertension. Medication initiated: amlodipine.", "output": "Diagnosis: hypertension; Medication: amlodipine"}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports persistent cough, fatigue, fever.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Extract the diagnosis and medication.", "input": "Diagnosis confirmed as migraine. Medication initiated: ibuprofen.", "output": "Diagnosis: migraine; Medication: ibuprofen"}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports weight loss, fever, frequent urination.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports weight loss, fatigue, fever.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Extract the diagnosis and medication.", "input": "Clinical notes indicate diabetes treated using ibuprofen.", "output": "Diagnosis: diabetes; Medication: ibuprofen"}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports frequent urination, chest pain, joint pain.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports shortness of breath, frequent urination, fever.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "What is asthma?", "input": "", "output": "Asthma is a medical condition that affects the body and requires clinical management."}
+{"instruction": "What is heart disease?", "input": "", "output": "Heart disease is a medical condition that affects the body and requires clinical management."}
+{"instruction": "What is tuberculosis?", "input": "", "output": "Tuberculosis is a medical condition that affects the body and requires clinical management."}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports frequent urination, persistent cough, shortness of breath.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Extract the diagnosis and medication.", "input": "The patient was diagnosed with arthritis and prescribed insulin.", "output": "Diagnosis: arthritis; Medication: insulin"}
+{"instruction": "Based on the symptoms, identify the most likely condition.", "input": "The patient reports chest pain, fever, shortness of breath.", "output": "The symptoms suggest a possible metabolic or cardiovascular disorder."}
+{"instruction": "Extract the diagnosis and medication.", "input": "Clinical notes indicate stroke treated using amlodipine.", "output": "Diagnosis: stroke; Medication: amlodipine"}
+{"instruction": "What is asthma?", "input": "", "output": "Asthma is a medical condition that affects the body and requires clinical management."}
