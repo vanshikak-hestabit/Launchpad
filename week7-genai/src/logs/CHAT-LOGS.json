@@ -1,29 +1,34 @@
 [
   {
     "role": "user",
-    "content": "expliane minerals?"
+    "content": "explain coal"
   },
   {
     "role": "assistant",
-    "content": "According to the context from page 31 of the geography.pdf file, minerals are classified into two main types: metallic and non-metallic minerals. \n\nMetallic minerals can be further divided into ferrous and non-ferrous minerals. Ferrous minerals, such as iron ore and manganese, contain iron. Non-ferrous minerals, like gold and silver, do not contain iron but may contain other metals.\n\nNon-metallic minerals, on the other hand, do not contain metals. Examples of non-metallic minerals include limestone, mica, and gypsum, as well as mineral fuels like coal and petroleum.\n\nTo know more about minerals, you can refer to page 31 of the geography.pdf file. Would you like to know more about the extraction of minerals or the types of minerals?"
+    "content": "Coal is referred to as \"Buried Sunshine\" because it was formed millions of years ago when giant ferns and swamps got buried under layers of earth. This process occurred over time, resulting in the formation of coal, which is a significant source of energy. Coal is used to produce thermal power, and its production involves several leading countries, including China, the USA, and others. In India, notable coal-producing areas include Raniganj, Jharia, Dhanbad, and Bokaro in Jharkhand."
   },
   {
-    "question": "expliane minerals?",
-    "answer": "Minerals are naturally occurring inorganic substances with a specific chemical composition and a crystalline structure. They can be classified into two main types: metallic and non-metallic minerals.\n\nMetallic minerals can be further divided into ferrous and non-ferrous minerals. Ferrous minerals, such as iron ore and manganese, contain iron. Non-ferrous minerals, like gold, silver, and copper, do not contain iron but may contain other metals.\n\nNon-metallic minerals, on the other hand, do not contain metals. Examples of non-metallic minerals include limestone, mica, gypsum, and mineral fuels like coal and petroleum.\n\nThere are over 3,000 known types of minerals, but only about 100 are considered ore minerals, from which minerals can be mined. Minerals can be extracted through various methods, including mining, drilling, and quarrying.",
-    "faithfulness_score": 0.26,
+    "type": "text",
+    "question": "explain coal",
+    "answer": "Coal is referred to as \"Buried Sunshine\" because it was formed millions of years ago when giant ferns and swamps got buried under layers of earth. This process occurred over time, resulting in the formation of coal, which is a significant source of energy. Coal is used to produce thermal power, and its production involves several leading countries, including China, the USA, and others. In India, notable coal-producing areas include Raniganj, Jharia, Dhanbad, and Bokaro in Jharkhand.",
+    "faithfulness_score": 0.15,
     "confidence": 0.85,
-    "retrieved_context": [
-      "Do you know? \nA rock is an \naggregate of one or \nmore minerals but \nwithout definite \ncomposition of \nconstituent of \nmineral. Rocks \nfrom which \nminerals are mined \nare known as ores. \nAlthough more \nthan 2,800 types \nof minerals have \nbeen identified, \nonly about 100 \nare considered ore \nminerals. \nTypes of Minerals\nThere are over three thousand different minerals. \nOn the basis of composition, minerals are classified \nmainly as metallic and non-metallic minerals (Fig. 3.2). \nMinerals\nMetallic\nFerrous\nNon-metallic\nNon-ferrous\nFig. 3.2: Classification of Minerals\nExtraction of Minerals\nMining\nOpen cast\nmining\nDrilling\nShaft\nmining\nQuarrying\nFig. 3.3: Extraction of Minerals",
-      "have a characteristic lustre or shine. Iron ore, bauxite, \nmanganese ore are some examples. Metallic minerals \nmay be fer rous or non-ferrous. Ferrous minerals like \niron ore, manganese and chromites contain iron. A  \nnon-ferrous mineral does not contain iron but may contain \nsome other metal such as gold, silver, copper or lead.\nNon-metallic minerals do not contain metals. \nLimestone, mica and gypsum are examples of such \nminerals. The mineral fuels like coal and petroleum are \nalso non-metallic minerals.\nMinerals can be extracted by mining, drilling or \nquarrying (Fig 3.3). \nThe process of taking out minerals from rocks buried \nunder the earth\u2019s surface is called mining. Minerals that"
-    ],
-    "timestamp": "2026-01-06T12:25:50.799164"
+    "timestamp": "2026-01-10T16:00:21.395194"
   },
   {
     "role": "user",
-    "content": "[SQL] chal bhag jaa yha se saale "
+    "content": "explain soil profile"
   },
   {
     "role": "assistant",
-    "content": "Results:\nmessage: chal bhag jaa yha se saale\n"
+    "content": "A soil profile is a vertical section of the soil that displays its layers, also known as horizons. The main layers of a soil profile are:\n\n1. **Topsoil**: The topmost layer, rich in humus and vegetation, which supports plant growth.\n2. **Subsoil**: The layer beneath the topsoil, composed of sand, silt, and clay.\n3. **Weathered rock material**: A layer of partially broken-down rock fragments.\n4. **Parent rock**: The underlying, unweathered rock layer that determines the soil's color, texture, chemical properties, mineral content, and permeability.\n\nThese layers are formed through the interaction of various factors, including climate, time, topography, organic matter, and the nature of the parent rock. Understanding the soil profile is essential for managing soil resources, as it provides insight into the soil's composition, structure, and fertility."
+  },
+  {
+    "type": "text",
+    "question": "explain soil profile",
+    "answer": "A soil profile is a vertical section of the soil that displays its layers, also known as horizons. The main layers of a soil profile are:\n\n1. **Topsoil**: The topmost layer, rich in humus and vegetation, which supports plant growth.\n2. **Subsoil**: The layer beneath the topsoil, composed of sand, silt, and clay.\n3. **Weathered rock material**: A layer of partially broken-down rock fragments.\n4. **Parent rock**: The underlying, unweathered rock layer that determines the soil's color, texture, chemical properties, mineral content, and permeability.\n\nThese layers are formed through the interaction of various factors, including climate, time, topography, organic matter, and the nature of the parent rock. Understanding the soil profile is essential for managing soil resources, as it provides insight into the soil's composition, structure, and fertility.",
+    "faithfulness_score": 0.18,
+    "confidence": 0.85,
+    "timestamp": "2026-01-10T16:02:03.729974"
   }
 ]
