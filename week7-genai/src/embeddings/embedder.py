@@ -2,7 +2,12 @@ from langchain_community.embeddings import HuggingFaceBgeEmbeddings
 from langchain_qdrant import QdrantVectorStore
 from src.pipelines.ingest import chunk_load
 from langchain_qdrant import FastEmbedSparse, RetrievalMode
-from src.vectorstore.qdrant_client import get_QD_client
+from src.vectorstore.qdrant_client import get_QD_client_for_pdf_rag
+
+
+from qdrant_client import QdrantClient
+from qdrant_client.models import VectorParams, SparseVectorParams, Distance
+
 
 
 def embedding_model():
@@ -12,7 +17,12 @@ def embedding_model():
 )
 embedding = embedding_model()
 
-client = get_QD_client()
+
+
+
+
+client = get_QD_client_for_pdf_rag()
+
 def sparseModel():
    return FastEmbedSparse(model_name="Qdrant/bm25")
 
@@ -21,7 +31,7 @@ chunks = chunk_load()
 
 vector_store = QdrantVectorStore(
   client=client,
-  collection_name="genai-learning",
+  collection_name="genai-hestabit",
   sparse_embedding=get_sparse_embedding,
   embedding=embedding,
   vector_name="dense",
