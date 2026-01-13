@@ -13,13 +13,14 @@ COLLECTION_NAME = "genai-learning"
 model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
 processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 
-# -----------------------------
+
 # Generate CLIP embedding for text or image
-# -----------------------------
 def get_text_embedding(text):
     inputs = processor(text=[text], images=None, return_tensors="pt", padding=True)
     with torch.no_grad():
         return model.get_text_features(inputs['input_ids'])[0].numpy()
+
+
 
 def get_image_embedding(image_path):
     image = Image.open(image_path).convert('RGB')
@@ -27,9 +28,7 @@ def get_image_embedding(image_path):
     with torch.no_grad():
         return model.get_image_features(inputs['pixel_values'])[0].numpy()
 
-# -----------------------------
 # Query Qdrant
-# -----------------------------
 def search_by_vector(vector, top_k=3):
     results = client.query_points(
         collection_name=COLLECTION_NAME,
@@ -42,58 +41,39 @@ def search_by_vector(vector, top_k=3):
 
 
 
-# -----------------------------
-# High-level search functions
-# -----------------------------
+#  img-txt conversion functions
+
 def text_to_image(query_text, top_k=1):
     vec = get_text_embedding(query_text)
-    results = search_by_vector(vec, top_k)
-    # print(results)
-    # print(f"Top {top_k} results for TEXT → IMAGE:")
-    # for item in results:
-        # payload = item.payload
-        # print("Score:", item.score)
-        # print("Image:", payload["image_path"])
-        # print("Caption:", payload["caption"])
-        # print("----")
-    return results
+    # results = search_by_vector(vec, top_k)
+    results = client.query_points(
+        collection_name=COLLECTION_NAME,
+        query=vec.tolist(),
+        using="image_dense",        
+        with_payload=True,
+        limit=top_k
+    )
+    return results.points
 
 
-def image_to_image(query_image_path, top_k=3):
+def image_to_image(query_image_path, top_k=1):
     vec = get_image_embedding(query_image_path)
     results = search_by_vector(vec, top_k)
 
-    print(f"Top {top_k} results for IMAGE → IMAGE:")
-    for item in results:
-        payload = item.payload
-
-        print("Score:", item.score)
-        print("Image:", payload["image_path"])
-        print("Caption:", payload["caption"])
-
-        img = Image.open(payload["image_path"])
-        img.show()
-
-        print("----")
+    print(f"Top results for IMAGE → IMAGE:")
+    return results
 
 
-# def image_to_text(query_image_path, top_k=3):
-#     vec = get_image_embedding(query_image_path)
-#     results = search_by_vector(vec, top_k)
-#     print(f"Top {top_k} results for IMAGE → TEXT:")
-#     for item in results:
-#         payload = item[1]
-#         print(payload["caption"])
-#     print("-----")
+def image_to_text(query_image_path, top_k=1):
+    vec = get_image_embedding(query_image_path)
+    results = search_by_vector(vec, top_k)
+    
+    caption = ""
+    ocr_text = ""
 
+    if results:
+        payload = results[0].payload
+        caption = payload.get("caption", "")
+        ocr_text = payload.get("ocr_text", "")
 
-
-# if __name__ == "__main__":
-#     # Text → Image
-#     text_to_image("recycling poster")
-
-#     # Image → Image
-#     image_to_image("src/data/raw/gi1.png")
-
-#     # Image → Text
-#     # image_to_text("src/data/raw/gi1.png")
+    return caption, ocr_text, query_image_path
