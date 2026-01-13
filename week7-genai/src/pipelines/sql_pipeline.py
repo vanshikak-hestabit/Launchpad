@@ -81,7 +81,7 @@ def run_pipeline(question: str):
         columns, rows = execute_sql("sales.db", sql)
 
     except ValueError as e:        
-        print("\n⚠️ SQL invalid. Asking LLM to fix it...")
+        print("\n SQL invalid. Asking LLM to fix it...")
         print("Reason:", e)
 
         sql = generate_sql(
