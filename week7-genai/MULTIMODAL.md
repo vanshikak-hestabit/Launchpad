@@ -85,3 +85,7 @@ A production-style **Multimodal RAG system** that:
 - Stores both together
 - Retrieves across modalities
 
+## How to run
+- python3 -m src.embeddings.embedder [txt embeddings]
+- python3 -m src.embeddings.clip_embedder [img embeddings]
+- python3 -m src.retriever.chat [img-txt conversion]
