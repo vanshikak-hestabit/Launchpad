@@ -1,13 +1,18 @@
-from datetime import datetime
+# answer_agent.py
 import json
+from datetime import datetime
+from .base_model import call_llm
 
 class AnswerAgent:
     def __init__(self):
         self.system_prompt = """
-You are an Answer Agent.
-Your job is to provide a short, beginner-friendly answer using only the summary.
-Return 1-2 sentences max.
-Do NOT add new information.
+You are the Answer Agent.
+Strictly follow the instructions below.
+- You will be provided with a summary of information.
+- Based on this summary, generate a concise and accurate answer to the user's original query in bullets.
+- Do NOT add any information that is not present in the summary.
+- Keep your answer clear and to the point.
+- Only answer using the given summary. 
 """
         self.memory_path = "memory/answer.json"
         self.memory_window = 10
@@ -16,32 +21,26 @@ Do NOT add new information.
         try:
             with open(self.memory_path, "r") as f:
                 data = f.read().strip()
-                if not data:
-                    return []
-                return json.loads(data)
+                return json.loads(data) if data else []
         except json.JSONDecodeError:
             return []
-        
+
     def _write_memory(self, memory):
         with open(self.memory_path, "w") as f:
             json.dump(memory, f, indent=2)
 
-    def _add_to_memory(self, user_text, agent_text):
-        memory = self._read_memory()
-
-        memory.append({"role": "user", "content": user_text, "timestamp": str(datetime.now())})
-        memory.append({"role": "answer-agent", "content": agent_text, "timestamp": str(datetime.now())})
-
-        memory = memory[-2*self.memory_window:]  # keep last N messages
+    def _add_to_memory(self, summary_text, answer_text):
+        memory = self._read_memory()[-self.memory_window*2:]
+        memory.append({"role": "user", "content": summary_text, "timestamp": str(datetime.now())})
+        memory.append({"role": "answer-agent", "content": answer_text, "timestamp": str(datetime.now())})
+        memory = memory[-2*self.memory_window:]
         self._write_memory(memory)
 
-    def run(self, summary_text: str):
-    
-        sentences = summary_text.split(". ")
-        answer = ". ".join(sentences[:2]).strip()
+    def run(self, summary_text: str) -> str:
+        prompt = self.system_prompt + "\n\nSummary:\n" + summary_text + "\n\nAnswer:"
+        answer = call_llm(prompt, max_tokens=200)
+        answer = answer.strip()
         if not answer.endswith("."):
             answer += "."
-
         self._add_to_memory(summary_text, answer)
-
         return answer
