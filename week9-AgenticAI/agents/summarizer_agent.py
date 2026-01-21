@@ -1,14 +1,22 @@
+# summarizer_agent.py
 import json
 from datetime import datetime
-
+from .base_model import call_llm
 
 class SummarizerAgent:
     def __init__(self):
         self.system_prompt = """
-You are a Summarizer Agent.
-Your job is to read the research text and return only the key points in 2-3 concise sentences.
-Do NOT include examples, article mentions, or extra explanations.
-Keep it beginner-friendly.
+You are the Summarizer Agent.
+Strictly follow the instructions below.
+- You will be provided with researched information.
+- Summarize the provided information into a concise and coherent summary.
+- Ensure that the summary captures all key points and relevant details.
+- Do NOT omit any critical information.
+- Do NOT add any information that is not present in the provided content.
+- Keep the summary clear and to the point.
+- Strictly follow what is mentioned in the provided content.
+- Only summarize the given research content.
+- Do NOT answer the user directly.
 """
         self.memory_path = "memory/summarizer.json"
         self.memory_window = 10
@@ -17,31 +25,24 @@ Keep it beginner-friendly.
         try:
             with open(self.memory_path, "r") as f:
                 data = f.read().strip()
-                if not data:
-                    return []
-                return json.loads(data)
+                return json.loads(data) if data else []
         except json.JSONDecodeError:
             return []
-        
+
     def _write_memory(self, memory):
         with open(self.memory_path, "w") as f:
             json.dump(memory, f, indent=2)
 
-    def _add_to_memory(self, user_text, agent_text):
-        memory = self._read_memory()
+    def _add_to_memory(self, research_text, summary_text):
+        memory = self._read_memory()[-self.memory_window*2:]
 
-        memory.append({"role": "user", "content": user_text, "timestamp": str(datetime.now())})
-        memory.append({"role": "summarizer", "content": agent_text, "timestamp": str(datetime.now())})
-
-        memory = memory[-2*self.memory_window:]  # keep last N messages
-
+        memory.append({"role": "user", "content": research_text, "timestamp": str(datetime.now())})
+        memory.append({"role": "summarizer", "content": summary_text, "timestamp": str(datetime.now())})
+        memory = memory[-2*self.memory_window:]
         self._write_memory(memory)
-        
-    def run(self, research_text: str):
 
-        sentences = research_text.replace("\n", " ").split(". ")
-        summary = ". ".join(sentences[:3]).strip()
-        if not summary.endswith("."):
-            summary += "."
+    def run(self, research_text: str) -> str:
+        prompt = self.system_prompt + "\n\nResearch:\n" + research_text + "\n\nSummary:"
+        summary = call_llm(prompt, max_tokens=350)
         self._add_to_memory(research_text, summary)
         return summary
