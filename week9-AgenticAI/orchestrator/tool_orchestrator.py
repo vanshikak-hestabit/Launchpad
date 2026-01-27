@@ -1,105 +1,137 @@
-import asyncio
-import json
-from tools.code_executor import SimpleCodeExecutor
-from tools.db_agent import SimpleDBAgent
+from typing import List, Dict, Any, Callable, Optional
+from autogen_agentchat.agents import AssistantAgent
+from autogen_agentchat.messages import TextMessage
+from groq_client import create_model_client
+from tools.code_executor import CodeExecutor
+from tools.db_agent import DatabaseAgent
 from tools.file_agent import FileAgent
-from model_client import create_model_client
-from autogen_core.models import UserMessage
 
+class Orchestrator:
+    def __init__(self, database_path: str = "user_data.db"):
+        self.agents = {
+            "code": CodeExecutor(),
+            "database": DatabaseAgent(database_path),
+            "file": FileAgent(),
+        }
 
-class ToolOrchestrator:
-    def __init__(self):
-        self.file_agent = FileAgent()
-        self.db_agent = SimpleDBAgent()
-        self.code_executor = SimpleCodeExecutor()
-        self.model = create_model_client()
+        self.coordinator = AssistantAgent(
+            name="Coordinator",
+            model_client=create_model_client(),
+            system_message=(
+"""
+You are a task router.
 
-    # decide tool
-
-    async def decide_tools(self, user_request):
-        prompt = f"""
-You are an AI Tool Orchestrator.
-
-User request:
-"{user_request}"
+Your job is to decide which tools are needed.
 
 Available tools:
-- code_executor : generates Python code
-- file_agent    : creates / writes files
-- db_agent      : database queries
+- code
+- file
+- database
 
 Rules:
-- If user asks about database, sql, table, price, quantity → use db_agent ONLY.
-- If user asks for code → use code_executor.
-- If user asks to save/create/write file → use file_agent.
-- If code + file → run code_executor first, then file_agent.
-- NEVER generate python code for database questions.
-- Return ONLY JSON.
+- Return ONLY tool names
+- Separate multiple tools with commas
+- No explanations
+- No extra text
+- Order matters
 
-Schema:
-{{
-  "tools": [],
-  "instructions": {{
-    "code_executor": {{"user_request": ""}},
-    "file_agent": {{"filename": "", "content": ""}},
-    "db_agent": {{"user_query": ""}}
-  }}
-}}
+Routing logic:
+- If user asks about SQL, tables, rows, CSV, database, queries, data → database
+- If user asks to create or modify files/folders → file
+- If user asks to write or run code → code
+- If task involves both → combine tools
+
+Examples:
+- "Write a Python function" → code
+- "Create folders and files" → file
+- "Import this CSV and query it" → database
+- "Show all users from uploaded CSV" → database
+- "Build script and save results to DB" → code,database
+- "Scaffold backend project" → file,code
 """
 
-        response = await self.model.create([UserMessage(content=prompt, source="user")])
-        raw = response.content
+            ),
+        )
 
-        if isinstance(raw, list):
-            raw = raw[0].text
+    async def analyze_request(self, user_request: str):
+        prompt = (
+            f"Request: {user_request}\n\n"
+            "Available tools: code, database, file\n"
+            "Return tool names separated by commas."
+        )
 
-        start = raw.find("{")
-        end = raw.rfind("}") + 1
-        raw = raw[start:end]
+        response = await self.coordinator.on_messages(
+            [TextMessage(content=prompt, source="user")],
+            cancellation_token=None,
+        )
 
-        try:
-            return json.loads(raw)
-        except Exception as e:
-            print("LLM JSON error:", e)
-            print("RAW LLM OUTPUT:\n", raw)
-            return {"tools": [], "instructions": {}}
+        text = response.chat_message.content.lower().strip()
+        tools = [t.strip() for t in text.split(",") if t.strip() in self.agents]
+        return tools or ["code"]
 
-    async def handle_request(self, user_request):
-        decision = await self.decide_tools(user_request)
-        tools = decision.get("tools", [])
-        instructions = decision.get("instructions", {})
+    async def execute_with_agents(
+        self,
+        user_request: str,
+        agent_names: List[str],
+        status_callback: Optional[Callable[[str], None]] = None,
+    ):
+        results = {}
 
-        for tool in tools:
+        for name in agent_names:
+            if status_callback:
+                status_callback(f"Running {name} agent...")
 
-            if tool == "db_agent":
-                q = instructions.get("db_agent", {}).get("user_query", user_request)
-                await self.db_agent.ask(q)
+            agent = self.agents[name]
+            results[name] = await agent.process_request(user_request)
 
-            elif tool == "code_executor":
-                code_req = instructions.get("code_executor", {}).get("user_request", user_request)
-                await self.code_executor.run(code_req)
+        return results
 
-            elif tool == "file_agent":
-                fname = instructions.get("file_agent", {}).get("filename", "output.txt")
-                content = instructions.get("file_agent", {}).get("content", "")
+    async def synthesize_results(
+        self,
+        user_request: str,
+        results: Dict[str, Any],
+    ):
+        if not results:
+            return "No results."
 
-                if content == "USE_OUTPUT_FROM_CODE_EXECUTOR":
-                    content = self.code_executor.last_output
+        parts = [f"User request: {user_request}\n"]
+        for name, value in results.items():
+            parts.append(f"{name.upper()} RESULT:\n{value}\n")
 
-                await self.file_agent.run_json(fname, content)
+        parts.append("Give final answer.")
+        prompt = "\n".join(parts)
 
-async def main():
-    orchestrator = ToolOrchestrator()
-    print("Welcome to AI Tool Orchestrator!")
-    print("Type your request or 'exit' to quit.")
+        response = await self.coordinator.on_messages(
+            [TextMessage(content=prompt, source="user")],
+            cancellation_token=None,
+        )
 
-    while True:
-        user_request = input("\nEnter request: ")
-        if user_request.lower() == "exit":
-            break
+        return response.chat_message.content
 
-        await orchestrator.handle_request(user_request)
+    async def process_request(
+        self,
+        user_request: str,
+        status_callback: Optional[Callable[[str], None]] = None,
+    ):
+        if status_callback:
+            status_callback("Analyzing request...")
 
+        agent_names = await self.analyze_request(user_request)
 
-if __name__ == "__main__":
-    asyncio.run(main())
+        if status_callback:
+            status_callback(f"Using agents: {', '.join(agent_names)}")
+
+        results = await self.execute_with_agents(
+            user_request, agent_names, status_callback
+        )
+
+        if status_callback:
+            status_callback("Synthesizing results...")
+
+        final_answer = await self.synthesize_results(user_request, results)
+
+        return {
+            "final_answer": final_answer,
+            "agents_used": agent_names,
+            "agent_results": results,
+        }
