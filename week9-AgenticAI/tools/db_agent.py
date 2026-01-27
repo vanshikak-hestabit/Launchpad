@@ -1,148 +1,105 @@
 import sqlite3
-import sys
+import csv
 import os
-import asyncio
-import re
-from model_client import create_model_client
-from autogen_core.models import UserMessage
+from unittest import result
+from autogen_agentchat.agents import AssistantAgent
+from autogen_agentchat.messages import TextMessage
+from groq_client import create_model_client
 
-
-class SimpleDBAgent:
-    def __init__(self, db_path="sample.db"):
+class DatabaseAgent:
+    def __init__(self, db_path: str = ""):
         self.db_path = db_path
-        self.model = create_model_client()
-        self.setup_db()
+        self.agent = AssistantAgent(
+    name="DatabaseAgent",
+    model_client=create_model_client(),
+    system_message=(
+        "You are a SQLite query generator.\n"
+        "\n"
+        "STRICT RULES:\n"
+        "1. NEVER generate CREATE TABLE.\n"
+        "2. NEVER generate DROP TABLE.\n"
+        "3. NEVER generate ALTER TABLE.\n"
+        "4. Assume all required tables ALREADY EXIST.\n"
+        "5. Only generate ONE valid SQLite statement.\n"
+        "6. Use SELECT for data retrieval.\n"
+        "7. Use INSERT/UPDATE only if user explicitly asks to modify data.\n"
+        "8. Do NOT include explanations.\n"
+        "9. Do NOT use markdown.\n"
+        "10. Do NOT wrap output in backticks.\n"
+        "\n"
+        "If the user asks about data, infer the table name from the request.\n"
+        "If unsure, default to table name: sales.\n"
+    )
+)
 
-    def setup_db(self):
+
+    def _table_exists(self, table_name: str):
         conn = sqlite3.connect(self.db_path)
-        cur = conn.cursor()
-
-        cur.execute("""
-        CREATE TABLE IF NOT EXISTS products (
-            id INTEGER,
-            name TEXT,
-            price REAL,
-            quantity INTEGER
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name=?",
+            (table_name,)
         )
-        """)
-
-        cur.execute("SELECT COUNT(*) FROM products")
-        if cur.fetchone()[0] == 0:
-            data = [
-                (1, "Laptop", 900, 15),
-                (2, "Mouse", 25, 50),
-                (3, "Keyboard", 75, 30),
-                (4, "Monitor", 300, 20),
-                (5, "Headphones", 150, 25),
-            ]
-            cur.executemany("INSERT INTO products VALUES (?, ?, ?, ?)", data)
-            conn.commit()
-
+        exists = cursor.fetchone() is not None
         conn.close()
+        return exists
 
-    def fetch_schema(self):
+    def import_csv(self, csv_path: str, table_name: str):
+        if not os.path.exists(csv_path):
+            return f"File not found: {csv_path}"
+        if self._table_exists(table_name):
+            return f"Table '{table_name}' already exists. Skipping CSV import."
         conn = sqlite3.connect(self.db_path)
-        cur = conn.cursor()
-        cur.execute("PRAGMA table_info(products)")
-        rows = cur.fetchall()
+        cursor = conn.cursor()
+
+        with open(csv_path, "r", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            headers = next(reader)
+            columns_def = ", ".join([f'"{h}" TEXT' for h in headers])
+            cursor.execute(f'CREATE TABLE "{table_name}" ({columns_def})')
+            placeholders = ", ".join(["?"] * len(headers))
+            insert_query = f'INSERT INTO "{table_name}" VALUES ({placeholders})'
+            for row in reader:
+                cursor.execute(insert_query, row)
+        conn.commit()
         conn.close()
-        return [r[1] for r in rows]
+        return f"Imported CSV into table '{table_name}' successfully."
 
-    async def text_to_sql(self, question):
-        columns = self.fetch_schema()
+    def _execute_sql(self, query: str):
+        lowered = query.strip().lower()
 
-        prompt = f"""
-You are a SQLite SQL generator.
+        if any(kw in lowered for kw in ["create table", "drop table", "alter table"]):
+            return "Blocked unsafe SQL operation (DDL is not allowed)."
 
-Table: products
-Columns: {columns}
-
-Rules:
-- Only SELECT
-- Only use listed columns
-- Use LOWER(name) in WHERE
-- Do NOT use COUNT unless user asks count
-- Do NOT use SUM unless user asks total
-- No explanation, only SQL
-
-Question: {question}
-SQL:
-"""
-
-        response = await self.model.create(
-            [UserMessage(content=prompt, source="user")]
-        )
-
-        sql = response.content.strip()
-        sql = sql.replace("```sql", "").replace("```", "").strip()
-
-        return self.validate_sql(sql, columns)
-
-    def validate_sql(self, sql, columns):
-        if not sql.lower().startswith("select"):
-            raise ValueError("Only SELECT allowed")
-
-        match = re.search(r"select\s+(.*?)\s+from", sql, re.I)
-        if not match:
-            raise ValueError("Invalid SQL")
-
-        used_cols = match.group(1)
-
-        for col in used_cols.split(","):
-            c = col.strip().lower()
-            if "(" in c:   # aggregate
-                continue
-            if c not in columns and c != "*":
-                raise ValueError(f"Invalid column generated: {c}")
-
-        sql = re.sub(r"name\s*=\s*'([^']+)'", r"LOWER(name) = '\1'", sql, flags=re.I)
-        return sql
-
-    def run_sql(self, sql):
         conn = sqlite3.connect(self.db_path)
-        cur = conn.cursor()
-
-        cur.execute(sql)
-        rows = cur.fetchall()
-        cols = [d[0] for d in cur.description]
-
-        conn.close()
-        return cols, rows
-
-    async def ask(self, question):
-        print("\nUser:", question)
-
+        cursor = conn.cursor()
         try:
-            sql = await self.text_to_sql(question)
-        except Exception as e:
-            print("SQL Error:", e)
-            return
+            cursor.execute(query)
 
-        print("\nSQL:", sql)
+            if lowered.startswith("select"):
+                rows = cursor.fetchall()
+                columns = [desc[0] for desc in cursor.description]
+                if not rows:
+                    result = "Query executed successfully but returned no rows."
+                else:
+                    result = " | ".join(columns) + "\n"
+                    result += "-" * 50 + "\n"
+                    for row in rows[:100]:
+                        result += " | ".join(str(v) for v in row) + "\n"
+            else:
+                conn.commit()
+                result = f"Query executed successfully. Rows affected: {cursor.rowcount}"
 
-        cols, rows = self.run_sql(sql)
+        except sqlite3.Error as e:
+            result = f"SQL Error: {e}"
+        conn.close()
+        return result
 
-        print("\nResult:")
-        print(" | ".join(cols))
-        print("-" * 40)
-
-        if not rows:
-            print("No results found.")
-            return
-
-        for r in rows:
-            print(" | ".join(str(x) for x in r))
-
-async def main():
-    agent = SimpleDBAgent()
-
-    while True:
-        q = input("\nAsk DB (or 'exit'): ")
-        if q.lower() == "exit":
-            break
-
-        await agent.ask(q)
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
+    async def process_request(self, task: str):
+        response = await self.agent.on_messages(
+            [TextMessage(content=task, source="user")],
+            cancellation_token=None
+        )
+        sql_query = response.chat_message.content.strip()
+        print("\n--- GENERATED SQL ---\n", sql_query)
+        return self._execute_sql(sql_query)
