@@ -1,129 +1,136 @@
+from curses import raw
 import os
-import csv
-from model_client import create_model_client
-from autogen_core.models import UserMessage
+import json
+import re
+from tracemalloc import start
+from autogen_agentchat.agents import AssistantAgent
+from autogen_agentchat.messages import TextMessage
+from groq_client import create_model_client
 
 class FileAgent:
-    def __init__(self):
-        self.model = create_model_client()
-        self.files_dir = "created_files"
+    def __init__(self, base_dir: str = "created_files"):
+        self.base_dir = os.path.abspath(base_dir)
+        os.makedirs(self.base_dir, exist_ok=True)
+        self.agent = AssistantAgent(
+    name="FileAgent",
+    model_client=create_model_client(),
+    system_message="""
+You are a file system agent.
+Return STRICT VALID JSON ONLY.
+No explanations. No markdown. No backticks.
 
-        if not os.path.exists(self.files_dir):
-            os.makedirs(self.files_dir)
-            print(f"Created files directory: {self.files_dir}")
+CRITICAL JSON RULES:
+- Every action object MUST contain: action, path, filename, content
+- Use null for unused fields
+- Escape all newlines in content using \\n
+- Do NOT output partial JSON
+- Do NOT truncate output
 
-    async def understand_request(self, user_request):
-        prompt = f"""You are a file operation expert. Analyze the user's request and determine what file operation to perform.
+Valid actions: create_dir, write_text, read_text, list_files
 
-User Request: {user_request}
+Each action MUST be a SINGLE atomic operation.
+NEVER combine actions.
 
-Respond with ONLY a JSON object:
-{{
-    "operation": "read|write|create",
-    "file_type": "txt|csv",
-    "filename": "name of file",
-    "content": "content to write (if creating/writing)",
-    "filter": ""
-}}
-JSON:"""
+JSON format:
+{
+  "actions": [
+    {
+      "action": "create_dir" | "write_text" | "read_text" | "list_files",
+      "path": "relative/path",
+      "filename": "file.txt" | null,
+      "content": "text" | null
+    }
+  ]
+}
+"""
+)
 
-        response = await self.model.create([UserMessage(content=prompt, source="user")])
-        text = response.content.strip()
 
-        # Extract JSON from any extra text
-        start = text.find("{")
-        end = text.rfind("}") + 1
-        if start != -1 and end != -1:
-            text = text[start:end]
+    def _safe_join(self, *paths):
+        final_path = os.path.abspath(os.path.join(self.base_dir, *paths))
+        if not final_path.startswith(self.base_dir):
+            raise PermissionError(f"Blocked unsafe path: {final_path}")
+        return final_path
 
-        import json
+    def _create_dir(self, rel_path: str):
+        full_path = self._safe_join(rel_path)
+        os.makedirs(full_path, exist_ok=True)
+        return f"Created directory: {rel_path}"
+
+    def _write_text(self, rel_path: str, content: str):
+        full_path = self._safe_join(rel_path)
+        os.makedirs(os.path.dirname(full_path), exist_ok=True)
+
+        with open(full_path, "w", encoding="utf-8") as f:
+            f.write(content or "")
+
+        return f"Wrote file: {rel_path}"
+
+    def _read_text(self, rel_path: str):
+        full_path = self._safe_join(rel_path)
+        if not os.path.exists(full_path):
+            return f"File not found: {rel_path}"
+
+        with open(full_path, "r", encoding="utf-8") as f:
+            return f.read()
+
+    def _list_files(self):
+        files = []
+        for root, _, filenames in os.walk(self.base_dir):
+            for name in filenames:
+                files.append(os.path.relpath(os.path.join(root, name), self.base_dir))
+        return "\n".join(files) or "No files found."
+    
+    async def process_request(self, request: str):
+        response = await self.agent.on_messages(
+        [TextMessage(content=request, source="user")],
+        cancellation_token=None
+    )
+
+        raw = response.chat_message.content.strip()
+
+        raw = re.sub(r"```json", "", raw, flags=re.IGNORECASE).strip()
+        raw = re.sub(r"```", "", raw).strip()
+
+        start = raw.find("{")
+        end = raw.rfind("}")
+
+        if start == -1 or end == -1 or end <= start:
+            return f"File agent error: Invalid JSON\nRaw:\n{raw}"
+
+        cleaned = raw[start:end + 1]
+
+        cleaned = cleaned.replace('"create_file"', '"write_text"')
+
+        print("\n--- CLEANED FILE AGENT JSON ---\n", cleaned)
+
         try:
-            data = json.loads(text)
-        except:
-            data = {"operation": None, "file_type": None, "filename": None, "content": ""}
-        return data
+            data = json.loads(cleaned)
+            actions = data.get("actions", [])
+            results = []
 
-    def create_txt_file(self, filename, content):
-        path = os.path.join(self.files_dir, filename)
-        try:
-            with open(path, 'w') as f:
-                f.write(content)
-            print(f"Created text file: {filename} at {path}")
-            return True
+            for step in actions:
+                action = step.get("action")
+                path = (step.get("path") or "").lstrip("/\\")
+                filename = (step.get("filename") or "").lstrip("/\\")
+                content = step.get("content")
+                rel_path = f"{path}/{filename}".lstrip("/") if filename else path
+
+                if action == "create_dir":
+                    results.append(self._create_dir(rel_path))
+
+                elif action == "write_text":
+                    results.append(self._write_text(rel_path, content))
+                elif action == "read_text":
+                    results.append(self._read_text(rel_path))
+
+                elif action == "list_files":
+                    results.append(self._list_files())
+
+                else:
+                    results.append(f"Unknown action: {action}")
+
+            return "\n".join(results)
+
         except Exception as e:
-            print(f"Error creating file: {e}")
-            return False
-
-    def create_csv_file(self, filename, content):
-        path = os.path.join(self.files_dir, filename)
-        try:
-            rows = [row.strip().split(',') for row in content.strip().split('\n')]
-            with open(path, 'w', newline='') as f:
-                writer = csv.writer(f)
-                writer.writerows(rows)
-            print(f"Created CSV file: {filename} at {path}")
-            return True
-        except Exception as e:
-            print(f"Error creating CSV: {e}")
-            return False
-
-    def read_txt_file(self, filename):
-        path = os.path.join(self.files_dir, filename)
-        try:
-            with open(path, 'r') as f:
-                content = f.read()
-            print(content)
-            return content
-        except FileNotFoundError:
-            print(f"File not found: {filename}")
-            return None
-
-    def read_csv_file(self, filename):
-        path = os.path.join(self.files_dir, filename)
-        try:
-            with open(path, 'r') as f:
-                rows = list(csv.reader(f))
-            for r in rows:
-                print(" | ".join(r))
-            return rows
-        except FileNotFoundError:
-            print(f"File not found: {filename}")
-            return None
-
-    async def run_json(self, filename, content):
-        if filename.endswith(".csv"):
-            self.create_csv_file(filename, content)
-        else:
-            self.create_txt_file(filename, content)
-
-    async def run(self, user_request=None):
-        print("FileAgent Ready!")
-        if user_request:
-            requests = [user_request]
-        else:
-            requests = []
-            while True:
-                req = input("\nEnter request: ")
-                if req.lower() == "exit":
-                    return
-                requests.append(req)
-
-        for req in requests:
-            print(f"\n{'='*60}\nUSER REQUEST: {req}\n{'='*60}")
-            details = await self.understand_request(req)
-            op = details.get("operation")
-            ftype = details.get("file_type")
-            fname = details.get("filename")
-            content = details.get("content") or ""
-
-            if op and ("create" in op or "write" in op):
-                if ftype == "txt":
-                    self.create_txt_file(fname, content)
-                elif ftype == "csv":
-                    self.create_csv_file(fname, content)
-            elif op == "read":
-                if ftype == "txt":
-                    self.read_txt_file(fname)
-                elif ftype == "csv":
-                    self.read_csv_file(fname)
-        return
+            return f"File agent error: {e}\nRaw:\n{raw}"
