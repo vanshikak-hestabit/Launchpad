@@ -59,12 +59,16 @@ JSON format:
 
     def _write_text(self, rel_path: str, content: str):
         full_path = self._safe_join(rel_path)
-        os.makedirs(os.path.dirname(full_path), exist_ok=True)
+
+        dir_path = os.path.dirname(full_path)
+        if dir_path and dir_path != self.base_dir:
+            os.makedirs(dir_path, exist_ok=True)
 
         with open(full_path, "w", encoding="utf-8") as f:
             f.write(content or "")
 
         return f"Wrote file: {rel_path}"
+
 
     def _read_text(self, rel_path: str):
         full_path = self._safe_join(rel_path)
@@ -114,10 +118,13 @@ JSON format:
                 path = (step.get("path") or "").lstrip("/\\")
                 filename = (step.get("filename") or "").lstrip("/\\")
                 content = step.get("content")
-                rel_path = f"{path}/{filename}".lstrip("/") if filename else path
+                if path and filename and path == filename:
+                    path = ""
+                rel_path = os.path.join(path, filename).lstrip("/\\") if filename else path
 
                 if action == "create_dir":
-                    results.append(self._create_dir(rel_path))
+                    results.append(self._create_dir(path))
+
 
                 elif action == "write_text":
                     results.append(self._write_text(rel_path, content))
