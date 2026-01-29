@@ -26,7 +26,9 @@ class DatabaseAgent:
         "8. Do NOT include explanations.\n"
         "9. Do NOT use markdown.\n"
         "10. Do NOT wrap output in backticks.\n"
-        "\n"
+        "11. Use ONLY existing columns: id, name, price, quantity.\n"
+        "12. NEVER invent column names like product_name.\n"
+
         "If the user asks about data, infer the table name from the request.\n"
         "If unsure, default to table name: sales.\n"
     )
@@ -34,7 +36,7 @@ class DatabaseAgent:
 
 
     def _table_exists(self, table_name: str):
-        conn = sqlite3.connect(self.db_path)
+        conn = sqlite3.connect(self.db_path, check_same_thread=False)
         cursor = conn.cursor()
         cursor.execute(
             "SELECT name FROM sqlite_master WHERE type='table' AND name=?",
@@ -49,7 +51,8 @@ class DatabaseAgent:
             return f"File not found: {csv_path}"
         if self._table_exists(table_name):
             return f"Table '{table_name}' already exists. Skipping CSV import."
-        conn = sqlite3.connect(self.db_path)
+        conn = sqlite3.connect(self.db_path, check_same_thread=False)
+
         cursor = conn.cursor()
 
         with open(csv_path, "r", encoding="utf-8") as f:
@@ -71,7 +74,8 @@ class DatabaseAgent:
         if any(kw in lowered for kw in ["create table", "drop table", "alter table"]):
             return "Blocked unsafe SQL operation (DDL is not allowed)."
 
-        conn = sqlite3.connect(self.db_path)
+        conn = sqlite3.connect(self.db_path, check_same_thread=False)
+
         cursor = conn.cursor()
         try:
             cursor.execute(query)
