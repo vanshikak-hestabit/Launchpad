@@ -1,33 +1,66 @@
-from sentence_transformers import SentenceTransformer
+import faiss
+import pickle
+import os
 import numpy as np
+import torch
+from sentence_transformers import SentenceTransformer
+
 
 class VectorStore:
-    def __init__(self, model_name: str = "all-MiniLM-L6-v2"):
-        self.model = SentenceTransformer(model_name)
-        self.vectors = []  # list of numpy arrays
-        self.texts = []    # list of dicts {"text": ..., "metadata": ...}
+    def __init__(self, dim=384, path="memory/faiss"):
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.model = SentenceTransformer("all-MiniLM-L6-v2", device=device)
 
-    def _embed_text(self, text: str):
-        return self.model.encode(text, convert_to_numpy=True)
+        self.dim = dim
+        self.path = path
 
-    def add(self, text: str, metadata: dict = None):
-        vec = self._embed_text(text)
-        self.vectors.append(vec)
-        self.texts.append({"text": text, "metadata": metadata})
+        self.index_file = os.path.join(path, "index.faiss")
+        self.text_file = os.path.join(path, "faiss.pkl")
 
-    def query(self, text: str, top_k: int = 3):
-        if not self.vectors:
+        self.texts = []
+        self._init()
+
+    def _init(self):
+        os.makedirs(self.path, exist_ok=True)
+
+        if os.path.exists(self.index_file):
+            self.index = faiss.read_index(self.index_file)
+            if os.path.exists(self.text_file):
+                with open(self.text_file, "rb") as f:
+                    self.texts = pickle.load(f)
+            else:
+                self.texts = []
+        else:
+            self.index = faiss.IndexFlatIP(self.dim)
+            self.texts = []
+
+    def add(self, text: str):
+        embedding = self.model.encode(
+            text,
+            normalize_embeddings=True
+        ).astype("float32")
+
+        self.index.add(np.array([embedding]))
+        self.texts.append(text)
+
+    def search(self, query: str, k=5) -> list:
+        if self.index.ntotal == 0:
             return []
 
-        query_vec = self._embed_text(text)
-        sims = [
-            np.dot(query_vec, v) / (np.linalg.norm(query_vec) * np.linalg.norm(v))
-            for v in self.vectors
-        ]
+        embedding = self.model.encode(
+            query,
+            normalize_embeddings=True
+        ).astype("float32")
 
-        top_indices = np.argsort(sims)[-top_k:][::-1]
+        _, idxs = self.index.search(np.array([embedding]), k)
 
         return [
-            {"content": self.texts[i]["text"], "metadata": self.texts[i]["metadata"]}
-            for i in top_indices
+            self.texts[i]
+            for i in idxs[0]
+            if 0 <= i < len(self.texts)
         ]
+
+    def save(self):
+        faiss.write_index(self.index, self.index_file)
+        with open(self.text_file, "wb") as f:
+            pickle.dump(self.texts, f)
