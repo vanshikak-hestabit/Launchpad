@@ -1,59 +1,45 @@
 import streamlit as st
 import asyncio
 
-from autogen_ext.models.ollama import OllamaChatCompletionClient
-from orchestrator.planner import Planner
+from groq_client import model_client
+from orchestrator.planner import create_planner_agent, plan_tasks
+from agents.worker_agent import run_workers_parallel
+from agents.reflector_agent import create_reflection_agent, reflect_answer
+from agents.validator_agent import create_validator_agent, validate_answer
 
+st.title("Agentic AI Task Pipeline")
 
-def create_model_client():
-    return OllamaChatCompletionClient(
-        model="llama3.1:latest",
-        model_info={
-            "type": "ollama",
-            "json_output": False,
-            "vision": False,
-            "function_calling": False,
-        },
-        device="cuda",
-        max_new_tokens=512,
-        temperature=0.7,
-    )
+# Input query
+user_query = st.text_area("Enter your query:", height=150)
 
+if st.button("Run Pipeline") and user_query:
 
-async def run_planner(query: str):
-    model_client = create_model_client()
-    planner = Planner(model_client)
-    return await planner.run(query)
+    st.info("Running agents... Please wait!")
 
+    async def run_pipeline():
+        # Planner
+        planner_agent = create_planner_agent(model_client)
+        plan = await plan_tasks(planner_agent, user_query)
 
-st.set_page_config(page_title="Multi-Agent Orchestrator", layout="wide")
-st.title("🧠 Multi-Agent Orchestrator")
+        # Workers
+        worker_outputs = await run_workers_parallel(plan.tasks, model_client)
+        merged_output = "\n".join(f"{t_id}: {out}" for t_id, out in worker_outputs.items())
 
-st.caption("Planner → Workers → Reflector → Validator (doing their tiny corporate jobs).")
+        # Reflection
+        reflection_agent = create_reflection_agent(model_client)
+        refined_output = await reflect_answer(reflection_agent, merged_output)
 
-query = st.text_area("Enter your query", height=120)
+        # Validation
+        validator_agent = create_validator_agent(model_client)
+        validation = await validate_answer(validator_agent, refined_output)
 
-run_btn = st.button("Run Agents")
+        return refined_output, validation.verdict, validation.reason
 
-if run_btn and query.strip():
-    with st.spinner("Agents are thinking..."):
-        try:
-            final_output, execution_tree = asyncio.run(run_planner(query))
-        except RuntimeError:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            final_output, execution_tree = loop.run_until_complete(run_planner(query))
+    refined_output, verdict, reason = asyncio.run(run_pipeline())
 
-    st.subheader("✅ Final Answer")
-    st.write(final_output)
+    st.subheader("Answer:")
+    st.write(refined_output)
 
-    st.subheader("🌳 Execution Tree")
-
-    for node, data in execution_tree.items():
-        with st.expander(f"Node: {node}"):
-            st.write("**Dependencies:**", data["deps"])
-            st.write("**Output:**")
-            st.write(data["output"])
-
-elif run_btn:
-    st.warning("Type something before waking the agents.")
+    st.subheader("Validation:")
+    st.write(f"Verdict: {verdict}")
+    st.write(f"Reason: {reason}")
