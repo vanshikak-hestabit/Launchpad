@@ -6,3 +6,4 @@ sentence-transformers
 sqlite-utils
 transformers
 torch
+tiktoken
