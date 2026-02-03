@@ -1,7 +1,8 @@
-# answer_agent.py
 import json
 from datetime import datetime
-from .base_model import call_llm
+from groq_client import create_model_client
+from autogen_core.models import SystemMessage, UserMessage
+
 
 class AnswerAgent:
     def __init__(self):
@@ -12,10 +13,11 @@ Strictly follow the instructions below.
 - Based on this summary, generate a concise and accurate answer to the user's original query in bullets.
 - Do NOT add any information that is not present in the summary.
 - Keep your answer clear and to the point.
-- Only answer using the given summary. 
+- Only answer using the given summary.
 """
         self.memory_path = "memory/answer.json"
         self.memory_window = 10
+        self.model_client = create_model_client()
 
     def _read_memory(self):
         try:
@@ -36,10 +38,17 @@ Strictly follow the instructions below.
         memory = memory[-2*self.memory_window:]
         self._write_memory(memory)
 
-    def run(self, summary_text: str) -> str:
-        prompt = self.system_prompt + "\n\nSummary:\n" + summary_text + "\n\nAnswer:"
-        answer = call_llm(prompt, max_tokens=200)
-        answer = answer.strip()
+    async def run(self, summary_text: str) -> str:
+        response = await self.model_client.create(
+            messages=[
+                SystemMessage(content=self.system_prompt),
+                UserMessage(content=summary_text, source="user")
+            ]
+        )
+
+
+
+        answer = response.content.strip()
         if not answer.endswith("."):
             answer += "."
         self._add_to_memory(summary_text, answer)
