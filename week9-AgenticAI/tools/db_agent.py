@@ -26,11 +26,12 @@ class DatabaseAgent:
         "8. Do NOT include explanations.\n"
         "9. Do NOT use markdown.\n"
         "10. Do NOT wrap output in backticks.\n"
-        "11. Use ONLY existing columns: id, name, price, quantity.\n"
-        "12. NEVER invent column names like product_name.\n"
+        "11. Use ONLY columns that exist in the SQLite database.\n"
+        "12. NEVER invent column names.\n"
+        "13. Infer the correct table name from the user's question.\n"
+        "14. If multiple tables exist, choose the most relevant one.\n"
+        "15. In the products table, the product name column is called 'name', NOT 'product_name' or 'type'."
 
-        "If the user asks about data, infer the table name from the request.\n"
-        "If unsure, default to table name: sales.\n"
     )
 )
 
