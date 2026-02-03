@@ -1,7 +1,6 @@
 import streamlit as st
 import asyncio
 from orchestrator.tool_orchestrator import Orchestrator
-import os 
 
 st.set_page_config(page_title="Multi-Agent System", layout="wide")
 
@@ -38,23 +37,6 @@ def main():
     init_session_state()
 
     st.title("AutoGen Multi-Agent System")
-
-    st.sidebar.header("Upload CSV to Database")
-    uploaded_file = st.sidebar.file_uploader("Upload a CSV file", type=["csv"])
-
-    if uploaded_file:
-        save_path = os.path.join("uploads", uploaded_file.name)
-        os.makedirs("uploads", exist_ok=True)
-
-        with open(save_path, "wb") as f:
-            f.write(uploaded_file.getbuffer())
-
-        st.sidebar.success(f"Uploaded: {uploaded_file.name}")
-
-        table_name = os.path.splitext(uploaded_file.name)[0]
-        db_agent = st.session_state.orchestrator.agents["database"]
-        msg = db_agent.import_csv(save_path, table_name)
-        st.sidebar.info(msg)
 
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
