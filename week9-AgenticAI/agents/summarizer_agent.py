@@ -1,7 +1,7 @@
-# summarizer_agent.py
 import json
 from datetime import datetime
-from .base_model import call_llm
+from groq_client import create_model_client
+from autogen_core.models import SystemMessage, UserMessage
 
 class SummarizerAgent:
     def __init__(self):
@@ -20,6 +20,7 @@ Strictly follow the instructions below.
 """
         self.memory_path = "memory/summarizer.json"
         self.memory_window = 10
+        self.model_client = create_model_client()
 
     def _read_memory(self):
         try:
@@ -35,14 +36,21 @@ Strictly follow the instructions below.
 
     def _add_to_memory(self, research_text, summary_text):
         memory = self._read_memory()[-self.memory_window*2:]
-
         memory.append({"role": "user", "content": research_text, "timestamp": str(datetime.now())})
         memory.append({"role": "summarizer", "content": summary_text, "timestamp": str(datetime.now())})
         memory = memory[-2*self.memory_window:]
         self._write_memory(memory)
 
-    def run(self, research_text: str) -> str:
-        prompt = self.system_prompt + "\n\nResearch:\n" + research_text + "\n\nSummary:"
-        summary = call_llm(prompt, max_tokens=350)
+    async def run(self, research_text: str) -> str:
+        response = await self.model_client.create(
+            messages=[
+                SystemMessage(content=self.system_prompt),
+                UserMessage(content=research_text, source="user")
+            ]
+        )
+
+
+
+        summary = response.content.strip()
         self._add_to_memory(research_text, summary)
         return summary
