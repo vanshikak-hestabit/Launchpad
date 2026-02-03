@@ -9,9 +9,7 @@ from agents.validator_agent import create_validator_agent, validate_answer
 
 
 def print_dag(plan):
-    """
-    Pretty print a DAG with clear sections for level, tasks, and dependencies.
-    """
+    
     printed_tasks = set()
     level = 0
     print("\n" + "="*60)
@@ -50,7 +48,7 @@ def print_dag(plan):
     printed_tasks = set()
     level = 1
 
-    print("\n=== DAG TASK PLAN (PRETTY) ===")
+    print("\n=== DAG TASK PLAN ===")
     print(f"{'Level':<6} | {'Task':<40} | {'Depends On'}")
     print("-" * 80)
 
