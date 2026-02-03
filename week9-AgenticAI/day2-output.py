@@ -1,7 +1,7 @@
 import streamlit as st
 import asyncio
 
-from groq_client import model_client
+from groq_client import create_model_client
 from orchestrator.planner import create_planner_agent, plan_tasks
 from agents.worker_agent import run_workers_parallel
 from agents.reflector_agent import create_reflection_agent, reflect_answer
@@ -17,6 +17,7 @@ if st.button("Run Pipeline") and user_query:
     st.info("Running agents... Please wait!")
 
     async def run_pipeline():
+        model_client = create_model_client()  
         # Planner
         planner_agent = create_planner_agent(model_client)
         plan = await plan_tasks(planner_agent, user_query)
