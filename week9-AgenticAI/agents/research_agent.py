@@ -1,7 +1,7 @@
-# research_agent.py
 import json
 from datetime import datetime
-from .base_model import call_llm
+from groq_client import create_model_client
+from autogen_core.models import SystemMessage, UserMessage
 
 class ResearchAgent:
     def __init__(self):
@@ -13,6 +13,7 @@ Return raw, informative research text.
 """
         self.memory_path = "memory/research.json"
         self.memory_window = 10
+        self.model_client = create_model_client()
 
     def _read_memory(self):
         try:
@@ -33,14 +34,12 @@ Return raw, informative research text.
         memory = memory[-2*self.memory_window:]
         self._write_memory(memory)
 
-
-    def run(self, query: str) -> str:
+    async def run(self, query: str) -> str:
         if "last question" in query.lower():
             memory = self._read_memory()
             user_queries = [m["content"] for m in memory if m["role"] == "user"]
             if len(user_queries) >= 2:
-                last_question = user_queries[-2]  # the one before the current
-                result = f"Your last question was: {last_question}"
+                result = f"Your last question was: {user_queries[-2]}"
             else:
                 result = "No previous question found."
             self._add_to_memory(query, result)
@@ -48,25 +47,33 @@ Return raw, informative research text.
 
         memory = self._read_memory()[-self.memory_window*2:]
         memory_context = "\n".join(
-            [f"{m['role']}: {m['content'][:300]}" for m in memory]  # limit each message to 300 chars
+            [f"{m['role']}: {m['content'][:300]}" for m in memory]
         )
 
         prompt = f"""
-    <System>
-    {self.system_prompt}
-    </System>
+<System>
+{self.system_prompt}
+</System>
 
-    <Memory>
-    {memory_context}
-    </Memory>
+<Memory>
+{memory_context}
+</Memory>
 
-    <User>
-    {query}
-    </User>
+<User>
+{query}
+</User>
 
-    <Assistant>
-    """
-        research_text = call_llm(prompt, max_tokens=500)
+<Assistant>
+"""
+
+        response = await self.model_client.create(
+            messages=[
+                SystemMessage(content=self.system_prompt),
+                UserMessage(content=prompt, source="user")
+            ]
+        )
+
+
+        research_text = response.content.strip()
         self._add_to_memory(query, research_text)
-
         return research_text
