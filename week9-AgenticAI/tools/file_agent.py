@@ -1,8 +1,6 @@
-from curses import raw
 import os
 import json
 import re
-from tracemalloc import start
 from autogen_agentchat.agents import AssistantAgent
 from autogen_agentchat.messages import TextMessage
 from groq_client import create_model_client
@@ -12,9 +10,9 @@ class FileAgent:
         self.base_dir = os.path.abspath(base_dir)
         os.makedirs(self.base_dir, exist_ok=True)
         self.agent = AssistantAgent(
-    name="FileAgent",
-    model_client=create_model_client(),
-    system_message="""
+            name="FileAgent",
+            model_client=create_model_client(),
+            system_message="""
 You are a file system agent.
 Return STRICT VALID JSON ONLY.
 No explanations. No markdown. No backticks.
@@ -30,51 +28,32 @@ Valid actions: create_dir, write_text, read_text, list_files
 
 Each action MUST be a SINGLE atomic operation.
 NEVER combine actions.
-
-JSON format:
-{
-  "actions": [
-    {
-      "action": "create_dir" | "write_text" | "read_text" | "list_files",
-      "path": "relative/path",
-      "filename": "file.txt" | null,
-      "content": "text" | null
-    }
-  ]
-}
 """
-)
+        )
 
+    def _safe_join(self, filename: str):
+        # Always write inside created_files, ignore any path
+        full_path = os.path.abspath(os.path.join(self.base_dir, filename))
+        if not full_path.startswith(self.base_dir):
+            raise PermissionError(f"Blocked unsafe path: {full_path}")
+        return full_path
 
-    def _safe_join(self, *paths):
-        final_path = os.path.abspath(os.path.join(self.base_dir, *paths))
-        if not final_path.startswith(self.base_dir):
-            raise PermissionError(f"Blocked unsafe path: {final_path}")
-        return final_path
+    def _write_text(self, filename: str, content: str):
+        full_path = self._safe_join(filename)
 
-    def _create_dir(self, rel_path: str):
-        full_path = self._safe_join(rel_path)
-        os.makedirs(full_path, exist_ok=True)
-        return f"Created directory: {rel_path}"
-
-    def _write_text(self, rel_path: str, content: str):
-        full_path = self._safe_join(rel_path)
-
-        dir_path = os.path.dirname(full_path)
-        if dir_path and dir_path != self.base_dir:
-            os.makedirs(dir_path, exist_ok=True)
+        # Decode escaped sequences like \n to real newlines
+        if content:
+            content = content.encode("utf-8").decode("unicode_escape")
 
         with open(full_path, "w", encoding="utf-8") as f:
             f.write(content or "")
 
-        return f"Wrote file: {rel_path}"
+        return f"Wrote file: {filename}"
 
-
-    def _read_text(self, rel_path: str):
-        full_path = self._safe_join(rel_path)
+    def _read_text(self, filename: str):
+        full_path = self._safe_join(filename)
         if not os.path.exists(full_path):
-            return f"File not found: {rel_path}"
-
+            return f"File not found: {filename}"
         with open(full_path, "r", encoding="utf-8") as f:
             return f.read()
 
@@ -84,60 +63,38 @@ JSON format:
             for name in filenames:
                 files.append(os.path.relpath(os.path.join(root, name), self.base_dir))
         return "\n".join(files) or "No files found."
-    
+
     async def process_request(self, request: str):
         response = await self.agent.on_messages(
-        [TextMessage(content=request, source="user")],
-        cancellation_token=None
-    )
+            [TextMessage(content=request, source="user")],
+            cancellation_token=None
+        )
 
         raw = response.chat_message.content.strip()
-
         raw = re.sub(r"```json", "", raw, flags=re.IGNORECASE).strip()
         raw = re.sub(r"```", "", raw).strip()
 
-        start = raw.find("{")
-        end = raw.rfind("}")
+        # Match ALL JSON objects in the raw response
+        json_objects = re.findall(r"\{.*?\}", raw, flags=re.DOTALL)
+        if not json_objects:
+            return f"File agent error: No valid JSON found\nRaw:\n{raw}"
 
-        if start == -1 or end == -1 or end <= start:
-            return f"File agent error: Invalid JSON\nRaw:\n{raw}"
+        results = []
 
-        cleaned = raw[start:end + 1]
+        for obj in json_objects:
+            try:
+                cleaned = obj.replace('"create_file"', '"write_text"')  # fix misnamed actions
+                step = json.loads(cleaned)
 
-        cleaned = cleaned.replace('"create_file"', '"write_text"')
-
-        print("\n--- CLEANED FILE AGENT JSON ---\n", cleaned)
-
-        try:
-            data = json.loads(cleaned)
-            actions = data.get("actions", [])
-            results = []
-
-            for step in actions:
                 action = step.get("action")
-                path = (step.get("path") or "").lstrip("/\\")
-                filename = (step.get("filename") or "").lstrip("/\\")
-                content = step.get("content")
-                if path and filename and path == filename:
-                    path = ""
-                rel_path = os.path.join(path, filename).lstrip("/\\") if filename else path
+                filename = (step.get("filename") or "").strip()
+                content = step.get("content") or ""
 
-                if action == "create_dir":
-                    results.append(self._create_dir(path))
+                # Only write files, ignore everything else
+                if action == "write_text" and filename:
+                    results.append(self._write_text(filename, content))
 
+            except Exception as e:
+                results.append(f"Error processing JSON: {e}\nRaw:\n{obj}")
 
-                elif action == "write_text":
-                    results.append(self._write_text(rel_path, content))
-                elif action == "read_text":
-                    results.append(self._read_text(rel_path))
-
-                elif action == "list_files":
-                    results.append(self._list_files())
-
-                else:
-                    results.append(f"Unknown action: {action}")
-
-            return "\n".join(results)
-
-        except Exception as e:
-            return f"File agent error: {e}\nRaw:\n{raw}"
+        return "\n".join(results)
