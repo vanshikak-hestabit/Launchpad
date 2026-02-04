@@ -1,0 +1,8 @@
+# NEXUS AI - Required Python Packages
+
+# Core dependencies
+autogen-ext>=0.4.0
+python-dotenv>=1.0.0
+
+# Optional but recommended
+colorama>=0.4.6  # For colored console output
