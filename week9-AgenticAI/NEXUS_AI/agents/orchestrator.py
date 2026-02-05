@@ -1,223 +1,181 @@
-"""
-Orchestrator Agent
-The master coordinator that manages all other agents
-Decides which agents to use and in what order
-"""
+import asyncio
+import json
+import os
+import shutil
+from collections import defaultdict, deque
+from autogen_agentchat.messages import TextMessage
 
-from typing import Dict, Any, List
-from agents.base_agent import BaseAgent
+from config import MAX_RETRIES_PER_AGENT, MAX_PLAN_RETRIES, LOG_FILE_PATH, OUTPUT_DIR
+from tools import create_log_entry
+from memory.memory_manager import MemoryManager
+from agents.planner import planner, ExecutionPlan
+from agents.researcher import researcher
+from agents.coder import coder
+from agents.analyst import analyst
+from agents.critic import critic
+from agents.optimizer import optimizer
+from agents.validator import validator
+from agents.reporter import reporter
 
-class OrchestratorAgent(BaseAgent):
-    """
-    Orchestrator coordinates all other agents
-    It's the 'brain' that decides what needs to be done and who should do it
-    """
-    
-    def __init__(self, client, available_agents: Dict[str, BaseAgent] = None):
-        """
-        Initialize the Orchestrator
-        
-        Args:
-            client: The Groq LLM client
-            available_agents: Dictionary of agent_name -> agent_instance
-        """
-        super().__init__(
-            name="orchestrator",
-            role="Master coordinator and task delegator",
-            client=client
-        )
-        
-        # Store references to all other agents
-        self.available_agents = available_agents or {}
-        
-        # Current workflow being executed
-        self.current_workflow: List[str] = []
-        
-        self.logger.info(f"Orchestrator ready with {len(self.available_agents)} agents")
-    
-    def add_agent(self, agent_name: str, agent: BaseAgent):
-        """
-        Add an agent to the orchestrator's team
-        
-        Args:
-            agent_name: Name of the agent
-            agent: The agent instance
-        """
-        self.available_agents[agent_name] = agent
-        self.logger.info(f"Added agent: {agent_name}")
-    
-    def create_plan(self, task: str) -> List[Dict[str, str]]:
-        """
-        Create a step-by-step plan for completing a task
-        Decides which agents should work on which parts
-        
-        Args:
-            task: The main task to accomplish
-            
-        Returns:
-            List of steps, each with agent and subtask
-        """
-        self.logger.info(f"Creating plan for task: {task[:100]}...")
-        
-        # Analyze the task and create a workflow
-        plan = []
-        
-        # Step 1: Always start with planning
-        plan.append({
-            "agent": "planner",
-            "subtask": f"Create detailed plan for: {task}",
-            "step": 1
-        })
-        
-        # Step 2: If task involves research, add researcher
-        if any(word in task.lower() for word in ["research", "find", "analyze", "study"]):
-            plan.append({
-                "agent": "researcher",
-                "subtask": "Research relevant information for the task",
-                "step": 2
-            })
-        
-        # Step 3: If task involves code, add coder
-        if any(word in task.lower() for word in ["code", "program", "develop", "build", "backend", "architecture"]):
-            plan.append({
-                "agent": "coder",
-                "subtask": "Develop code solution based on plan",
-                "step": 3
-            })
-        
-        # Step 4: If task involves data, add analyst
-        if any(word in task.lower() for word in ["data", "csv", "analyze", "statistics", "business"]):
-            plan.append({
-                "agent": "analyst",
-                "subtask": "Analyze data and provide insights",
-                "step": 4
-            })
-        
-        # Step 5: Add critic to review the work
-        plan.append({
-            "agent": "critic",
-            "subtask": "Review all work done so far",
-            "step": len(plan) + 1
-        })
-        
-        # Step 6: Add optimizer to improve the solution
-        plan.append({
-            "agent": "optimizer",
-            "subtask": "Optimize and improve the solution",
-            "step": len(plan) + 1
-        })
-        
-        # Step 7: Add validator to check quality
-        plan.append({
-            "agent": "validator",
-            "subtask": "Validate final solution quality",
-            "step": len(plan) + 1
-        })
-        
-        # Step 8: Finally, create a report
-        plan.append({
-            "agent": "reporter",
-            "subtask": "Generate comprehensive final report",
-            "step": len(plan) + 1
-        })
-        
-        self.logger.info(f"Plan created with {len(plan)} steps")
-        return plan
-    
-    def execute(self, task: str) -> Dict[str, Any]:
-        """
-        Execute a task by coordinating multiple agents
-        
-        Args:
-            task: The task to complete
-            
-        Returns:
-            Final results from all agents
-        """
-        self.logger.info(f"=== ORCHESTRATOR STARTING TASK ===")
-        self.logger.info(f"Task: {task}")
-        
-        # Mark as active
-        self.is_active = True
-        
-        # Record the task
-        self.add_to_memory("task_started", task)
-        
+AGENT_REGISTRY = {
+    "Researcher": researcher,
+    "Coder": coder,
+    "Analyst": analyst,
+    "Critic": critic,
+    "Optimizer": optimizer,
+    "Validator": validator,
+    "Reporter": reporter,
+}
+
+memory_manager = MemoryManager()
+
+def compute_levels(execution_plan):
+    graph = defaultdict(list)
+    in_degree = defaultdict(int)
+
+    for step in execution_plan.steps:
+        in_degree[step.agent] = len(step.depends_on)
+        for dep in step.depends_on:
+            graph[dep].append(step.agent)
+
+    queue = deque([n for n in in_degree if in_degree[n] == 0])
+    levels = []
+
+    while queue:
+        level = list(queue)
+        levels.append(level)
+        next_queue = deque()
+
+        for node in level:
+            for neighbor in graph[node]:
+                in_degree[neighbor] -= 1
+                if in_degree[neighbor] == 0:
+                    next_queue.append(neighbor)
+
+        queue = next_queue
+
+    return levels
+
+
+async def run_agent_with_retry(agent_name, instruction, global_context, user_query):
+    agent = AGENT_REGISTRY[agent_name]
+    last_error = None
+
+    for attempt in range(MAX_RETRIES_PER_AGENT):
+
+        retry_info = f"\nPREVIOUS FAILURE:\n{last_error}\nFix the issue.\n" if last_error else ""
+        global_context = compress_context(global_context)
+        prompt = f"""
+SYSTEM GOAL (USER REQUEST):
+{user_query}
+
+YOUR TASK:
+{instruction}
+
+CONTEXT FROM PREVIOUS AGENTS:
+{global_context}
+
+{retry_info}
+"""
         try:
-            # Step 1: Create the execution plan
-            plan = self.create_plan(task)
-            self.current_workflow = [step["agent"] for step in plan]
-            
-            self.logger.info(f"Workflow: {' -> '.join(self.current_workflow)}")
-            
-            # Step 2: Execute each step in the plan
-            results = []
-            context = {"original_task": task}  # Shared context between agents
-            
-            for step in plan:
-                agent_name = step["agent"]
-                subtask = step["subtask"]
-                step_num = step["step"]
-                
-                self.logger.info(f"\n--- Step {step_num}: {agent_name} ---")
-                
-                # Check if agent exists
-                if agent_name not in self.available_agents:
-                    self.logger.warning(f"Agent {agent_name} not available, skipping")
-                    continue
-                
-                # Get the agent
-                agent = self.available_agents[agent_name]
-                
-                # Execute the agent's task
-                try:
-                    # Add context to subtask
-                    full_task = f"{subtask}\n\nContext: {context}"
-                    
-                    result = agent.execute(full_task)
-                    
-                    # Store result
-                    results.append({
-                        "step": step_num,
-                        "agent": agent_name,
-                        "result": result
-                    })
-                    
-                    # Update shared context
-                    context[f"{agent_name}_output"] = result
-                    
-                    self.logger.info(f"Step {step_num} completed successfully")
-                    
-                except Exception as e:
-                    self.logger.error(f"Step {step_num} failed: {str(e)}")
-                    results.append({
-                        "step": step_num,
-                        "agent": agent_name,
-                        "result": {"status": "error", "message": str(e)}
-                    })
-            
-            # Step 3: Compile final output
-            final_result = {
-                "status": "completed",
-                "task": task,
-                "workflow": self.current_workflow,
-                "steps_executed": len(results),
-                "results": results,
-                "context": context
-            }
-            
-            self.add_to_memory("task_completed", f"Executed {len(results)} steps")
-            self.logger.info(f"=== TASK COMPLETED ===")
-            
-            return final_result
-            
+            print(f"\n running {agent_name} Agent")
+            result = await agent.run(task=TextMessage(content=prompt, source="orchestrator"))
+            output = result.messages[-1].content
+
+            memory_manager.store_interaction(agent_name, output)
+
+            create_log_entry(LOG_FILE_PATH, agent_name.lower(), "success", {"output": output})
+            return {"agent": agent_name, "success": True, "output": output}
+
         except Exception as e:
-            self.logger.error(f"Orchestration failed: {str(e)}")
-            self.add_to_memory("task_failed", str(e))
-            return {
-                "status": "failed",
-                "task": task,
-                "error": str(e)
-            }
-        finally:
-            self.is_active = False
+            last_error = str(e)
+            create_log_entry(LOG_FILE_PATH, agent_name.lower(), "retry", {"attempt": attempt + 1, "error": last_error})
+
+    return {"agent": agent_name, "success": False, "error": last_error}
+
+
+async def run_level(level_agents, step_map, context, user_query):
+    tasks = [
+        run_agent_with_retry(agent, step_map[agent], context, user_query)
+        for agent in level_agents
+    ]
+    return await asyncio.gather(*tasks)
+
+
+async def execute_plan(execution_plan, user_query):
+    levels = compute_levels(execution_plan)
+    step_map = {step.agent: step.instruction for step in execution_plan.steps}
+    global_context = {}
+
+    for level_agents in levels:
+        level_results = await run_level(level_agents, step_map, global_context, user_query)
+
+        for res in level_results:
+
+            if not res["success"]:
+                raise Exception(f"EXEC_FAIL::{res['agent']}::{res['error']}")
+
+            global_context[res["agent"]] = res["output"]
+
+            if res["agent"] == "Validator":
+                if "FAIL" in res["output"].upper() or "REJECTED" in res["output"].upper():
+                    raise Exception(f"VALIDATION_FAIL::{res['output']}")
+
+    return global_context
+
+def compress_context(context, limit=1200):
+    return {k: v[:limit] for k, v in context.items()}
+
+
+async def run_autonomous_loop(initial_plan, user_query):
+    current_plan = initial_plan
+    validator_feedback = None
+
+    for attempt in range(MAX_PLAN_RETRIES):
+        print(f"\n ATTEMPT {attempt+1}/{MAX_PLAN_RETRIES} ")
+
+        try:
+            return await execute_plan(current_plan, user_query)
+
+        except Exception as e:
+            err = str(e)
+
+            if err.startswith("VALIDATION_FAIL::"):
+                validator_feedback = err.replace("VALIDATION_FAIL::", "")
+                memory_manager.store_interaction("validator_feedback", validator_feedback)
+
+                clear_output_dir()
+
+                replan_prompt = f"""
+SYSTEM GOAL:
+{user_query}
+
+VALIDATOR FEEDBACK:
+{validator_feedback}
+
+Generate a NEW improved execution plan fixing these issues.
+"""
+
+                result = await planner.run(task=TextMessage(content=replan_prompt, source="orchestrator"))
+                plan_data = json.loads(result.messages[-1].content)
+                create_log_entry(LOG_FILE_PATH, "planner", "updated_plan_generated", {"steps": plan_data})
+                current_plan = ExecutionPlan(**plan_data)
+                continue
+
+            raise
+
+    raise Exception("System failed after maximum plan retries.")
+
+
+def clear_output_dir():
+    if not os.path.exists(OUTPUT_DIR):
+        return
+    for f in os.listdir(OUTPUT_DIR):
+        p = os.path.join(OUTPUT_DIR, f)
+        try:
+            if os.path.isfile(p):
+                os.unlink(p)
+            else:
+                shutil.rmtree(p)
+        except:
+            pass

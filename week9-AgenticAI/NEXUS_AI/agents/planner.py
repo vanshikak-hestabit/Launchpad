@@ -1,173 +1,97 @@
-"""
-Planner Agent
-Creates detailed step-by-step plans for tasks
-Breaks down complex problems into manageable steps
+from autogen_agentchat.agents import AssistantAgent
+from autogen_agentchat.messages import TextMessage
+from llm import OllamaClient
+from pydantic import BaseModel, Field
+from typing import Literal, List, Optional
+# import asyncio
+
+AgentName = Literal["Researcher", "Coder", "Analyst", "Critic", "Optimizer", "Validator", "Reporter"]
+
+class PlanStep(BaseModel):
+    agent: AgentName
+    instruction: str
+    depends_on: List[AgentName] = Field(default_factory=list)
+
+
+class ExecutionPlan(BaseModel):
+    steps: List[PlanStep]
+
+    steps: List[PlanStep]
+
+
+PLANNER_PROMPT = """
+You are an expert Planner Agent for a multi-agent system.
+
+Your job is to:
+1. Decompose complex user queries into concrete execution steps
+2. Assign each step to the most appropriate agent
+3. Return a structured plan following the ExecutionPlan schema
+
+- Do NOT execute tasks
+- Do NOT analyze data
+
+Available Agents and Their Roles:
+- Researcher: Research, data gathering, competitive analysis
+- Analyst: Data analysis, statistical analysis, business intelligence
+- Coder: Code generation, architecture design, technical implementation
+- Critic: Review, critique, quality assessment, feedback
+- Optimizer: Performance optimization, efficiency improvements
+- Validator: Validation of result and is the Solution alligned to user needs (should be near the end)
+- Reporter: Final report generation, documentation (should be last)
+
+AVAILABLE TOOLS FOR AGENTS:
+Coder: read/write source files, create JSON configs, inspect project structure.
+Analyst: read CSV/JSON/FILE data, compute column statistics, inspect data files and project structure.
+Optimizer: read and rewrite code/configs to improve performance and efficiency, inspect project structure.
+Reporter: read artifacts and logs, write reports and documentation.
+
+IMPORTANT:
+- Think about which steps can run independently (in parallel)
+- Generate ATMOST one instance of each Agent
+- Use dependencies to control execution order
+- Implement parallelization where logical
+- Return ONLY valid JSON matching ExecutionPlan schema
+- Do not include explanations or markdown formatting
+
+CRITICAL: Identify dependencies between steps to enable parallel execution
+Dependency Rules:
+- Steps with NO dependencies (dependencies: []) can run FIRST and IN PARALLEL
+- Steps that depend on other steps must list those agent names in dependencies
+- Multiple independent steps can run in parallel (good for performance)
+- Validator should depend on most agents
+- Reporter should depend on Validator (runs last)
+- We Need to Generate a Directed Acyclic Graph for parallel an sequential execution with different levels of agents
+
+PLANNING METHODOLOGY:
+1. Understand the user request and final deliverable
+2. Identify required knowledge, artifacts, and validations
+3. Ensure logical dependencies are respected
+4. Include quality gates (Critic, Validator) at appropriate points
+5. Assign only one task to one Agent
+6. Use one Agent ATMOST once
+7. If any agent is NOT required to perform the query DO NOT include it
 """
 
-from typing import Dict, Any
-from agents.base_agent import BaseAgent
+planner_client = OllamaClient(ExecutionPlan).ollama_client
 
-class PlannerAgent(BaseAgent):
-    """
-    Planner creates structured plans for task execution
-    It thinks ahead and organizes work logically
-    """
+planner = AssistantAgent(
+    name="planner",
+    description="Generates sequential execution plans by assigning tasks to specialized agents",
+    system_message=PLANNER_PROMPT,
+    model_client=planner_client,
     
-    def __init__(self, client):
-        """Initialize the Planner agent"""
-        super().__init__(
-            name="planner",
-            role="Strategic planner and task breakdown specialist",
-            client=client
+
+)
+
+async def run_planner(query="plan an ai healthcare startup"):
+
+    result = await planner.run(
+        task = TextMessage(
+            content=query,
+            source="user"
         )
-    
-    def execute(self, task: str) -> Dict[str, Any]:
-        """
-        Create a detailed plan for the given task
-        
-        Args:
-            task: The task to plan
-            
-        Returns:
-            Dictionary with the plan details
-        """
-        self.logger.info(f"Planning task: {task[:100]}...")
-        self.is_active = True
-        
-        try:
-            # Analyze the task
-            plan_result = self._create_detailed_plan(task)
-            
-            # Store in memory
-            self.add_to_memory("plan_created", f"Created plan with {len(plan_result['steps'])} steps")
-            
-            return plan_result
-            
-        except Exception as e:
-            self.logger.error(f"Planning failed: {str(e)}")
-            return {
-                "status": "error",
-                "message": str(e)
-            }
-        finally:
-            self.is_active = False
-    
-    def _create_detailed_plan(self, task: str) -> Dict[str, Any]:
-        """
-        Internal method to create a detailed plan
-        
-        Args:
-            task: Task description
-            
-        Returns:
-            Structured plan dictionary
-        """
-        # Extract key information from task
-        task_lower = task.lower()
-        
-        # Initialize plan structure
-        plan = {
-            "status": "success",
-            "task": task,
-            "steps": [],
-            "estimated_complexity": "medium",
-            "required_agents": []
-        }
-        
-        # Determine complexity
-        if len(task.split()) > 50 or any(word in task_lower for word in ["complex", "advanced", "comprehensive"]):
-            plan["estimated_complexity"] = "high"
-        elif len(task.split()) < 20:
-            plan["estimated_complexity"] = "low"
-        
-        # Create steps based on task type
-        
-        # Step 1: Understand requirements
-        plan["steps"].append({
-            "step_number": 1,
-            "action": "Understand Requirements",
-            "description": "Analyze and clarify what needs to be accomplished",
-            "agent_needed": "planner"
-        })
-        
-        # Step 2: Research if needed
-        if any(word in task_lower for word in ["research", "find", "learn", "discover"]):
-            plan["steps"].append({
-                "step_number": len(plan["steps"]) + 1,
-                "action": "Research Information",
-                "description": "Gather necessary information and resources",
-                "agent_needed": "researcher"
-            })
-            plan["required_agents"].append("researcher")
-        
-        # Step 3: Design/Architecture if needed
-        if any(word in task_lower for word in ["design", "architecture", "structure", "build", "backend"]):
-            plan["steps"].append({
-                "step_number": len(plan["steps"]) + 1,
-                "action": "Design Solution",
-                "description": "Create architecture and design specifications",
-                "agent_needed": "planner"
-            })
-        
-        # Step 4: Implementation
-        if any(word in task_lower for word in ["code", "develop", "build", "create", "implement"]):
-            plan["steps"].append({
-                "step_number": len(plan["steps"]) + 1,
-                "action": "Implement Solution",
-                "description": "Build the actual solution/code",
-                "agent_needed": "coder"
-            })
-            plan["required_agents"].append("coder")
-        
-        # Step 5: Data Analysis if needed
-        if any(word in task_lower for word in ["analyze", "data", "csv", "statistics", "metrics"]):
-            plan["steps"].append({
-                "step_number": len(plan["steps"]) + 1,
-                "action": "Analyze Data",
-                "description": "Process and analyze relevant data",
-                "agent_needed": "analyst"
-            })
-            plan["required_agents"].append("analyst")
-        
-        # Step 6: Review
-        plan["steps"].append({
-            "step_number": len(plan["steps"]) + 1,
-            "action": "Review Work",
-            "description": "Critically review all completed work",
-            "agent_needed": "critic"
-        })
-        plan["required_agents"].append("critic")
-        
-        # Step 7: Optimize
-        plan["steps"].append({
-            "step_number": len(plan["steps"]) + 1,
-            "action": "Optimize Solution",
-            "description": "Improve and refine the solution",
-            "agent_needed": "optimizer"
-        })
-        plan["required_agents"].append("optimizer")
-        
-        # Step 8: Validate
-        plan["steps"].append({
-            "step_number": len(plan["steps"]) + 1,
-            "action": "Validate Quality",
-            "description": "Ensure solution meets quality standards",
-            "agent_needed": "validator"
-        })
-        plan["required_agents"].append("validator")
-        
-        # Step 9: Document
-        plan["steps"].append({
-            "step_number": len(plan["steps"]) + 1,
-            "action": "Create Report",
-            "description": "Generate final documentation and report",
-            "agent_needed": "reporter"
-        })
-        plan["required_agents"].append("reporter")
-        
-        # Remove duplicates from required agents
-        plan["required_agents"] = list(set(plan["required_agents"]))
-        
-        self.logger.info(f"Plan created: {len(plan['steps'])} steps, complexity: {plan['estimated_complexity']}")
-        
-        return plan
+    )
+    print(result.messages[-1].content)
+
+
+# asyncio.run(run_planner())
