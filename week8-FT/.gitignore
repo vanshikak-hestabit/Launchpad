@@ -2,3 +2,6 @@ models
 venv
 deploy/__pycache__/
 .DS_Store
+adapters/adapter_config.json
+adapters/chat_template.jinja
+adapters/tokenizer.json
