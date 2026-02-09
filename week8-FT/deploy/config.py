@@ -1,5 +1,5 @@
 
-MODEL_PATH = "/home/vanshikakhandelwal/Launchpad/week8-FT/models/model-q4_0.gguf"
+MODEL_PATH = "/Users/vanshika/Desktop/Hestabit/Launchpad/week8-FT/models/model.gguf"
 N_CTX = 2048
 N_THREADS = 8
 N_GPU_LAYERS = 0  
