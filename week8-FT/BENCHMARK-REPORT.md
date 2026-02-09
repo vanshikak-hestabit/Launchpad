@@ -65,6 +65,8 @@ The benchmarking script runs the same set of prompts through each model and meas
  Accuracy   | Semantic similarity to reference answers |
 
 ---
+## Results 
+-> ![benchmark](benchmark.png)
 
 ## Notes / Observations
 
