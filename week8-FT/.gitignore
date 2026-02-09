@@ -1,4 +1,4 @@
 models
 venv
 deploy/__pycache__/
-adapters
+.DS_Store
