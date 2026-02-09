@@ -1,4 +1,4 @@
 Model,Tokens/sec,Latency(s),VRAM(MB),Accuracy
-GGUF Q8 llama.cpp,2.02,297.59,0.0,0.788
-Base Model,37.75,16.26,2533.58,0.857
-Fine-tuned,37.19,38.96,2533.58,0.765
+GGUF Q4 llama.cpp,4.42,37.74,0.0,0.807
+Base Model,43.26,8.14,11186.47,0.785
+Fine-tuned,36.42,24.0,11186.47,0.68
