@@ -49,7 +49,7 @@ Fine-tune an LLM using **QLoRA** with minimal memory and ~1% trainable parameter
 
 ## Results
 
-✔ ~1% trainable params
+✔ ~0.2% trainable params
 ✔ Loss optimized
 ✔ Adapter saved
 
