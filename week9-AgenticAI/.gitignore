@@ -1,8 +1,9 @@
 venv
 .env
-utils/__pycache__/
-orchestrator/__pycache__/
 agents/__pycache__/
+memory
+NEXUS_AI/__pycache__/
+NEXUS_AI/agents/__pycache__/
+NEXUS_AI/memory/__pycache__/
+.vscode/
 __pycache__/
-user_data.db
-
