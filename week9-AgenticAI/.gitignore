@@ -1,9 +1,7 @@
 venv
 .env
 agents/__pycache__/
-memory/answer.json
-memory/research.json
-memory/summarizer.json
+memoryy
 NEXUS_AI/__pycache__/
 NEXUS_AI/agents/__pycache__/
 NEXUS_AI/memory/__pycache__/
