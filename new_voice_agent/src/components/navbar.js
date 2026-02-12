@@ -1,6 +1,6 @@
 "use client"
-
-import { useState } from "react"
+import { supabase } from "@/lib/supabase"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import {
@@ -25,8 +25,29 @@ import {
 export default function DashboardNavbar() {
   const router = useRouter()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [user, setUser] = useState(null)
 
-  const handleLogout = () => {
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user) {
+        setUser(session.user)
+      }
+    }
+
+    fetchUser()
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => {
+      listener.subscription.unsubscribe()
+    }
+  }, [])
+
+  // <<< Added this function >>>
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
     router.push("/login")
   }
 
@@ -82,11 +103,11 @@ export default function DashboardNavbar() {
               >
                 <Avatar className="h-8 w-8">
                   <AvatarFallback className="bg-primary/10 text-sm font-semibold text-primary">
-                    JD
+                    {user?.email?.[0]?.toUpperCase() ?? ""}
                   </AvatarFallback>
                 </Avatar>
                 <span className="text-sm font-medium text-foreground">
-                  John Doe
+                  {user?.email ?? ""}
                 </span>
                 <ChevronDown className="h-4 w-4 text-muted-foreground" />
               </Button>
@@ -95,15 +116,15 @@ export default function DashboardNavbar() {
               <div className="flex items-center gap-3 px-3 py-2.5">
                 <Avatar className="h-9 w-9">
                   <AvatarFallback className="bg-primary/10 text-sm font-semibold text-primary">
-                    JD
+                    {user?.email?.[0]?.toUpperCase() ?? ""}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
                   <span className="text-sm font-medium text-foreground">
-                    John Doe
+                    {user?.email ?? ""}
                   </span>
                   <span className="text-xs text-muted-foreground">
-                    john@example.com
+                    {user?.email ?? ""}
                   </span>
                 </div>
               </div>
@@ -181,15 +202,15 @@ export default function DashboardNavbar() {
           <div className="flex items-center gap-3 px-3 py-2">
             <Avatar className="h-9 w-9">
               <AvatarFallback className="bg-primary/10 text-sm font-semibold text-primary">
-                JD
+                {user?.email?.[0]?.toUpperCase() ?? ""}
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-1 flex-col">
               <span className="text-sm font-medium text-foreground">
-                John Doe
+                {user?.email ?? ""}
               </span>
               <span className="text-xs text-muted-foreground">
-                john@example.com
+                {user?.email ?? ""}
               </span>
             </div>
           </div>
