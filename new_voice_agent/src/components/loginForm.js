@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Eye, EyeOff, Mail, Lock, Loader2, CheckCircle2, LogIn } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -17,6 +18,7 @@ import {
 import { Separator } from "@/components/ui/separator"
 
 export default function LoginForm() {
+  const router = useRouter() 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
@@ -48,6 +50,7 @@ export default function LoginForm() {
     setLoading(false)
     setIsSuccess(true)
     setMessage("Signed in successfully! Redirecting...")
+    router.push("/dashboard")
   }
 
   return (

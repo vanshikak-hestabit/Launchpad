@@ -1,5 +1,6 @@
 "use client"
-
+import { supabase } from "@/lib/supabase"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { Eye, EyeOff, Mail, Lock, Loader2, CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -16,6 +17,9 @@ import {
 import { Separator } from "@/components/ui/separator"
 
 export default function SignupForm() {
+  const router = useRouter()
+  const [displayName, setDisplayName] = useState("")
+  const [phone, setPhone] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
@@ -26,30 +30,47 @@ export default function SignupForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const handleSignup = async (e) => {
-    e.preventDefault()
-    setMessage("")
+  e.preventDefault()
+  setMessage("")
+  setIsSuccess(false)
 
-    if (password !== confirmPassword) {
-      setMessage("Passwords do not match")
-      setIsSuccess(false)
-      return
-    }
-
-    if (password.length < 6) {
-      setMessage("Password must be at least 6 characters")
-      setIsSuccess(false)
-      return
-    }
-
-    setLoading(true)
-
-    // Simulated signup — replace with your Supabase call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-
-    setLoading(false)
-    setIsSuccess(true)
-    setMessage("Account created successfully! Check your email.")
+  if (password !== confirmPassword) {
+    setMessage("Passwords do not match")
+    return
   }
+
+  if (password.length < 6) {
+    setMessage("Password must be at least 6 characters")
+    return
+  }
+
+  setLoading(true)
+
+  const { error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        display_name: displayName,
+        phone: phone,
+      },
+    },
+  })
+
+  setLoading(false)
+
+  if (error) {
+    setMessage(error.message)
+    return
+  }
+
+  setIsSuccess(true)
+  setMessage("Account created! Redirecting to login...")
+
+  setTimeout(() => {
+    router.push("/login")
+  }, 1500)
+}
 
   return (
     <Card className="w-full max-w-md border-border/50 shadow-lg shadow-primary/5">
@@ -67,6 +88,29 @@ export default function SignupForm() {
 
       <CardContent className="pt-4">
         <form onSubmit={handleSignup} className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+                <Label htmlFor="displayName" className="text-foreground">
+                    Display Name
+                </Label>
+                <Input
+                    id="displayName"
+                    placeholder="Your name"
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                    required/>
+            </div>
+
+            <div className="flex flex-col gap-2">
+            <Label htmlFor="phone" className="text-foreground">
+                Phone
+            </Label>
+            <Input
+                id="phone"
+                placeholder="Phone number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)} />
+            </div>
+
           <div className="flex flex-col gap-2">
             <Label htmlFor="email" className="text-foreground">
               Email
