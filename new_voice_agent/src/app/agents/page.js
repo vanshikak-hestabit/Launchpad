@@ -7,6 +7,8 @@ export default function AgentsPage() {
   const [systemPrompt, setSystemPrompt] = useState("")
   const [voice, setVoice] = useState("voice1")
   const [agents, setAgents] = useState([])
+  const [editingId, setEditingId] = useState(null)
+
 
   useEffect(() => {
     fetchAgents()
@@ -28,22 +30,58 @@ export default function AgentsPage() {
   }
 }
 
-  async function handleSubmit(e) {
-    e.preventDefault()
+  function startEditing(agent) {
+    setEditingId(agent.agent_id)
+    setName(agent.name)
+    setSystemPrompt(agent.system_prompt)
+    setVoice(agent.voice)
+    }
 
-    await fetch("/api/agents", {
+  async function handleSubmit(e) {
+  e.preventDefault()
+
+  if (editingId) {
+    // UPDATE existing agent
+    const res = await fetch(`/api/agents/${editingId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name,
+        system_prompt: systemPrompt,
+        voice,
+      }),
+    })
+    const data = await res.json()
+    console.log("UPDATE RESPONSE:", data)
+    setEditingId(null)
+  } else {
+    // CREATE new agent
+    const res = await fetch("/api/agents", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name,
         system_prompt: systemPrompt,
-        voice: voice,
+        voice,
       }),
     })
+    const data = await res.json()
+    console.log("CREATE RESPONSE:", data)
+  }
 
-    setName("")
-    setSystemPrompt("")
-    setVoice("")
+  // reset form
+  setName("")
+  setSystemPrompt("")
+  setVoice("voice1")
+  fetchAgents()
+}
+  async function handleDelete(id) {
+  console.log("Deleting agent with ID:", id) // should show valid UUID
+  if (!id) return;
+
+  const res = await fetch(`/api/agents/ae2d4128-9b3b-4218-adc2-db248d9e7a5d`, { method: "DELETE" })
+    const data = await res.json() // will always succeed
+    console.log("DELETE RESPONSE:", data)
     fetchAgents()
   }
 
@@ -80,12 +118,13 @@ export default function AgentsPage() {
         <option value="voice3">Voice 3</option>
         </select>
 
-        <button
-          type="submit"
-          className="bg-black text-white px-4 py-2 rounded"
-        >
-          Create Agent
+          <button
+            type="submit"
+            className="bg-black text-white px-4 py-2 rounded"
+            >
+            {editingId ? "Update Agent" : "Create Agent"}
         </button>
+
       </form>
 
       {/* Agent List */}
@@ -95,7 +134,7 @@ export default function AgentsPage() {
         {agents.map((agent) => (
           <div
             key={agent.agent_id}
-            className="border p-4 rounded"
+            className="border p-4 rounded flex justify-between items-start"
           >
             <h3 className="font-semibold">{agent.name}</h3>
             <p className="text-sm text-gray-500 mt-1">
@@ -104,6 +143,23 @@ export default function AgentsPage() {
             <p className="text-xs text-gray-400 mt-1">
               Voice: {agent.voice}
             </p>
+            {/* Edit & Delete Buttons */}
+            <div className="flex flex-col gap-2">
+            <button
+                onClick={() => startEditing(agent)}
+                className="text-sm bg-gray-200 px-3 py-1 rounded"
+            >
+                Edit
+            </button>
+
+            <button
+            onClick={() => handleDelete(String(agent.agent_id))}
+            className="text-sm bg-red-500 text-white px-3 py-1 rounded"
+            >
+            Delete
+            </button>
+            </div>
+
           </div>
         ))}
       </div>
