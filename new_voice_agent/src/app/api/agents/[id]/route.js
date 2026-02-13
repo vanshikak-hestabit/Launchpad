@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server"
 import { supabase } from "@/lib/supabase"
 
-export async function PUT(request, { context }) {
-  const { id } = context.params
+export async function PUT(request, context) {
+  const { id } = await context.params
+  console.log("id", id)
 
   if (!id) return NextResponse.json({ error: "Missing ID in URL" }, { status: 400 })
 
@@ -23,35 +24,43 @@ export async function PUT(request, { context }) {
   return NextResponse.json(data)
 }
 
-export async function DELETE(_, context) {
+export async function DELETE(request, context) {
   try {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+  
+    const { id } = await context.params
 
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-    const id = context?.params?.id; 
+    console.log("Deleting agent id:", id)
+
     if (!id) {
-      return NextResponse.json({ error: "Missing agent id" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing agent id" },
+        { status: 400 }
+      )
     }
-
     const { data, error } = await supabase
-      .from("agents")
+      .from("Agents")
       .delete()
-      .eq("id", id)
-      .eq("user_id", user.id)
-      .select(); // optional, if you want deleted row info
+      .eq("agent_id", id)
+      .select()
 
     if (error) {
-      console.error("SUPABASE DELETE ERROR:", error);
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      console.error("Delete error:", error)
+      return NextResponse.json(
+        { error: error.message },
+        { status: 500 }
+      )
     }
 
-    return NextResponse.json({ success: true, deleted: data });
+    return NextResponse.json({
+      success: true,
+      deleted: data,
+    })
 
   } catch (err) {
-    console.error("Error deleting agent:", err);
-    return NextResponse.json({ error: "An error occurred while deleting agent" }, { status: 500 });
+    console.error("Unexpected delete error:", err)
+    return NextResponse.json(
+      { error: "An unexpected error occurred while deleting agent" },
+      { status: 500 }
+    )
   }
 }
