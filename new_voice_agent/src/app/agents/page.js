@@ -79,7 +79,7 @@ export default function AgentsPage() {
   console.log("Deleting agent with ID:", agentId) // should show valid UUID
   if (!agentId) return;
 
-  const res = await fetch(`/api/agents/ae2d4128-9b3b-4218-adc2-db248d9e7a5d`, { method: "DELETE" })
+  const res = await fetch(`/api/agents/${agentId}`, { method: "DELETE" })
     const data = await res.json() // will always succeed
     console.log("DELETE RESPONSE:", data)
     fetchAgents()
