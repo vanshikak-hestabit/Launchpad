@@ -46,24 +46,40 @@ export default function SignupForm() {
 
   setLoading(true)
 
-  const { error } = await supabase.auth.signUp({
+  // Sign up user in Auth
+  const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
     email,
     password,
-    options: {
-      data: {
-        display_name: displayName,
-        phone: phone,
-      },
-    },
+    options: { data: { display_name: displayName, phone } },
   })
 
-  setLoading(false)
-
-  if (error) {
-    setMessage(error.message)
+  if (signUpError) {
+    setMessage(signUpError.message)
+    setLoading(false)
     return
   }
 
+  const userId = signUpData.user.id
+
+  // Insert into your existing table
+  const { error: dbError } = await supabase
+    .from("users") // <-- replace with your table name
+    .insert([
+      {
+        id: userId,
+        email,
+        display_name: displayName,
+        phone,
+      },
+    ])
+
+  if (dbError) {
+    setMessage(dbError.message)
+    setLoading(false)
+    return
+  }
+
+  setLoading(false)
   setIsSuccess(true)
   setMessage("Account created! Redirecting to login...")
 
@@ -71,6 +87,7 @@ export default function SignupForm() {
     router.push("/login")
   }, 1500)
 }
+
 
   return (
     <Card className="w-full max-w-md border-border/50 shadow-lg shadow-primary/5">
