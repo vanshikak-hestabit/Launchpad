@@ -75,9 +75,9 @@ export default function AgentsPage() {
   setVoice("voice1")
   fetchAgents()
 }
-  async function handleDelete(id) {
-  console.log("Deleting agent with ID:", id) // should show valid UUID
-  if (!id) return;
+  async function handleDelete(agentId) {
+  console.log("Deleting agent with ID:", agentId) // should show valid UUID
+  if (!agentId) return;
 
   const res = await fetch(`/api/agents/ae2d4128-9b3b-4218-adc2-db248d9e7a5d`, { method: "DELETE" })
     const data = await res.json() // will always succeed
