@@ -1,5 +1,6 @@
 "use client"
 
+import { supabase } from "@/lib/supabase/client"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Eye, EyeOff, Mail, Lock, Loader2, CheckCircle2, LogIn } from "lucide-react"
@@ -27,31 +28,27 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
 
   const handleLogin = async (e) => {
-    e.preventDefault()
-    setMessage("")
+  e.preventDefault()
+  setMessage("")
+  setLoading(true)
 
-    if (!email.trim()) {
-      setMessage("Please enter your email address")
-      setIsSuccess(false)
-      return
-    }
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  })
 
-    if (password.length < 6) {
-      setMessage("Password must be at least 6 characters")
-      setIsSuccess(false)
-      return
-    }
+  setLoading(false)
 
-    setLoading(true)
-
-    // Simulated login - replace with your auth call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-
-    setLoading(false)
-    setIsSuccess(true)
-    setMessage("Signed in successfully! Redirecting...")
-    router.push("/dashboard")
+  if (error) {
+    setIsSuccess(false)
+    setMessage(error.message)
+    return
   }
+
+  setIsSuccess(true)
+  setMessage("Signed in successfully!")
+  router.push("/dashboard")
+}
 
   return (
     <Card className="w-full max-w-md border-border/50 shadow-lg shadow-primary/5">
