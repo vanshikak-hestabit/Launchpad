@@ -63,7 +63,7 @@ export default function SignupForm() {
 
   // Insert into your existing table
   const { error: dbError } = await supabase
-    .from("users") // <-- replace with your table name
+    .from("Users") // <-- replace with your table name
     .insert([
       {
         id: userId,
