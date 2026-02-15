@@ -45,6 +45,7 @@ export default function AgentsPage() {
     const res = await fetch(`/api/agents/${editingId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
+      
       body: JSON.stringify({
         name,
         system_prompt: systemPrompt,
@@ -57,16 +58,25 @@ export default function AgentsPage() {
   } else {
     // CREATE new agent
     const res = await fetch("/api/agents", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name,
-        system_prompt: systemPrompt,
-        voice,
-      }),
-    })
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include", 
+    body: JSON.stringify({
+      name,
+      system_prompt: systemPrompt,
+      voice,
+    }),
+})
+
+    if (!res.ok) {
+      const text = await res.text()
+      console.error("SERVER ERROR:", text)
+      return
+    }
+
     const data = await res.json()
     console.log("CREATE RESPONSE:", data)
+
   }
 
   // reset form
