@@ -6,7 +6,7 @@ export default function AskQuestionModal() {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState(null);
   const [agents, setAgents] = useState([]);
-  const [selectedAgent, setSelectedAgent] = useState(null);
+  const [selectedAgentId, setSelectedAgentId] = useState(null);
   const [question, setQuestion] = useState("");
 
   const loadAgents = async () => {
@@ -26,7 +26,7 @@ export default function AskQuestionModal() {
 
       {open && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded w-96 space-y-4">
+          <div className="bg-white p-6 rounded w-[420px] space-y-4">
 
             {/* STEP 1 */}
             {mode === null && (
@@ -60,16 +60,19 @@ export default function AskQuestionModal() {
                 {agents.map((agent) => (
                   <button
                     key={agent.id}
-                    className={`w-full border px-3 py-2 rounded ${
-                      selectedAgent?.id === agent.id ? "bg-gray-200" : ""
+                    onClick={() => setSelectedAgentId(agent.id)}
+                    className={`w-full text-left border px-3 py-2 rounded ${
+                      selectedAgentId === agent.id ? "bg-gray-100" : ""
                     }`}
-                    onClick={() => setSelectedAgent(agent)}
                   >
-                    {agent.name}
+                    <div className="font-medium">{agent.name}</div>
+                    <div className="text-xs text-gray-500 line-clamp-2">
+                      {agent.system_prompt}
+                    </div>
                   </button>
                 ))}
 
-                {selectedAgent && (
+                {selectedAgentId && (
                   <>
                     <textarea
                       className="w-full border rounded p-2"
@@ -84,7 +87,7 @@ export default function AskQuestionModal() {
                       onClick={() =>
                         console.log(
                           "AGENT:",
-                          selectedAgent.id,
+                          selectedAgentId,
                           "QUESTION:",
                           question
                         )
@@ -99,7 +102,7 @@ export default function AskQuestionModal() {
                   className="text-sm text-gray-500"
                   onClick={() => {
                     setMode(null);
-                    setSelectedAgent(null);
+                    setSelectedAgentId(null);
                     setQuestion("");
                   }}
                 >
@@ -115,7 +118,7 @@ export default function AskQuestionModal() {
                 setOpen(false);
                 setMode(null);
                 setAgents([]);
-                setSelectedAgent(null);
+                setSelectedAgentId(null);
                 setQuestion("");
               }}
             >
