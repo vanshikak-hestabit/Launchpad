@@ -25,38 +25,56 @@ export default function AskQuestionModal() {
   };
 
   // Ask question using selected agent
-  const askQuestion = async () => {
+    const askQuestion = async () => {
     if (!question.trim() || !selectedAgent) return;
 
     setLoading(true);
     setAnswer("");
 
     try {
-      const res = await fetch("/api/knowledge/search", {
+        // Search (retrieve chunks)
+        const searchRes = await fetch("/api/knowledge/search", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          query: question,
-          agent_id: selectedAgent.agent_id,
-          system_prompt: selectedAgent.system_prompt,
-          top_k: 5,
+            query: question,
+            agent_id: selectedAgent.agent_id,
+            top_k: 5,
         }),
-      });
+        });
 
-      const data = await res.json();
+        const searchData = await searchRes.json();
 
-      const combined =
-        data?.results?.map((r) => r.chunk_text).join("\n\n") ||
-        "No answer found.";
+        const chunks = searchData?.results
+        ?.map((r) => r.chunk_text)
+        .filter(Boolean);
 
-      setAnswer(combined);
+        if (!chunks || chunks.length === 0) {
+        setAnswer("No relevant information found in the documents.");
+        setLoading(false);
+        return;
+        }
+
+        // Answer (LLM formats the answer)
+        const answerRes = await fetch("/api/knowledge/answer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            question,
+            chunks,
+        }),
+        });
+
+        const answerData = await answerRes.json();
+
+        setAnswer(answerData.answer || "No answer generated.");
     } catch (err) {
-      console.error("Question failed", err);
-      setAnswer("Something went wrong.");
+        console.error("Question failed", err);
+        setAnswer("Something went wrong.");
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+    };
 
   // Reset everything
   const resetAll = () => {
