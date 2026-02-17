@@ -78,8 +78,8 @@ export default function AskQuestionModal() {
       </button>
 
       {open && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded w-[420px] space-y-4">
+        <div className="fixed inset-0 bg-black/50 z-50 overflow-hidden flex items-center justify-center">
+          <div className="bg-white p-6 rounded w-[420px] max-h-[80vh] overflow-y-auto space-y-4">
 
             {/* STEP 1 */}
             {mode === null && (
