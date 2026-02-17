@@ -5,41 +5,66 @@ import { useState } from "react";
 export default function AskQuestionModal() {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState(null);
+
   const [agents, setAgents] = useState([]);
-  const [selectedAgent, setSelectedAgent] = useState<any>(null)
-  const [question, setQuestion] = useState("")
-  const [answer, setAnswer] = useState("")
+  const [selectedAgent, setSelectedAgent] = useState(null);
+
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Load agents from API
   const loadAgents = async () => {
-    const res = await fetch("/api/agents");
-    const data = await res.json();
-    setAgents(data || []);
+    try {
+      const res = await fetch("/api/agents");
+      const data = await res.json();
+      setAgents(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("Failed to load agents", err);
+    }
   };
 
+  // Ask question using selected agent
   const askQuestion = async () => {
-    if (!question.trim() || !selectedAgentId) return;
+    if (!question.trim() || !selectedAgent) return;
 
     setLoading(true);
     setAnswer("");
 
-    const res = await fetch("/api/knowledge/search", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        query: question,
-        agent_id: selectedAgentId,
-        top_k: 5,
-      }),
-    });
+    try {
+      const res = await fetch("/api/knowledge/search", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          query: question,
+          agent_id: selectedAgent.agent_id,
+          system_prompt: selectedAgent.system_prompt,
+          top_k: 5,
+        }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    const combined = data?.results
-      ?.map((r) => r.chunk_text)
-      .join("\n\n");
+      const combined =
+        data?.results?.map((r) => r.chunk_text).join("\n\n") ||
+        "No answer found.";
 
-    setAnswer(combined || "No answer found.");
+      setAnswer(combined);
+    } catch (err) {
+      console.error("Question failed", err);
+      setAnswer("Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Reset everything
+  const resetAll = () => {
+    setMode(null);
+    setAgents([]);
+    setSelectedAgent(null);
+    setQuestion("");
+    setAnswer("");
     setLoading(false);
   };
 
@@ -56,6 +81,7 @@ export default function AskQuestionModal() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
           <div className="bg-white p-6 rounded w-[420px] space-y-4">
 
+            {/* STEP 1 */}
             {mode === null && (
               <>
                 <h2 className="text-lg font-semibold">Choose an option</h2>
@@ -79,6 +105,7 @@ export default function AskQuestionModal() {
               </>
             )}
 
+            {/* STEP 2 */}
             {mode === "ask" && (
               <>
                 <h2 className="text-lg font-semibold">Select Agent</h2>
@@ -86,9 +113,11 @@ export default function AskQuestionModal() {
                 {agents.map((agent) => (
                   <button
                     key={agent.agent_id}
-                    onClick={() => setSelectedAgentId(agent.agent_id)}
+                    onClick={() => setSelectedAgent(agent)}
                     className={`w-full text-left border px-3 py-2 rounded ${
-                      selectedAgentId === agent.agent_id ? "bg-gray-100" : ""
+                      selectedAgent?.agent_id === agent.agent_id
+                        ? "bg-gray-100"
+                        : ""
                     }`}
                   >
                     <div className="font-medium">{agent.name}</div>
@@ -98,7 +127,7 @@ export default function AskQuestionModal() {
                   </button>
                 ))}
 
-                {selectedAgentId && (
+                {selectedAgent && (
                   <>
                     <textarea
                       className="w-full border rounded p-2"
@@ -126,12 +155,7 @@ export default function AskQuestionModal() {
 
                 <button
                   className="text-sm text-gray-500"
-                  onClick={() => {
-                    setMode(null);
-                    setSelectedAgentId(null);
-                    setQuestion("");
-                    setAnswer("");
-                  }}
+                  onClick={resetAll}
                 >
                   Back
                 </button>
@@ -142,11 +166,7 @@ export default function AskQuestionModal() {
               className="text-sm text-gray-500"
               onClick={() => {
                 setOpen(false);
-                setMode(null);
-                setAgents([]);
-                setSelectedAgentId(null);
-                setQuestion("");
-                setAnswer("");
+                resetAll();
               }}
             >
               Close
