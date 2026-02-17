@@ -1,62 +1,36 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase"; 
+import { supabase } from "@/lib/supabase";
 import pdfParse from "pdf-parse-debugging-disabled";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 
 export const dynamic = "force-dynamic";
 
-/**
- * Extracts text from a PDF buffer using pdf-parse-debugging-disabled
- */
 async function extractTextFromPdf(buffer) {
   const parsed = await pdfParse(buffer);
   return parsed.text;
 }
 
-/**
- * Get embeddings from Google Gemini using your preferred chunk mapping
- */
 async function getGeminiEmbeddings(texts) {
-  if (!Array.isArray(texts) || texts.length === 0) {
-    return [];
-  }
-
   const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${process.env.GEMINI_API_KEY}`;
 
-  const requests = texts.map(async (text) => {
-    const res = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        content: {
-          parts: [{ text }],
-        },
-      }),
-    });
+  return Promise.all(
+    texts.map(async (text) => {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          content: { parts: [{ text }] },
+        }),
+      });
 
-    if (!res.ok) {
-      const errText = await res.text();
-      throw new Error(`Embedding failed: ${errText}`);
-    }
+      if (!res.ok) throw new Error(await res.text());
 
-    const json = await res.json();
-
-    if (!json.embedding?.values) {
-      throw new Error("Invalid embedding response format");
-    }
-
-    return json.embedding.values; // 768-length vector
-  });
-
-  // Run all embedding requests in parallel
-  return Promise.all(requests);
+      const json = await res.json();
+      return json.embedding.values;
+    })
+  );
 }
 
-/**
- * Main upload handler
- */
 export async function POST(req) {
   try {
     const formData = await req.formData();
@@ -70,14 +44,27 @@ export async function POST(req) {
       );
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
-    let rawText = "";
+    // ✅ VERIFY AGENT EXISTS
+    const { data: agent, error: agentError } = await supabase
+      .from("Agents")
+      .select("agent_id")
+      .eq("agent_id", agent_id)
+      .single();
 
-    // Extract text
-    if (file.type === "text/plain") {
-      rawText = buffer.toString("utf-8");
-    } else if (file.type === "application/pdf") {
+    if (agentError || !agent) {
+      return NextResponse.json(
+        { error: "Invalid agent_id" },
+        { status: 400 }
+      );
+    }
+
+    const buffer = Buffer.from(await file.arrayBuffer());
+
+    let rawText = "";
+    if (file.type === "application/pdf") {
       rawText = await extractTextFromPdf(buffer);
+    } else if (file.type === "text/plain") {
+      rawText = buffer.toString("utf-8");
     } else {
       return NextResponse.json(
         { error: "Unsupported file type" },
@@ -85,30 +72,27 @@ export async function POST(req) {
       );
     }
 
-    // Store full document in Supabase
+    // ✅ INSERT DOCUMENT
     const { data: docData, error: docError } = await supabase
       .from("documents")
       .insert([{ agent_id, file_name: file.name, original_text: rawText }])
-      .select();
+      .select()
+      .single();
 
     if (docError) throw docError;
-    const document_id = docData[0].id;
 
-    // Chunk text
     const splitter = new RecursiveCharacterTextSplitter({
       chunkSize: 500,
       chunkOverlap: 50,
     });
-    const chunks = await splitter.splitText(rawText);
 
-    // Generate embeddings
+    const chunks = await splitter.splitText(rawText);
     const embeddings = await getGeminiEmbeddings(chunks);
 
-    // Insert chunks into Supabase
-    const rows = chunks.map((chunkText, i) => ({
-      document_id,
+    const rows = chunks.map((chunk, i) => ({
+      document_id: docData.id,
       agent_id,
-      chunk_text: chunkText,
+      chunk_text: chunk,
       embedding: embeddings[i],
     }));
 
@@ -120,9 +104,10 @@ export async function POST(req) {
 
     return NextResponse.json({
       success: true,
-      document_id,
+      document_id: docData.id,
       chunks_added: rows.length,
     });
+
   } catch (err) {
     console.error(err);
     return NextResponse.json(
