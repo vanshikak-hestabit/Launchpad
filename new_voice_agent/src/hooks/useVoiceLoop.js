@@ -12,32 +12,77 @@ export function useVoiceLoop(agentSystemPrompt) {
   const mediaRecorder = useRef(null);
 
   async function startListening() {
-    setStatus("listening");
+  if (!localParticipant) return;
 
-    const audioTrack =
-      localParticipant.audioTracks.values().next().value?.track;
-    if (!audioTrack) return;
+  setStatus("listening");
 
-    const stream = new MediaStream([audioTrack.mediaStreamTrack]);
-    const recorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
-    mediaRecorder.current = recorder;
-
-    const chunks = [];
-    recorder.ondataavailable = (e) => chunks.push(e.data);
-
-    recorder.onstop = async () => {
-      setStatus("thinking");
-
-      const blob = new Blob(chunks, { type: "audio/webm" });
-      const res = await fetch("/api/voice/stt", { method: "POST", body: blob });
-      const { transcript } = await res.json();
-
-      setTranscript(transcript);
-      if (transcript.trim()) await handleLLM(transcript);
-    };
-
-    recorder.start();
+  // Wait for mic track to be published
+  let micPublication;
+  for (let i = 0; i < 10; i++) {
+    const pubs = Array.from(localParticipant.trackPublications.values());
+    micPublication = pubs.find(
+      p => p.kind === "audio" && p.source === "microphone" && p.track
+    );
+    if (micPublication) break;
+    await new Promise(r => setTimeout(r, 300));
   }
+
+  if (!micPublication?.track) {
+    console.error("Mic track never became available");
+    setStatus("idle");
+    return;
+  }
+
+  const audioTrack = micPublication.track;
+
+  // Create AudioContext **after** getting the track
+  const ctx = new AudioContext();
+  const source = ctx.createMediaStreamSource(new MediaStream([audioTrack.mediaStreamTrack]));
+  const dest = ctx.createMediaStreamDestination();
+
+  // force mono
+  source.channelInterpretation = "discrete";
+  source.connect(dest);
+
+    const mimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
+    ? "audio/webm;codecs=opus"
+    : "audio/webm";
+
+    const recorder = new MediaRecorder(dest.stream, { mimeType });  mediaRecorder.current = recorder;
+
+  const chunks = [];
+  recorder.ondataavailable = e => chunks.push(e.data);
+
+  recorder.onstop = async () => {
+  setStatus("thinking");
+
+  // Use the correct MIME type that the recorder actually used
+  const blob = new Blob(chunks, { type: mimeType });
+  console.log("Blob size:", blob.size);
+
+  // Debug: show first 100 bytes so we know audio is real
+  const arrayBuffer = await blob.arrayBuffer();
+  console.log("First 100 bytes of audio:", new Uint8Array(arrayBuffer).slice(0, 100));
+
+  // Send blob to Deepgram
+  const res = await fetch("/api/voice/stt", { method: "POST", body: blob, headers: { "Content-Type": mimeType }});
+  const data = await res.json();
+  console.log("STT full response:", data); // full Deepgram response
+  console.log("Transcript extracted:", data.transcript);
+
+  setTranscript(data.transcript); // update UI
+  setStatus(data.transcript?.trim() ? "speaking" : "idle");
+
+  if (data.transcript?.trim()) await handleLLM(data.transcript);
+};
+
+  recorder.start();
+
+  // stop after 6s
+  setTimeout(() => {
+    if (mediaRecorder.current?.state === "recording") recorder.stop();
+  }, 6000);
+}
 
   function stopListening() {
     mediaRecorder.current?.stop();
@@ -72,7 +117,7 @@ export function useVoiceLoop(agentSystemPrompt) {
     const audio = new Audio(audioUrl);
 
     audio.onended = () => setStatus("idle");
-    audio.play();
+    await audio.play();
   }
 
   return { transcript, reply, status, startListening, stopListening };
