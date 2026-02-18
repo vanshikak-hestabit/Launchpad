@@ -104,21 +104,32 @@ export function useVoiceLoop(agentSystemPrompt) {
   }
 
   async function speakText(text) {
-    setStatus("speaking");
+  setStatus("speaking");
 
-    const ttsRes = await fetch("/api/voice/tts", {
+  try {
+    const res = await fetch("/api/voice/tts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text }),
     });
 
-    const audioBlob = await ttsRes.blob();
+    if (!res.ok) {
+      console.error("TTS API error:", await res.text());
+      setStatus("idle");
+      return;
+    }
+
+    const audioBlob = await res.blob(); // MP3 blob
     const audioUrl = URL.createObjectURL(audioBlob);
     const audio = new Audio(audioUrl);
 
     audio.onended = () => setStatus("idle");
     await audio.play();
+  } catch (err) {
+    console.error("speakText error:", err);
+    setStatus("idle");
   }
+}
 
   return { transcript, reply, status, startListening, stopListening };
 }
