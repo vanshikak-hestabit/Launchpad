@@ -20,8 +20,9 @@ const statusLabels = {
 export default function CallUI({ agent }) {
   const [callActive, setCallActive] = useState(false);
   const [muted, setMuted] = useState(false);
-  const { transcript, reply, status, startListening, stopListening } =
+  const { messages, status, startListening, stopListening } =
     useVoiceLoop(agent?.system_prompt);
+
 
   function handleStart() {
     setCallActive(true);
@@ -53,21 +54,24 @@ export default function CallUI({ agent }) {
         </span>
       </div>
 
-      {/* What user said */}
-      {transcript && (
-        <div className="bg-gray-800 rounded-xl p-4 w-full max-w-md">
-          <p className="text-gray-400 text-xs mb-1">You said</p>
-          <p className="text-white">{transcript}</p>
+      <div className="w-full max-w-md space-y-3">
+    {messages.map((msg, i) => (
+        <div
+          key={i}
+          className={`rounded-xl p-4 ${
+            msg.role === "user"
+              ? "bg-gray-800"
+              : "bg-indigo-900"
+          }`}
+        >
+          <p className="text-xs mb-1 text-gray-400">
+            {msg.role === "user" ? "You said" : "Agent replied"}
+          </p>
+          <p className="text-white">{msg.content}</p>
         </div>
-      )}
+      ))}
+    </div>
 
-      {/* What agent replied */}
-      {reply && (
-        <div className="bg-indigo-900 rounded-xl p-4 w-full max-w-md">
-          <p className="text-indigo-300 text-xs mb-1">Agent replied</p>
-          <p className="text-white">{reply}</p>
-        </div>
-      )}
 
       {/* Control buttons */}
       <div className="flex gap-4 mt-4">
