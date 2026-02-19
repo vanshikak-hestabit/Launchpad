@@ -6,9 +6,11 @@ import AskQuestionModal from "@/components/AskQuestionModal";
 import { supabase } from "@/lib/supabase";
 import DashboardCards from "@/components/dashboardCard";
 import DashboardActivity from "@/components/dashboardActivity";
+import VoiceModal from "@/components/VoiceModal";
 
 export default function DashboardPage() {
   const [name, setName] = useState("");
+  const [voiceOpen, setVoiceOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -40,6 +42,19 @@ export default function DashboardPage() {
         </div>
 
         <div className="flex gap-3">
+          {/* Mic Button */}
+          <button
+            onClick={() => setVoiceOpen(true)}
+            className="rounded-full bg-black p-3 text-white"
+            aria-label="Voice"
+          >
+            🎤
+          </button>
+          <VoiceModal
+            open={voiceOpen}
+            onClose={() => setVoiceOpen(false)}
+          />
+
           <AskQuestionModal />
 
           <button
@@ -51,7 +66,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <DashboardCards />
+        <DashboardCards />
 
       <div className="mt-8">
         <DashboardActivity />
