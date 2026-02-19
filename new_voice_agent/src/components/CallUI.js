@@ -20,8 +20,23 @@ const statusLabels = {
 export default function CallUI({ agent }) {
   const [callActive, setCallActive] = useState(false);
   const [muted, setMuted] = useState(false);
-  const { messages, status, startListening, stopListening } =
-    useVoiceLoop(agent?.system_prompt);
+  const {
+    messages,
+    status,
+    draft,
+    setDraft,
+    startListening,
+    stopListening,
+    handleLLM,
+  } = useVoiceLoop(agent?.system_prompt);
+
+  function handleSend() {
+    if (!draft.trim()) return;
+
+    // show user message immediately
+    handleLLM(draft);
+    setDraft("");
+  }
 
 
   function handleStart() {
@@ -41,27 +56,40 @@ export default function CallUI({ agent }) {
     else startListening();
   }
 
-  return (
-    <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center gap-8 p-6">
-      {/* Agent name */}
-      <h1 className="text-white text-2xl font-semibold">{agent?.name || "Voice Agent"}</h1>
+    function handleSend() {
+    if (!draft.trim()) return;
 
-      {/* Connection indicator dot */}
-      <div className="flex items-center gap-2">
-        <div className={`w-3 h-3 rounded-full ${callActive ? statusColors[status] : "bg-gray-600"}`} />
-        <span className="text-gray-400 text-sm">
-          {callActive ? statusLabels[status] : "Not connected"}
-        </span>
-      </div>
+    // show user message immediately
+    handleLLM(draft);
+    setDraft("");
+  }
 
-      <div className="w-full max-w-md space-y-3">
-    {messages.map((msg, i) => (
+ return (
+  <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center gap-6 p-6">
+    {/* Agent name */}
+    <h1 className="text-white text-2xl font-semibold">
+      {agent?.name || "Voice Agent"}
+    </h1>
+
+    {/* Connection indicator */}
+    <div className="flex items-center gap-2">
+      <div
+        className={`w-3 h-3 rounded-full ${
+          callActive ? statusColors[status] : "bg-gray-600"
+        }`}
+      />
+      <span className="text-gray-400 text-sm">
+        {callActive ? statusLabels[status] : "Not connected"}
+      </span>
+    </div>
+
+    {/* Messages */}
+    <div className="w-full max-w-md space-y-3">
+      {messages.map((msg, i) => (
         <div
           key={i}
           className={`rounded-xl p-4 ${
-            msg.role === "user"
-              ? "bg-gray-800"
-              : "bg-indigo-900"
+            msg.role === "user" ? "bg-gray-800" : "bg-indigo-900"
           }`}
         >
           <p className="text-xs mb-1 text-gray-400">
@@ -72,35 +100,56 @@ export default function CallUI({ agent }) {
       ))}
     </div>
 
-
-      {/* Control buttons */}
-      <div className="flex gap-4 mt-4">
-        {!callActive ? (
-          <button
-            onClick={handleStart}
-            className="bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded-full font-medium transition"
-          >
-            Start Call
-          </button>
-        ) : (
-          <>
-            <button
-              onClick={handleMute}
-              className={`px-6 py-3 rounded-full font-medium transition ${
-                muted ? "bg-yellow-600 hover:bg-yellow-500" : "bg-gray-700 hover:bg-gray-600"
-              } text-white`}
-            >
-              {muted ? "Unmute" : "Mute"}
-            </button>
-            <button
-              onClick={handleEnd}
-              className="bg-red-600 hover:bg-red-500 text-white px-6 py-3 rounded-full font-medium transition"
-            >
-              End Call
-            </button>
-          </>
-        )}
+    {/* INPUT BOX (always visible when call is active) */}
+    {callActive && (
+      <div className="w-full max-w-md flex gap-2">
+        <input
+          type="text"
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          placeholder="Speak or type your question..."
+          className="flex-1 rounded-lg bg-gray-800 text-white px-4 py-3 outline-none"
+        />
+    <button
+      onClick={handleSend}
+      className="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-3 rounded-lg font-medium"
+    >
+      Send
+    </button>
       </div>
+    )}
+
+    {/* Control buttons */}
+    <div className="flex gap-4">
+      {!callActive ? (
+        <button
+          onClick={handleStart}
+          className="bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded-full font-medium transition"
+        >
+          Start Call
+        </button>
+      ) : (
+        <>
+          <button
+            onClick={handleMute}
+            className={`px-6 py-3 rounded-full font-medium transition ${
+              muted
+                ? "bg-yellow-600 hover:bg-yellow-500"
+                : "bg-gray-700 hover:bg-gray-600"
+            } text-white`}
+          >
+            {muted ? "Unmute" : "Mute"}
+          </button>
+
+          <button
+            onClick={handleEnd}
+            className="bg-red-600 hover:bg-red-500 text-white px-6 py-3 rounded-full font-medium transition"
+          >
+            End Call
+          </button>
+        </>
+      )}
     </div>
-  );
+  </div>
+);
 }
