@@ -4,10 +4,10 @@ import { useLocalParticipant } from "@livekit/components-react";
 
 export function useVoiceLoop(agentSystemPrompt) {
   const { localParticipant } = useLocalParticipant();
-
-  const [transcript, setTranscript] = useState("");
-  const [reply, setReply] = useState("");
+  const [messages, setMessages] = useState([]); 
   const [status, setStatus] = useState("idle");
+  const [draft, setDraft] = useState("");
+
 
   const mediaRecorder = useRef(null);
 
@@ -70,38 +70,51 @@ export function useVoiceLoop(agentSystemPrompt) {
   console.log("STT full response:", data); // full Deepgram response
   console.log("Transcript extracted:", data.transcript);
 
-  setTranscript(data.transcript); // update UI
-  setStatus(data.transcript?.trim() ? "speaking" : "idle");
+  if (data.transcript?.trim()) {
+    setDraft(data.transcript);
+    setStatus("idle");
+  } else {
+    setStatus("idle");
+  }
 
-  if (data.transcript?.trim()) await handleLLM(data.transcript);
 };
 
   recorder.start();
 
-  // stop after 6s
   setTimeout(() => {
-    if (mediaRecorder.current?.state === "recording") recorder.stop();
-  }, 6000);
+    if (mediaRecorder.current?.state === "recording") {
+      mediaRecorder.current.stop();
+    }
+  }, 3000); // ⬅️ 3 seconds chunk
+
 }
 
   function stopListening() {
     mediaRecorder.current?.stop();
   }
+    async function handleLLM(userMessage) {
+      setMessages(prev => [
+        ...prev,
+        { role: "user", content: userMessage }
+      ]);
 
-  async function handleLLM(userMessage) {
-    const chatRes = await fetch("/api/voice/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        message: userMessage,
-        systemPrompt: agentSystemPrompt,
-      }),
-    });
+      const chatRes = await fetch("/api/voice/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: userMessage,
+          systemPrompt: agentSystemPrompt,
+        }),
+      });
+      const { reply: agentReply } = await chatRes.json();
+      setMessages(prev => [
+        ...prev,
+        { role: "assistant", content: agentReply }
+      ]);
 
-    const { reply: agentReply } = await chatRes.json();
-    setReply(agentReply);
-    await speakText(agentReply);
-  }
+      await speakText(agentReply);
+    }
+
 
   async function speakText(text) {
   setStatus("speaking");
@@ -131,5 +144,15 @@ export function useVoiceLoop(agentSystemPrompt) {
   }
 }
 
-  return { transcript, reply, status, startListening, stopListening };
+  return {
+  messages,
+  status,
+  draft,
+  setDraft,
+  startListening,
+  stopListening,
+  handleLLM,
+};
+
+
 }
