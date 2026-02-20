@@ -101,7 +101,7 @@ export default function CallUI({ agent }) {
       </button>
       {showHistory && (
             <div className="absolute top-16 left-4 w-80 max-h-[70vh] overflow-y-auto bg-gray-900 border border-gray-700 rounded-xl p-4 shadow-xl">
-              <h2 className="text-lg font-semibold mb-3">Past Conversations</h2>
+              <h2 className="text-lg font-semibold mb-3 text-white">Past Conversations</h2>
 
               {chatHistory.length === 0 && (
                 <p className="text-gray-400 text-sm">No history yet.</p>
