@@ -61,24 +61,6 @@ export default function SignupForm() {
 
   const userId = signUpData.user.id
 
-  // Insert into your existing table
-  const { error: dbError } = await supabase
-    .from("Users") // <-- replace with your table name
-    .insert([
-      {
-        id: userId,
-        email,
-        display_name: displayName,
-        phone,
-      },
-    ])
-
-  if (dbError) {
-    setMessage(dbError.message)
-    setLoading(false)
-    return
-  }
-
   setLoading(false)
   setIsSuccess(true)
   setMessage("Account created! Redirecting to login...")
