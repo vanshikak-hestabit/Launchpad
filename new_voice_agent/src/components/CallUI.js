@@ -21,6 +21,8 @@ const statusLabels = {
 export default function CallUI({ agent }) {
   const [callActive, setCallActive] = useState(false);
   const [muted, setMuted] = useState(false);
+  const [chatHistory, setChatHistory] = useState([]);
+  const [showHistory, setShowHistory] = useState(false);
   const {
     messages,
     status,
@@ -29,24 +31,27 @@ export default function CallUI({ agent }) {
     startListening,
     stopListening,
     handleLLM,
+    resetConversation,
   } = useVoiceLoop(agent?.system_prompt);
-
-  function handleSend() {
-    if (!draft.trim()) return;
-
-    // show user message immediately
-    handleLLM(draft);
-    setDraft("");
-  }
-
 
   function handleStart() {
     setCallActive(true);
   }
 
   function handleEnd() {
-    setCallActive(false);
+    if (messages.length > 0) {
+      const session = {
+        id: Date.now(),
+        date: new Date().toLocaleString(),
+        messages: messages,
+      };
+
+      setChatHistory((prev) => [session, ...prev]);
+    }
+
     stopListening();
+    resetConversation();   
+    setCallActive(false);
   }
 
   function handleMute() {
@@ -86,7 +91,61 @@ export default function CallUI({ agent }) {
   }
 
  return (
-  <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center gap-6 p-6">
+
+  <div className="relative min-h-screen bg-gray-950 flex flex-col items-center justify-center gap-6 p-6">
+    <button
+      onClick={() => setShowHistory(!showHistory)}
+      className="absolute top-4 left-4 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm"
+    >
+      {showHistory ? "Close History" : "History"}
+      </button>
+      {showHistory && (
+            <div className="absolute top-16 left-4 w-80 max-h-[70vh] overflow-y-auto bg-gray-900 border border-gray-700 rounded-xl p-4 shadow-xl">
+              <h2 className="text-lg font-semibold mb-3">Past Conversations</h2>
+
+              {chatHistory.length === 0 && (
+                <p className="text-gray-400 text-sm">No history yet.</p>
+              )}
+
+              {chatHistory.map((session) => (
+                <div
+                  key={session.id}
+                  className="mb-3 p-3 bg-gray-800 rounded-lg"
+                >
+                  <p className="text-xs text-gray-400 mb-2">
+                    {session.date}
+                  </p>
+
+                  <button
+                    onClick={() => {
+                      const formatted = session.messages
+                        .map(
+                          (msg) =>
+                            `${msg.role === "user" ? "User" : "Agent"}: ${msg.content}`
+                        )
+                        .join("\n\n");
+
+                      const blob = new Blob([formatted], {
+                        type: "text/plain",
+                      });
+                      const url = URL.createObjectURL(blob);
+
+                      const a = document.createElement("a");
+                      a.href = url;
+                      a.download = `chat-${session.id}.txt`;
+                      a.click();
+
+                      URL.revokeObjectURL(url);
+                    }}
+                    className="text-sm bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded"
+                  >
+                    Download
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
     {/* Agent name */}
     <h1 className="text-white text-2xl font-semibold">
       {agent?.name || "Voice Agent"}
