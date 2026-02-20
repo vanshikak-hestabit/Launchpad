@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useVoiceLoop } from "@/hooks/useVoiceLoop";
+import { Mic } from "lucide-react";
 
 // Color for each status
 const statusColors = {
@@ -41,7 +42,6 @@ export default function CallUI({ agent }) {
 
   function handleStart() {
     setCallActive(true);
-    startListening();
   }
 
   function handleEnd() {
@@ -62,6 +62,27 @@ export default function CallUI({ agent }) {
     // show user message immediately
     handleLLM(draft);
     setDraft("");
+  }
+
+  function downloadChat() {
+    if (!messages.length) return;
+
+    const formatted = messages
+      .map(
+        (msg) =>
+          `${msg.role === "user" ? "User" : "Agent"}: ${msg.content}`
+      )
+      .join("\n\n");
+
+    const blob = new Blob([formatted], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "chat-history.txt";
+    a.click();
+
+    URL.revokeObjectURL(url);
   }
 
  return (
@@ -99,6 +120,14 @@ export default function CallUI({ agent }) {
         </div>
       ))}
     </div>
+    {messages.length > 0 && (
+      <button
+        onClick={downloadChat}
+        className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm"
+      >
+        Download Chat
+      </button>
+    )}
 
     {/* INPUT BOX (always visible when call is active) */}
     {callActive && (
@@ -110,12 +139,19 @@ export default function CallUI({ agent }) {
           placeholder="Speak or type your question..."
           className="flex-1 rounded-lg bg-gray-800 text-white px-4 py-3 outline-none"
         />
-    <button
-      onClick={handleSend}
-      className="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-3 rounded-lg font-medium"
-    >
-      Send
-    </button>
+
+        <button
+          onClick={startListening}
+          className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-3 rounded-lg"
+        >
+          <Mic size={18} />
+       </button>
+        <button
+          onClick={handleSend}
+          className="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-3 rounded-lg font-medium"
+        >
+          Send
+        </button>
       </div>
     )}
 
