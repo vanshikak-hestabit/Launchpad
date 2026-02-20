@@ -89,6 +89,10 @@ export function useVoiceLoop(agentSystemPrompt) {
 
 }
 
+  function resetConversation() {
+    setMessages([]);
+  }
+
   function stopListening() {
     mediaRecorder.current?.stop();
   }
@@ -152,6 +156,7 @@ export function useVoiceLoop(agentSystemPrompt) {
   startListening,
   stopListening,
   handleLLM,
+  resetConversation,
 };
 
 
