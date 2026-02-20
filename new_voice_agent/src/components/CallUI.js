@@ -93,16 +93,17 @@ export default function CallUI({ agent }) {
 return (
   <div className="relative min-h-screen bg-gray-950 flex flex-col">
 
-    {/* History Button */}
+    {/* History Button (Fixed Top Left) */}
     <button
       onClick={() => setShowHistory(!showHistory)}
-      className="absolute top-4 left-4 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm"
+      className="fixed top-4 left-4 z-50 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm"
     >
       {showHistory ? "Close History" : "History"}
     </button>
 
+    {/* History Panel (Opens Without Pushing Layout) */}
     {showHistory && (
-      <div className="absolute top-16 left-4 w-80 max-h-[70vh] overflow-y-auto bg-gray-900 border border-gray-700 rounded-xl p-4 shadow-xl">
+      <div className="fixed top-16 left-4 w-80 max-h-[70vh] overflow-y-auto bg-gray-900 border border-gray-700 rounded-xl p-4 shadow-xl z-40">
         <h2 className="text-lg font-semibold mb-3 text-white">
           Past Conversations
         </h2>
@@ -150,8 +151,8 @@ return (
       </div>
     )}
 
-    {/* Header Section */}
-    <div className="pt-20 px-4 flex flex-col items-center text-center">
+    {/* Header Section (Fixed Top Center) */}
+    <div className="fixed top-0 left-0 w-full bg-gray-950 border-b border-gray-800 pt-16 pb-4 px-4 flex flex-col items-center text-center z-30">
       <h1 className="text-white text-2xl font-semibold">
         {agent?.name || "Voice Agent"}
       </h1>
@@ -168,8 +169,8 @@ return (
       </div>
     </div>
 
-    {/* Messages Area (Scrolls Up) */}
-    <div className="flex-1 overflow-y-auto px-4 mt-6 mb-40 w-full max-w-md self-center space-y-3">
+    {/* Messages Area (Scrollable Only Section) */}
+    <div className="flex-1 overflow-y-auto px-4 pt-40 mb-40 w-full max-w-md self-center space-y-3">
       {messages.map((msg, i) => (
         <div
           key={i}
@@ -185,8 +186,8 @@ return (
       ))}
     </div>
 
-    {/* Bottom Controls (Fixed at Bottom) */}
-    <div className="fixed bottom-0 left-0 w-full bg-gray-950 border-t border-gray-800 p-4 flex flex-col gap-4 items-center">
+    {/* Bottom Controls (Fixed Bottom) */}
+    <div className="fixed bottom-0 left-0 w-full bg-gray-950 border-t border-gray-800 p-4 flex flex-col gap-4 items-center z-30">
 
       {/* INPUT BOX */}
       {callActive && (
@@ -247,6 +248,7 @@ return (
         )}
       </div>
     </div>
+
   </div>
 );
 }
