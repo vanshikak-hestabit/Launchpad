@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useVoiceLoop } from "@/hooks/useVoiceLoop";
 import { Mic } from "lucide-react";
+import { supabase } from "@/lib/supabase/client";
 
 // Color for each status
 const statusColors = {
@@ -19,10 +20,12 @@ const statusLabels = {
 };
 
 export default function CallUI({ agent }) {
+  
   const [callActive, setCallActive] = useState(false);
   const [muted, setMuted] = useState(false);
   const [chatHistory, setChatHistory] = useState([]);
   const [showHistory, setShowHistory] = useState(false);
+  const [callStartTime, setCallStartTime] = useState(null);
   const {
     messages,
     status,
@@ -34,21 +37,53 @@ export default function CallUI({ agent }) {
     resetConversation,
   } = useVoiceLoop(agent?.system_prompt);
 
+  async function saveCall(durationInSeconds, transcriptText) {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) return;
+
+    const { error } = await supabase.from("calls").insert([
+      {
+        user_id: user.id,
+        duration: durationInSeconds,
+        transcript: transcriptText,
+      },
+    ]);
+
+    if (error) {
+      console.error("Error saving call:", error.message);
+    }
+  }
+
   function handleStart() {
+    setCallStartTime(Date.now());
     setCallActive(true);
   }
 
-  function handleEnd() {
+  async function handleEnd() {
+    const transcriptText = messages
+    .map(
+      (msg) =>
+        `${msg.role === "user" ? "User" : "Agent"}: ${msg.content}`
+    )
+    .join("\n\n");
+
+    const durationInSeconds = callStartTime ? Math.floor((Date.now() - callStartTime) / 1000) : 0;
+
+    if (durationInSeconds > 0 && transcriptText.length > 0) {
+      await saveCall(durationInSeconds, transcriptText);
+    }
+
     if (messages.length > 0) {
       const session = {
         id: Date.now(),
         date: new Date().toLocaleString(),
         messages: messages,
       };
-
       setChatHistory((prev) => [session, ...prev]);
     }
-
     stopListening();
     resetConversation();   
     setCallActive(false);
