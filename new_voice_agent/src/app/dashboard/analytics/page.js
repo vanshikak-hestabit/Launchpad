@@ -17,26 +17,28 @@ export default function AnalyticsPage() {
         )
       : 0;
 
-  useEffect(() => {
+// app/analytics/page.jsx
+
     const getCalls = async () => {
-      const {
+    const {
         data: { user },
-      } = await supabase.auth.getUser();
+    } = await supabase.auth.getUser();
 
-      if (!user) return;
+    if (!user) return;
+    console.log("Logged in user id:", user.id);
 
-      const { data, error } = await supabase
+    const { data, error } = await supabase
         .from("calls")
         .select("*")
-        .eq("user_id", user.id);
 
-      if (!error && data) {
+    if (!error && data) {
         setCalls(data);
-      }
+    }
     };
 
+    useEffect(() => {
     getCalls();
-  }, []);
+    }, []);
 
     return (
     <div className="mx-auto max-w-7xl px-4 py-8">
