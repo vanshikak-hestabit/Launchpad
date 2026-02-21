@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import DashboardActivity from "@/components/dashboardActivity";
 import AnalyticsCards from "@/components/AnalyticsCards"
+import AnalyticsGraphs from "@/components/AnalyticsGraphs";
 
 export default function AnalyticsPage() {
   const [calls, setCalls] = useState([]);
@@ -47,6 +48,7 @@ export default function AnalyticsPage() {
         </h1>
 
         <AnalyticsCards calls={calls} />
+        <AnalyticsGraphs calls={calls} />
 
         <div className="mt-8">
         <DashboardActivity calls={calls} />
