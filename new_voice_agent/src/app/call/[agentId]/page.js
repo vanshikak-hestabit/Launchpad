@@ -53,6 +53,25 @@ export default function CallPage() {
       </div>
     );
   }
+  const saveCall = async (durationInSeconds, transcriptText) => {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) return
+
+  const { error } = await supabase.from("calls").insert([
+    {
+      user_id: user.id,
+      duration: durationInSeconds,
+      transcript: transcriptText,
+    },
+  ])
+
+  if (error) {
+    console.error("Error saving call:", error.message)
+  }
+}
 
   return (
     <LiveKitRoom

@@ -11,6 +11,16 @@ import VoiceModal from "@/components/VoiceModal";
 export default function DashboardPage() {
   const [name, setName] = useState("");
   const [voiceOpen, setVoiceOpen] = useState(false);
+  const [calls, setCalls] = useState([]);
+
+  const totalCalls = calls.length;
+
+  const avgDuration =
+    calls.length > 0
+      ? Math.floor(
+          calls.reduce((sum, c) => sum + c.duration, 0) / calls.length
+        )
+      : 0;
   const router = useRouter();
 
   useEffect(() => {
@@ -19,8 +29,17 @@ export default function DashboardPage() {
         data: { user },
       } = await supabase.auth.getUser();
 
-      if (user) {
-        setName(user.user_metadata?.display_name || "User");
+      if (!user) return;
+
+      setName(user.user_metadata?.display_name || "User");
+
+      const { data, error } = await supabase
+        .from("calls")
+        .select("*")
+        .eq("user_id", user.id);
+
+      if (!error && data) {
+        setCalls(data);
       }
     };
 
@@ -66,7 +85,10 @@ export default function DashboardPage() {
         </div>
       </div>
 
-        <DashboardCards />
+        <DashboardCards
+          totalCalls={totalCalls}
+          avgDuration={avgDuration}
+        />
 
       <div className="mt-8">
         <DashboardActivity />
