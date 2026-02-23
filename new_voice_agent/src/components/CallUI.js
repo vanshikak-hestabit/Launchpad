@@ -38,6 +38,8 @@ export default function CallUI({ agent }) {
     stopListening,
     handleLLM,
     resetConversation,
+    pauseSpeaking,
+    resumeSpeaking,
   } = useVoiceLoop(agent?.system_prompt);
 
   useEffect(() => {
@@ -117,10 +119,15 @@ export default function CallUI({ agent }) {
   }
 
   function handleMute() {
-    setMuted((m) => !m);
-    // just stop sending audio when muted
-    if (!muted) stopListening();
-    else startListening();
+    if (!callActive) return;
+
+    if (!muted) {
+      pauseSpeaking();   // going into mute
+    } else {
+      resumeSpeaking();  // coming out of mute
+    }
+
+    setMuted(!muted);
   }
 
     function handleSend() {
