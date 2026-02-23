@@ -1,6 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useRef } from "react";
 import { useVoiceLoop } from "@/hooks/useVoiceLoop";
 import { Mic } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
@@ -27,6 +28,7 @@ export default function CallUI({ agent }) {
   const [chatHistory, setChatHistory] = useState([]);
   const [showHistory, setShowHistory] = useState(false);
   const [callStartTime, setCallStartTime] = useState(null);
+  const isEndingRef = useRef(false);
   const {
     messages,
     status,
@@ -88,22 +90,30 @@ export default function CallUI({ agent }) {
   }
 
   async function handleEnd() {
-    const transcriptText = messages
-    .map(
-      (msg) =>
-        `${msg.role === "user" ? "User" : "Agent"}: ${msg.content}`
-    )
-    .join("\n\n");
+    if (isEndingRef.current) return; // 👈 prevent double execution
+    isEndingRef.current = true;
 
-    const durationInSeconds = callStartTime ? Math.floor((Date.now() - callStartTime) / 1000) : 0;
+    const transcriptText = messages
+      .map(
+        (msg) =>
+          `${msg.role === "user" ? "User" : "Agent"}: ${msg.content}`
+      )
+      .join("\n\n");
+
+    const durationInSeconds = callStartTime
+      ? Math.floor((Date.now() - callStartTime) / 1000)
+      : 0;
 
     if (durationInSeconds > 0 && transcriptText.length > 0) {
       await saveCall(durationInSeconds, transcriptText);
+      await fetchHistory();
     }
 
     stopListening();
-    resetConversation();   
+    resetConversation();
     setCallActive(false);
+
+    isEndingRef.current = false; // release lock
   }
 
   function handleMute() {
