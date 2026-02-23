@@ -1,17 +1,13 @@
-import  SignupForm  from "@/components/SignupForm";
+import SignupForm from "@/components/SignupForm"
 
 export default function RegisterPage() {
   return (
-      <div className="relative min-h-screen flex items-center justify-center bg-[#0B0F19] overflow-hidden px-4">
-  
-        {/* Adding Background Glow Effects */}
-        <div className="absolute w-[600px] h-[600px] bg-violet-600/20 rounded-full blur-3xl -top-40 -left-40" />
-        <div className="absolute w-[500px] h-[500px] bg-cyan-400/20 rounded-full blur-3xl -bottom-40 -right-40" />
-  
-        <div className="relative w-full max-w-md text-center space-y-6">
-  
-          <SignupForm />
-        </div>
+    <main className="flex min-h-svh flex-col items-center justify-center bg-background px-4 py-12">
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-primary/5 blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-primary/5 blur-3xl" />
       </div>
-    )
+      <SignupForm />
+    </main>
+  )
 }

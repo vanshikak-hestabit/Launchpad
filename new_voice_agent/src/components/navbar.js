@@ -45,7 +45,7 @@ export default function DashboardNavbar() {
     }
   }, [])
 
-  // <<< Added this function >>>
+  // logout
   const handleLogout = async () => {
     await supabase.auth.signOut()
     router.push("/login")
@@ -60,7 +60,7 @@ export default function DashboardNavbar() {
             <LayoutDashboard className="h-5 w-5 text-primary-foreground" />
           </div>
           <span className="text-lg font-bold tracking-tight text-foreground">
-            Dashly
+            Echo
           </span>
         </Link>
 
@@ -68,7 +68,7 @@ export default function DashboardNavbar() {
         <nav className="hidden items-center gap-1 md:flex">
           <Link
             href="/dashboard"
-            className="rounded-lg px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+            className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
           >
             Overview
           </Link>
@@ -77,18 +77,6 @@ export default function DashboardNavbar() {
             className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
           >
             Analytics
-          </Link>
-          <Link
-            href="/dashboard"
-            className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-          >
-            Reports
-          </Link>
-          <Link
-            href="/dashboard"
-            className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-          >
-            Settings
           </Link>
         </nav>
 
@@ -182,20 +170,6 @@ export default function DashboardNavbar() {
               onClick={() => setMobileMenuOpen(false)}
             >
               Analytics
-            </Link>
-            <Link
-              href="/dashboard"
-              className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Reports
-            </Link>
-            <Link
-              href="/dashboard"
-              className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Settings
             </Link>
           </nav>
           <Divider />

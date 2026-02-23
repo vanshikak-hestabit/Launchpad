@@ -87,28 +87,32 @@ export default function SignupForm() {
 
       <CardContent className="pt-4">
         <form onSubmit={handleSignup} className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
-                <Label htmlFor="displayName" className="text-foreground">
-                    Display Name
-                </Label>
-                <Input
-                    id="displayName"
-                    placeholder="Your name"
-                    value={displayName}
-                    onChange={(e) => setDisplayName(e.target.value)}
-                    required/>
-            </div>
-
-            <div className="flex flex-col gap-2">
-            <Label htmlFor="phone" className="text-foreground">
-                Phone
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="displayName" className="text-foreground">
+              Display Name
             </Label>
             <Input
-                id="phone"
-                placeholder="Phone number"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)} />
-            </div>
+              id="displayName"
+              placeholder="Your name"
+              className="h-11 bg-background border-border/70 focus-visible:ring-primary/30"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="phone" className="text-foreground">
+              Phone
+            </Label>
+            <Input
+              id="phone"
+              placeholder="Phone number"
+              className="h-11 bg-background border-border/70 focus-visible:ring-primary/30"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+          </div>
 
           <div className="flex flex-col gap-2">
             <Label htmlFor="email" className="text-foreground">
@@ -147,7 +151,6 @@ export default function SignupForm() {
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
                   <EyeOff className="h-4 w-4" />
@@ -175,11 +178,10 @@ export default function SignupForm() {
               />
               <button
                 type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                aria-label={
-                  showConfirmPassword ? "Hide password" : "Show password"
+                onClick={() =>
+                  setShowConfirmPassword(!showConfirmPassword)
                 }
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
               >
                 {showConfirmPassword ? (
                   <EyeOff className="h-4 w-4" />

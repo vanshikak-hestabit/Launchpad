@@ -106,7 +106,7 @@ export default function VoiceModal({ open, onClose }) {
           </>
         )}
 
-        {/* STEP 2 — ASK */}
+        {/* STEP 2 ASK */}
         {mode === "ask" && (
           <>
             <h2 className="text-lg font-semibold">Select Agent</h2>
@@ -137,7 +137,7 @@ export default function VoiceModal({ open, onClose }) {
           </>
         )}
 
-        {/* STEP 2 — UPLOAD */}
+        {/* STEP 2 UPLOAD */}
         {mode === "upload" && (
           <>
             <h2 className="text-lg font-semibold">Upload Document</h2>
