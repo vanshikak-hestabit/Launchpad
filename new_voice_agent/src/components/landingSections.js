@@ -16,8 +16,7 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-/* ──────────────────────────── NAVBAR ──────────────────────────── */
-
+/* navbar */
 export function LandingNavbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -109,8 +108,7 @@ export function LandingNavbar() {
   )
 }
 
-/* ──────────────────────── VOICE WAVEFORM ──────────────────────── */
-
+/* voice waveform */
 function VoiceWaveform() {
   const bars = 40
 
@@ -131,12 +129,11 @@ function VoiceWaveform() {
   )
 }
 
-/* ──────────────────────────── HERO ──────────────────────────── */
-
+/* hero section*/
 export function HeroSection() {
   return (
     <section className="relative overflow-hidden px-4 pb-20 pt-16 sm:px-6 sm:pb-28 sm:pt-24 lg:px-8">
-      {/* Background glow */}
+      {/* background glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute left-1/2 top-0 h-[600px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/8 blur-3xl" />
       </div>
@@ -195,7 +192,7 @@ export function HeroSection() {
   )
 }
 
-/* ──────────────────────── FEATURES ──────────────────────────── */
+/* features*/
 
 const FEATURES = [
   {
@@ -275,8 +272,7 @@ export function FeaturesSection() {
   )
 }
 
-/* ────────────────────── HOW IT WORKS ──────────────────────── */
-
+/* how it works */
 const STEPS = [
   {
     step: "01",
@@ -337,8 +333,7 @@ export function HowItWorksSection() {
   )
 }
 
-/* ──────────────────────── PRICING ──────────────────────────── */
-
+/* pricing*/
 const PLANS = [
   {
     name: "Starter",
@@ -444,8 +439,7 @@ export function PricingSection() {
   )
 }
 
-/* ──────────────────────────── CTA ──────────────────────────── */
-
+/* cta*/
 export function CtaSection() {
   return (
     <section className="px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
@@ -473,8 +467,7 @@ export function CtaSection() {
   )
 }
 
-/* ──────────────────────────── FOOTER ──────────────────────── */
-
+/* footer section */
 const FOOTER_LINKS = {
   Product: ["Features", "Pricing", "Integrations", "Changelog"],
   Company: ["About", "Blog", "Careers", "Contact"],

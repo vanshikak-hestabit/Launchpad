@@ -36,7 +36,7 @@ export function useVoiceLoop(agentSystemPrompt) {
 
   const audioTrack = micPublication.track;
 
-  // Create AudioContext **after** getting the track
+  // Create AudioContext after getting the track
   const ctx = new AudioContext();
   const source = ctx.createMediaStreamSource(new MediaStream([audioTrack.mediaStreamTrack]));
   const dest = ctx.createMediaStreamDestination();
@@ -61,7 +61,7 @@ export function useVoiceLoop(agentSystemPrompt) {
   const blob = new Blob(chunks, { type: mimeType });
   console.log("Blob size:", blob.size);
 
-  // Debug: show first 100 bytes so we know audio is real
+  // show first 100 bytes for debug
   const arrayBuffer = await blob.arrayBuffer();
   console.log("First 100 bytes of audio:", new Uint8Array(arrayBuffer).slice(0, 100));
 
@@ -86,7 +86,7 @@ export function useVoiceLoop(agentSystemPrompt) {
     if (mediaRecorder.current?.state === "recording") {
       mediaRecorder.current.stop();
     }
-  }, 3000); // ⬅️ 3 seconds chunk
+  }, 3000); // 3 seconds chunk
 
 }
 

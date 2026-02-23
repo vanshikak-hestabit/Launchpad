@@ -44,7 +44,7 @@ export async function POST(req) {
       );
     }
 
-    // ✅ VERIFY AGENT EXISTS
+    //  VERIFY AGENT EXISTS
     const { data: agent, error: agentError } = await supabase
       .from("Agents")
       .select("agent_id")
@@ -72,7 +72,7 @@ export async function POST(req) {
       );
     }
 
-    // ✅ INSERT DOCUMENT
+    // INSERT DOCUMENT
     const { data: docData, error: docError } = await supabase
       .from("documents")
       .insert([{ agent_id, file_name: file.name, original_text: rawText }])

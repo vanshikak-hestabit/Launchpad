@@ -9,7 +9,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-// Helper to chunk text (~500 words)
+// Helper to chunk text (500 words)
 function chunkText(text, maxWords = 500) {
   const paragraphs = text.split(/\n+/).filter(p => p.trim());
   const chunks = [];

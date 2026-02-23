@@ -92,7 +92,7 @@ export default function CallUI({ agent }) {
   }
 
   async function handleEnd() {
-    if (isEndingRef.current) return; // 👈 prevent double execution
+    if (isEndingRef.current) return; //  prevent double execution
     isEndingRef.current = true;
 
     const transcriptText = messages
@@ -162,7 +162,7 @@ export default function CallUI({ agent }) {
 return (
   <div className="relative min-h-screen bg-gray-950 flex flex-col">
 
-    {/* History Button (Fixed Top Left) */}
+    {/* History Button */}
     <button
       onClick={() => setShowHistory(!showHistory)}
       className="fixed top-4 left-4 z-50 bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm"
@@ -170,7 +170,7 @@ return (
       {showHistory ? "Close History" : "History"}
     </button>
 
-    {/* History Panel (Opens Without Pushing Layout) */}
+    {/* History Panel */}
     {showHistory && (
       <div className="fixed top-16 left-4 w-80 max-h-[70vh] overflow-y-auto bg-gray-900 border border-gray-700 rounded-xl p-4 shadow-xl z-40">
         <h2 className="text-lg font-semibold mb-3 text-white">
@@ -214,7 +214,7 @@ return (
       </div>
     )}
 
-    {/* Header Section (Fixed Top Center) */}
+    {/* Header Section */}
     <div className="fixed top-0 left-0 w-full bg-gray-950 border-b border-gray-800 pt-16 pb-4 px-4 flex flex-col items-center text-center z-30">
       <h1 className="text-white text-2xl font-semibold">
         {agent?.name || "Voice Agent"}
@@ -232,7 +232,7 @@ return (
       </div>
     </div>
 
-    {/* Messages Area (Scrollable Only Section) */}
+    {/* Messages Area */}
     <div className="flex-1 overflow-y-auto px-4 pt-40 mb-40 w-full max-w-md self-center space-y-3">
       {messages.map((msg, i) => (
         <div
@@ -249,7 +249,7 @@ return (
       ))}
     </div>
 
-    {/* Bottom Controls (Fixed Bottom) */}
+    {/* Bottom Controls */}
     <div className="fixed bottom-0 left-0 w-full bg-gray-950 border-t border-gray-800 p-4 flex flex-col gap-4 items-center z-30">
 
       {/* INPUT BOX */}

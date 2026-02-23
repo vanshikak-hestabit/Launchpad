@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
-/**
- * Get embeddings from Google Gemini for a query
- */
+ 
+// embeddings from Google Gemini 
 async function getGeminiEmbeddings(texts) {
   if (!Array.isArray(texts)) return [];
 
@@ -27,9 +26,8 @@ async function getGeminiEmbeddings(texts) {
   return Promise.all(requests);
 }
 
-/**
- * Search API
- */
+
+// Search API
 export async function POST(req) {
   try {
     const { query, agent_id, top_k = 5 } = await req.json();
@@ -38,10 +36,10 @@ export async function POST(req) {
       return NextResponse.json({ error: "Missing query or agent_id" }, { status: 400 });
     }
 
-    // 1️⃣ Generate embedding for the query
+    // Generate embedding for the query
     const [queryEmbedding] = await getGeminiEmbeddings([query]);
 
-    // 2️⃣ Call Supabase RPC for similarity search
+    // Call Supabase RPC for similarity search
     const { data, error } = await supabase.rpc("match_document_chunks", {
       match_agent_id: agent_id,
       match_embedding: queryEmbedding, // pgvector column expects a JS array
@@ -50,7 +48,7 @@ export async function POST(req) {
 
     if (error) throw error;
 
-    // 3️⃣ Return the top chunks
+    //  Return the top chunks
     return NextResponse.json({ results: data });
   } catch (err) {
     console.error("Search failed:", err);

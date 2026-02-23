@@ -18,8 +18,6 @@ export default function AnalyticsPage() {
         )
       : 0;
 
-// app/analytics/page.jsx
-
     const getCalls = async () => {
     const {
         data: { user },

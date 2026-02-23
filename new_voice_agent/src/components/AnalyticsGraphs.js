@@ -13,7 +13,7 @@ import {
 } from "recharts";
 
 export default function AnalyticsGraphs({ calls }) {
-  // ---- Calls Per Day ----
+  // Calls Per Day 
   const groupedByDate = calls.reduce((acc, call) => {
     const date = new Date(call.created_at).toLocaleDateString();
     acc[date] = (acc[date] || 0) + 1;
@@ -27,7 +27,7 @@ export default function AnalyticsGraphs({ calls }) {
     })
   );
 
-  // ---- Duration Buckets ----
+  // Duration Buckets 
   const durationBuckets = {
     "0-1m": 0,
     "1-3m": 0,

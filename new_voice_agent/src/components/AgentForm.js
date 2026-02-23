@@ -29,7 +29,7 @@ export default function AgentForm() {
         name: name,
         system_prompt: systemPrompt,
         voice: selectedVoice,
-        user_id: null, // since you’re not using auth yet
+        user_id: null, 
     },
     ]);
 
