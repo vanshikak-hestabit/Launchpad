@@ -1,4 +1,5 @@
 "use client";
+import { useEffect } from "react";
 import { useState } from "react";
 import { useVoiceLoop } from "@/hooks/useVoiceLoop";
 import { Mic } from "lucide-react";
@@ -37,6 +38,10 @@ export default function CallUI({ agent }) {
     resetConversation,
   } = useVoiceLoop(agent?.system_prompt);
 
+  useEffect(() => {
+    fetchHistory();
+  }, []);
+
   async function saveCall(durationInSeconds, transcriptText) {
     const {
       data: { user },
@@ -55,6 +60,26 @@ export default function CallUI({ agent }) {
     if (error) {
       console.error("Error saving call:", error.message);
     }
+  }
+
+  async function fetchHistory() {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) return;
+
+    const { data, error } = await supabase
+      .from("calls")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Error fetching history:", error.message);
+      return;
+    }
+    setChatHistory(data);
   }
 
   function handleStart() {
@@ -76,14 +101,6 @@ export default function CallUI({ agent }) {
       await saveCall(durationInSeconds, transcriptText);
     }
 
-    if (messages.length > 0) {
-      const session = {
-        id: Date.now(),
-        date: new Date().toLocaleString(),
-        messages: messages,
-      };
-      setChatHistory((prev) => [session, ...prev]);
-    }
     stopListening();
     resetConversation();   
     setCallActive(false);
@@ -147,42 +164,36 @@ return (
           <p className="text-gray-400 text-sm">No history yet.</p>
         )}
 
-        {chatHistory.map((session) => (
-          <div
-            key={session.id}
-            className="mb-3 p-3 bg-gray-800 rounded-lg"
+      {chatHistory.map((call) => (
+        <div
+          key={call.id}
+          className="mb-3 p-3 bg-gray-800 rounded-lg"
+        >
+          <p className="text-xs text-gray-400 mb-2">
+            {new Date(call.created_at).toLocaleString()}
+          </p>
+
+          <button
+            onClick={() => {
+              const blob = new Blob([call.transcript], {
+                type: "text/plain",
+              });
+
+              const url = URL.createObjectURL(blob);
+
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = `chat-${call.id}.txt`;
+              a.click();
+
+              URL.revokeObjectURL(url);
+            }}
+            className="text-sm bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded"
           >
-            <p className="text-xs text-gray-400 mb-2">
-              {session.date}
-            </p>
-
-            <button
-              onClick={() => {
-                const formatted = session.messages
-                  .map(
-                    (msg) =>
-                      `${msg.role === "user" ? "User" : "Agent"}: ${msg.content}`
-                  )
-                  .join("\n\n");
-
-                const blob = new Blob([formatted], {
-                  type: "text/plain",
-                });
-                const url = URL.createObjectURL(blob);
-
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = `chat-${session.id}.txt`;
-                a.click();
-
-                URL.revokeObjectURL(url);
-              }}
-              className="text-sm bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded"
-            >
-              Download
-            </button>
-          </div>
-        ))}
+            Download
+          </button>
+        </div>
+      ))}
       </div>
     )}
 
