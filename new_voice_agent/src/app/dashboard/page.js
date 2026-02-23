@@ -3,13 +3,14 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AskQuestionModal from "@/components/AskQuestionModal";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/client";
 import DashboardCards from "@/components/dashboardCard";
 import DashboardActivity from "@/components/dashboardActivity";
 import VoiceModal from "@/components/VoiceModal";
 
 export default function DashboardPage() {
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [voiceOpen, setVoiceOpen] = useState(false);
   const [calls, setCalls] = useState([]);
 
@@ -32,6 +33,7 @@ export default function DashboardPage() {
       if (!user) return;
 
       setName(user.user_metadata?.display_name || "User");
+      setEmail(user.email || "");
 
       const { data, error } = await supabase
         .from("calls")
