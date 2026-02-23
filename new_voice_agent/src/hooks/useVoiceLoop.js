@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { useLocalParticipant } from "@livekit/components-react";
 
 export function useVoiceLoop(agentSystemPrompt) {
+  const currentAudio = useRef(null);
   const { localParticipant } = useLocalParticipant();
   const [messages, setMessages] = useState([]); 
   const [status, setStatus] = useState("idle");
@@ -138,7 +139,9 @@ export function useVoiceLoop(agentSystemPrompt) {
 
     const audioBlob = await res.blob(); // MP3 blob
     const audioUrl = URL.createObjectURL(audioBlob);
+
     const audio = new Audio(audioUrl);
+    currentAudio.current = audio;
 
     audio.onended = () => setStatus("idle");
     await audio.play();
@@ -147,6 +150,18 @@ export function useVoiceLoop(agentSystemPrompt) {
     setStatus("idle");
   }
 }
+
+  function pauseSpeaking() {
+    if (currentAudio.current) {
+      currentAudio.current.pause();
+    }
+  }
+
+  function resumeSpeaking() {
+    if (currentAudio.current) {
+      currentAudio.current.play();
+    }
+  }
 
   return {
   messages,
@@ -157,6 +172,8 @@ export function useVoiceLoop(agentSystemPrompt) {
   stopListening,
   handleLLM,
   resetConversation,
+  pauseSpeaking,
+  resumeSpeaking,
 };
 
 
