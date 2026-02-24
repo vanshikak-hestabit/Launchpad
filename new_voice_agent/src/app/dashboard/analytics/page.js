@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/client";
 import DashboardActivity from "@/components/dashboardActivity";
 import AnalyticsCards from "@/components/AnalyticsCards"
 import AnalyticsGraphs from "@/components/AnalyticsGraphs";
@@ -24,11 +24,15 @@ export default function AnalyticsPage() {
     } = await supabase.auth.getUser();
 
     if (!user) return;
-    console.log("Logged in user id:", user.id);
+
+    console.log("User ID in analytics:", user.id);
 
     const { data, error } = await supabase
         .from("calls")
         .select("*")
+        .eq("user_id", user.id);
+
+    console.log("Fetched calls:", data);
 
     if (!error && data) {
         setCalls(data);
