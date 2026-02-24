@@ -64,7 +64,10 @@ export default function AnalyticsGraphs({ calls }) {
           <LineChart data={callsPerDayData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" tick={{ fontSize: 10 }} />
-            <YAxis tick={{ fontSize: 10 }} />
+            <YAxis
+              allowDecimals={false}
+              domain={[0, 'auto']}
+            />
             <Tooltip />
             <Line
               type="monotone"
