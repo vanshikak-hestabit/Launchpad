@@ -7,17 +7,8 @@ import AnalyticsCards from "@/components/AnalyticsCards"
 import AnalyticsGraphs from "@/components/AnalyticsGraphs";
 
 export default function AnalyticsPage() {
-  const [calls, setCalls] = useState([]);
 
-  const totalCalls = calls.length;
-
-  const avgDuration =
-    calls.length > 0
-      ? Math.floor(
-          calls.reduce((sum, c) => sum + c.duration, 0) / calls.length
-        )
-      : 0;
-
+    const [calls, setCalls] = useState([]);
     const getCalls = async () => {
     const {
         data: { user },
