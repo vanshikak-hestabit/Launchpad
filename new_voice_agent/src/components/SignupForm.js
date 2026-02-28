@@ -70,7 +70,6 @@ export default function SignupForm() {
   }, 1500)
 }
 
-
   return (
     <Card className="w-full max-w-md border-border/50 shadow-lg shadow-primary/5">
       <CardHeader className="text-center pb-2">
