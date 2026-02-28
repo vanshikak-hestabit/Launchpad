@@ -10,10 +10,9 @@ export default function AgentForm() {
   const [voices, setVoices] = useState([]);
   const [selectedVoice, setSelectedVoice] = useState("");
 
-  // Simulate fetching voices from ElevenLabs (later we connect API)
+  // voices from elevenlabs
   useEffect(() => {
     const fetchVoices = async () => {
-      // For now, hardcoded voices
       setVoices(["Voice 1", "Voice 2", "Voice 3"]);
     };
     fetchVoices();
@@ -48,7 +47,6 @@ export default function AgentForm() {
   setSystemPrompt("");
   setSelectedVoice("");
 };
-
 
   return (
     <form
