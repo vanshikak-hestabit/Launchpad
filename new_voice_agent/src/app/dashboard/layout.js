@@ -1,11 +1,11 @@
 import DashboardNavbar from "@/components/navbar"
 
 export const metadata = {
-  title: "Dashboard - Dashly",
-  description: "Your personal dashboard overview",
+  title: "Echo",
+  description: "Your personal voice agent",
 }
 
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout({ children }) { //children means the page that will be shown that is the dashboard/page.js
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <DashboardNavbar />
