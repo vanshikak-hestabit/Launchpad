@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 
 export default function AskQuestionModal() {
@@ -7,10 +6,8 @@ export default function AskQuestionModal() {
   const [mode, setMode] = useState(null);
   const [file, setFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
-
   const [agents, setAgents] = useState([]);
   const [selectedAgent, setSelectedAgent] = useState(null);
-
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
@@ -256,27 +253,28 @@ export default function AskQuestionModal() {
                   <div className="border rounded p-3 text-sm whitespace-pre-wrap">
                     {answer}
                   </div>
-                )}
+                )} 
+                   
+                <div className="flex justify-between mt-4">
+                  <button
+                    className="text-sm text-gray-500"
+                    onClick={resetAll}
+                  >
+                    Back
+                  </button>
 
-                <button
-                  className="text-sm text-gray-500"
-                  onClick={resetAll}
-                >
-                  Back
-                </button>
-              </>
-            )}
-
-            <button
-              className="text-sm text-gray-500"
-              onClick={() => {
-                setOpen(false);
-                resetAll();
-              }}
-            >
-              Close
-            </button>
-
+                  <button
+                    className="text-sm text-gray-500"
+                    onClick={() => {
+                      setOpen(false);
+                      resetAll();
+                    }}
+                  >
+                    Close
+                  </button>
+                </div>
+                  </>
+              )}
           </div>
         </div>
       )}
