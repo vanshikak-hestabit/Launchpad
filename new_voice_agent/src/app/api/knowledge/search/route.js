@@ -55,3 +55,5 @@ export async function POST(req) {
     return NextResponse.json({ error: "Search failed", details: err.message }, { status: 500 });
   }
 }
+
+// Question → Vector → Similarity Search → Return Top Chunks
