@@ -17,6 +17,7 @@ export default function CallPage() {
         .from("Agents")
         .select("*")
         .eq("agent_id", agentId)
+        .single();
 
         console.log("agentId:", agentId, typeof agentId)
         console.log("data:", data)

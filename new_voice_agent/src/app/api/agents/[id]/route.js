@@ -12,7 +12,7 @@ export async function PUT(request, context) {
 
   const { data, error } = await supabase
     .from("Agents")
-    .update({ name, system_prompt, voice })
+    .update({ name, system_prompt, voice }) 
     .eq("agent_id", id)
     .select()
 
