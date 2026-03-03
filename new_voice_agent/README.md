@@ -22,6 +22,14 @@ The architecture follows production-level UI structure patterns used in real Saa
 - Tailwind CSS
 - Shadcn UI / Themed Tailwind tokens
 - Lucide Icons (if used in navigation)
+ 
+## others 
+
+- embedding model: gemini-embedding-001
+- chunking - RecursiveCharacterTextSplitter
+- chunkSize: 500
+- chunkOverlap: 50
+- Model: llama-3.1-8b-instant
 
 ## Project Structure
 
@@ -112,18 +120,5 @@ Reusable components handle structure, while pages act as layout wrappers.
 - User profile management
 - Analytics dashboard
 
-## License
-
-This project is open for learning and development purposes.
-
-## Author
-
-Built as part of a Voice AI SaaS application project.
-
-If you'd like, I can also generate:
-- A more professional production-ready README
-- A GitHub portfolio-optimized version
-- A version tailored for investors or demo presentation
-- Deployment instructions (Vercel / Railway / Render)
 
 This structure is already solid. What matters next is feature depth, not layout.
