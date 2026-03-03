@@ -40,7 +40,7 @@ export default function CallUI({ agent }) {
     resetConversation,
     pauseSpeaking,
     resumeSpeaking,
-  } = useVoiceLoop(agent?.system_prompt);
+  } = useVoiceLoop(agent);;
 
   useEffect(() => {
     fetchHistory();
