@@ -41,7 +41,7 @@ Answer in clear, well-structured paragraphs.
           { role: "system", content: "You answer using provided context only." },
           { role: "user", content: prompt },
         ],
-        temperature: 0.3,
+        temperature: 0.3, // low randomness
       }),
     });
 
@@ -62,3 +62,5 @@ Answer in clear, well-structured paragraphs.
     );
   }
 }
+
+// Take retrieved chunks + question → generate final answer using Groq LLM.
