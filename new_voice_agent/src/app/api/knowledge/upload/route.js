@@ -3,16 +3,20 @@ import { supabase } from "@/lib/supabase";
 import pdfParse from "pdf-parse-debugging-disabled";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic"; //prevents caching 
 
+// reads pdf, extract text and returns text
 async function extractTextFromPdf(buffer) {
   const parsed = await pdfParse(buffer);
   return parsed.text;
 }
 
+// generates embeddings
 async function getGeminiEmbeddings(texts) {
+  // google gemini embedding model - gemini-embedding-001
   const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${process.env.GEMINI_API_KEY}`;
 
+  // returns vector embedding
   return Promise.all(
     texts.map(async (text) => {
       const res = await fetch(endpoint, {
@@ -30,7 +34,9 @@ async function getGeminiEmbeddings(texts) {
     })
   );
 }
-
+ 
+// runs when frontend uploads file 
+// FormData is a container used to send files + extra fields from browser to server.
 export async function POST(req) {
   try {
     const formData = await req.formData();
@@ -44,7 +50,7 @@ export async function POST(req) {
       );
     }
 
-    //  VERIFY AGENT EXISTS
+    // verify agent exists
     const { data: agent, error: agentError } = await supabase
       .from("Agents")
       .select("agent_id")
@@ -58,6 +64,8 @@ export async function POST(req) {
       );
     }
 
+    // loading data in mem conver raw binary data to node.js buffer obj
+    //  A Buffer is just Node’s way of storing binary data
     const buffer = Buffer.from(await file.arrayBuffer());
 
     let rawText = "";
@@ -72,7 +80,7 @@ export async function POST(req) {
       );
     }
 
-    // INSERT DOCUMENT
+    // insert doc in db
     const { data: docData, error: docError } = await supabase
       .from("documents")
       .insert([{ agent_id, file_name: file.name, original_text: rawText }])
@@ -81,6 +89,7 @@ export async function POST(req) {
 
     if (docError) throw docError;
 
+    // chunking 
     const splitter = new RecursiveCharacterTextSplitter({
       chunkSize: 500,
       chunkOverlap: 50,
@@ -116,3 +125,5 @@ export async function POST(req) {
     );
   }
 }
+
+//Request → FormData → File → AgentCheck → Buffer → TypeCheck → Extract → SaveDocument → Split → Embed → SaveChunks → SuccessResponse
