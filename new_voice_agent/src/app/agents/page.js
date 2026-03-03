@@ -85,14 +85,15 @@ export default function AgentsPage() {
   setVoice("voice1")
   fetchAgents()
 }
-  async function handleDelete(agentId) {
-  console.log("Deleting agent with ID:", agentId) // should show valid UUID
-  if (!agentId) return;
 
-  const res = await fetch(`/api/agents/${agentId}`, { method: "DELETE" })
-    const data = await res.json() // will always succeed
-    console.log("DELETE RESPONSE:", data)
-    fetchAgents()
+  async function handleDelete(agentId) {
+    console.log("Deleting agent with ID:", agentId) 
+    if (!agentId) return;
+
+    const res = await fetch(`/api/agents/${agentId}`, { method: "DELETE" })
+      const data = await res.json() // will always succeed
+      console.log("DELETE RESPONSE:", data)
+      fetchAgents()
   }
 
   return (
@@ -176,3 +177,5 @@ export default function AgentsPage() {
     </div>
   )
 }
+
+// this file does CRUD operations
