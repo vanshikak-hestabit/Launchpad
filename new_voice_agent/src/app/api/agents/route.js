@@ -25,7 +25,9 @@ export async function GET() {
   return NextResponse.json(data)
 }
 
+
 export async function POST(request) {
+
   const supabase = await createSupabaseServer()
 
   const {
@@ -50,3 +52,5 @@ export async function POST(request) {
 
   return NextResponse.json(data)
 }
+
+// handles req that doesn't need ID 
