@@ -2,13 +2,12 @@
 import { useRef, useState } from "react";
 import { useLocalParticipant } from "@livekit/components-react";
 
-export function useVoiceLoop(agentSystemPrompt) {
+export function useVoiceLoop(agent) {
   const currentAudio = useRef(null);
   const { localParticipant } = useLocalParticipant();
   const [messages, setMessages] = useState([]); 
   const [status, setStatus] = useState("idle");
   const [draft, setDraft] = useState("");
-
 
   const mediaRecorder = useRef(null);
 
@@ -77,7 +76,6 @@ export function useVoiceLoop(agentSystemPrompt) {
   } else {
     setStatus("idle");
   }
-
 };
 
   recorder.start();
@@ -103,23 +101,50 @@ export function useVoiceLoop(agentSystemPrompt) {
         { role: "user", content: userMessage }
       ]);
 
-      const chatRes = await fetch("/api/voice/chat", {
+    // Search knowledge
+      console.log("VOICE AGENT ID:", agent?.agent_id);
+      const searchRes = await fetch("/api/knowledge/search", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          message: userMessage,
-          systemPrompt: agentSystemPrompt,
+          query: userMessage,
+          agent_id: agent?.agent_id, // IMPORTANT
+          top_k: 5,
         }),
       });
-      const { reply: agentReply } = await chatRes.json();
-      setMessages(prev => [
-        ...prev,
-        { role: "assistant", content: agentReply }
-      ]);
 
-      await speakText(agentReply);
-    }
+      const searchData = await searchRes.json();
 
+      const chunks = searchData?.results
+        ?.map((r) => r.chunk_text)
+        .filter(Boolean);
+
+      // If no chunks found
+      if (!chunks || chunks.length === 0) {
+        await speakText("No relevant information found in the documents.");
+        return;
+      }
+
+      // Generate answer from chunks
+      const answerRes = await fetch("/api/knowledge/answer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question: userMessage,
+          chunks,
+        }),
+      });
+
+  const answerData = await answerRes.json();
+  const agentReply = answerData.answer || "No answer generated.";
+
+        setMessages(prev => [
+          ...prev,
+          { role: "assistant", content: agentReply }
+        ]);
+
+        await speakText(agentReply);
+      }
 
   async function speakText(text) {
   setStatus("speaking");
