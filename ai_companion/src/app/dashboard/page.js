@@ -35,30 +35,36 @@ export default function DashboardPage() {
         </div>
 
         {/* List */}
-        <ul className="flex flex-col gap-3">
-        {companions.map((c) => (
-            <li
-            key={c.id}
-            className="border p-3 rounded flex justify-between items-center max-w-md"
-            >
-            <span className="font-medium">{c.name}</span>
-            <div className="flex flex-col gap-1">
-                <Link
-                href={`/dashboard/companion/${c.id}`}
-                className="text-sm text-primary"
-                >
-                Edit
-                </Link>
-                <button
-                onClick={() => handleDelete(c.id)}
-                className="text-sm text-destructive"
-                >
-                Delete
-                </button>
-            </div>
-            </li>
-        ))}
-        </ul>
+<ul className="flex flex-col gap-2">
+  {companions.map((c) => (
+    <li
+      key={c.id}
+      className="border p-2 rounded flex justify-between items-center max-w-md"
+    >
+      <span>{c.name}</span>
+      <div className="flex flex-col gap-1">
+        <Link
+          href={`/chat/${c.id}`}
+          className="text-sm text-primary hover:underline"
+        >
+          Chat
+        </Link>
+        <Link
+          href={`/dashboard/companion/${c.id}`}
+          className="text-sm text-primary hover:underline"
+        >
+          Edit
+        </Link>
+        <button
+          onClick={() => handleDelete(c.id)}
+          className="text-sm text-destructive hover:underline"
+        >
+          Delete
+        </button>
+      </div>
+    </li>
+  ))}
+</ul>
         </div>
     </div>
   )
