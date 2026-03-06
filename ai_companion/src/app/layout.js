@@ -8,7 +8,7 @@ const spaceGrotesk = Space_Grotesk({
 })
 
 export const metadata = {
-  title: "Voice Agent - AI-Powered Conversational Intelligence",
+  title: "AI Companion - AI Powered Conversational Intelligence",
   description:
     "Transform your customer interactions with intelligent voice agents. Automate calls, boost efficiency, and deliver exceptional experiences at scale.",
 }

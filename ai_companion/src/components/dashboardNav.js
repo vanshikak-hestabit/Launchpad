@@ -72,12 +72,6 @@ export default function DashboardNavbar() {
           >
             Overview
           </Link>
-          <Link
-            href="/dashboard/analytics"
-            className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-          >
-            Analytics
-          </Link>
         </nav>
 
         {/* Right side */}

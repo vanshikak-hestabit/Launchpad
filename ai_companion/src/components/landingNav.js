@@ -17,7 +17,7 @@ export default function LandingNavbar() {
             <Mic className="h-5 w-5 text-primary-foreground" />
           </div>
           <span className="font-display text-lg font-bold tracking-tight text-foreground">
-            VoiceAgent
+            AI Companion
           </span>
         </Link>
 
@@ -55,7 +55,7 @@ export default function LandingNavbar() {
             <Link href="/login">Log In</Link>
           </Button>
           <Button asChild className="font-semibold">
-            <Link href="/signup">Get Started</Link>
+            <Link href="/register">Get Started</Link>
           </Button>
         </div>
 
