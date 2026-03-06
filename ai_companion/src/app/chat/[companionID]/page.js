@@ -30,14 +30,16 @@ export default function ChatPage() {
 
   const fetchMessages = async (conversationId) => {
     if (!conversationId) return;
+
     const { data, error } = await supabase
       .from("messages")
       .select("*")
       .eq("conversation_id", conversationId)
-      .order("created_at", { ascending: true });
+      .order("created_at", { ascending: false }) 
+      .limit(20); 
 
     if (error) console.error(error);
-    if (data) setMessages(data);
+    if (data) setMessages(data.reverse()); 
   };
 
   useEffect(() => {
@@ -67,8 +69,8 @@ export default function ChatPage() {
     e.preventDefault();
     if (!newMsg) return;
 
-    const messageText = newMsg;   // store message
-    setNewMsg(""); 
+    const messageText = newMsg; // store message
+    setNewMsg("");
 
     const userMessage = {
       id: Date.now(),
@@ -83,12 +85,11 @@ export default function ChatPage() {
 
     let conversationId = activeConversation.id;
 
+    // If conversation doesn't exist, create it with title
     if (!conversationId) {
       const res = await fetch("/api/chat", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages: [{ role: "user", content: messageText }],
           firstMessage: messageText
@@ -126,23 +127,33 @@ export default function ChatPage() {
       user_id: session.user.id,
     });
 
-    const res = await fetch("/api/chat", {
+    // Fetch last 20 messages for context (including current user message)
+    let { data: lastMsgs } = await supabase
+      .from("messages")
+      .select("*")
+      .eq("conversation_id", conversationId)
+      .order("created_at", { ascending: false })
+      .limit(20);
+
+    const contextMessages = lastMsgs.reverse().map(msg => ({
+      role: msg.role,
+      content: msg.content
+    }));
+
+    // Send context to LLM
+    const llmRes = await fetch("/api/chat", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        messages: [{ role: "user", content: newMsg }],
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages: contextMessages }),
     });
 
-    const data = await res.json();
+    const llmData = await llmRes.json();
 
     // Insert assistant message
     await supabase.from("messages").insert({
       conversation_id: conversationId,
       role: "assistant",
-      content: data.reply,
+      content: llmData.reply,
       user_id: session.user.id,
     });
 
