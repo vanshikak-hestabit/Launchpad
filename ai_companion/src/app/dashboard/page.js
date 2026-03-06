@@ -3,7 +3,6 @@ import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase/client"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import DashboardNavbar from "@/components/dashboardNav"
 
 export default function DashboardPage() {
   const [companions, setCompanions] = useState([])
@@ -25,7 +24,6 @@ export default function DashboardPage() {
 
   return (
     <div>
-      <DashboardNavbar />
         <div className="p-4">
         <div className="flex justify-between items-center mb-4">
             <h1 className="text-xl font-bold">Your Companions</h1>
