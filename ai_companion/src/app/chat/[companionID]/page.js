@@ -84,9 +84,27 @@ export default function ChatPage() {
     let conversationId = activeConversation.id;
 
     if (!conversationId) {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          messages: [{ role: "user", content: messageText }],
+          firstMessage: messageText
+        }),
+      });
+
+      const data = await res.json();
+      const title = data.title;
+
       const { data: newConv, error } = await supabase
         .from("conversations")
-        .insert({ companion_id: companionId, user_id: session.user.id })
+        .insert({
+          companion_id: companionId,
+          user_id: session.user.id,
+          title: title
+        })
         .select()
         .single();
 
@@ -156,7 +174,7 @@ export default function ChatPage() {
                   : "bg-gray-100"
               }`}
             >
-              Conversation {conv.id.slice(0, 6)}
+              {conv.title || `Conversation ${conv.id.slice(0, 6)}`}
             </button>
           ))}
         </div>
