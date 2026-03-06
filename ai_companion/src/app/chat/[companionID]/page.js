@@ -13,7 +13,6 @@ export default function ChatPage() {
   const [newMsg, setNewMsg] = useState("");
   const messagesEndRef = useRef(null);
 
-  // Fetch conversations from DB
   const fetchConversations = async () => {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) return;
@@ -29,7 +28,6 @@ export default function ChatPage() {
     if (data) setConversations(data);
   };
 
-  // Fetch messages for active conversation
   const fetchMessages = async (conversationId) => {
     if (!conversationId) return;
     const { data, error } = await supabase
@@ -42,7 +40,6 @@ export default function ChatPage() {
     if (data) setMessages(data);
   };
 
-  // On mount: fetch history and start a temporary conversation
   useEffect(() => {
     const init = async () => {
       await fetchConversations();
@@ -52,20 +49,20 @@ export default function ChatPage() {
   }, [companionId]);
 
   useEffect(() => {
-    if (activeConversation && activeConversation.id) fetchMessages(activeConversation.id);
+    if (activeConversation && activeConversation.id) {
+      fetchMessages(activeConversation.id);
+    }
   }, [activeConversation]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Start a temporary conversation (not saved yet)
   const startTempConversation = () => {
-    setActiveConversation({ id: null }); // id null = unsaved
+    setActiveConversation({ id: null });
     setMessages([]);
   };
 
-  // Send message
   const handleSend = async (e) => {
     e.preventDefault();
     if (!newMsg) return;
@@ -75,7 +72,6 @@ export default function ChatPage() {
 
     let conversationId = activeConversation.id;
 
-    // If this conversation is temporary, insert into DB first
     if (!conversationId) {
       const { data: newConv, error } = await supabase
         .from("conversations")
@@ -87,12 +83,13 @@ export default function ChatPage() {
         console.error(error);
         return;
       }
+
       conversationId = newConv.id;
-      setActiveConversation(newConv); // now active with ID
-      fetchConversations(); // update history
+      setActiveConversation(newConv);
+      fetchConversations();
     }
 
-    // Insert message
+    // Insert user message
     await supabase.from("messages").insert({
       conversation_id: conversationId,
       role: "user",
@@ -100,20 +97,36 @@ export default function ChatPage() {
       user_id: session.user.id,
     });
 
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        messages: [{ role: "user", content: newMsg }],
+      }),
+    });
+
+    const data = await res.json();
+
+    // Insert assistant message
+    await supabase.from("messages").insert({
+      conversation_id: conversationId,
+      role: "assistant",
+      content: data.reply,
+      user_id: session.user.id,
+    });
+
     setNewMsg("");
     fetchMessages(conversationId);
   };
 
-  // Handle "New Conversation" button
   const handleNewConversation = () => {
-    // If current conversation has messages, leave it in history
-    // If it's empty (id null), just keep as active temp
     startTempConversation();
   };
 
   return (
     <div className="flex h-screen w-screen">
-      {/* Left: history */}
       <div className="w-1/4 border-r p-4 flex flex-col">
         <button
           onClick={handleNewConversation}
@@ -121,6 +134,7 @@ export default function ChatPage() {
         >
           New Conversation
         </button>
+
         <div className="flex-1 overflow-y-auto space-y-2">
           {conversations.map((conv) => (
             <button
@@ -138,7 +152,6 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* Right: chat */}
       <div className="flex-1 flex flex-col p-4">
         <div className="flex-1 overflow-y-auto mb-4 space-y-2">
           {messages.map((msg) => (
@@ -164,6 +177,7 @@ export default function ChatPage() {
             placeholder="Type a message..."
             className="flex-1 border rounded px-3 py-2"
           />
+
           <button type="submit" className="bg-primary text-white px-4 rounded">
             Send
           </button>
