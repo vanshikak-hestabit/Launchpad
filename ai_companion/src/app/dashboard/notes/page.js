@@ -82,28 +82,28 @@ export default function NotesPage() {
 
   return (
     <div className="p-6">
-      {/* Add/Edit Note Form */}
-      <div className="mb-6 flex flex-col gap-2 max-w-md">
+        {/* Add/Edit Note Form */}
+        <div className="mb-6 flex flex-col gap-3 max-w-6xl">
         <input
-          type="text"
-          placeholder="Note Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="border rounded px-3 py-2"
+            type="text"
+            placeholder="Note Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="border rounded px-4 py-3 text-lg"
         />
         <textarea
-          placeholder="Write your note..."
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          className="border rounded px-3 py-2 h-24"
+            placeholder="Write your note..."
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            className="border rounded px-4 py-3 text-lg h-40"
         />
         <button
-          onClick={addOrUpdateNote}
-          className="bg-primary text-white px-4 py-2 rounded w-max"
+            onClick={addOrUpdateNote}
+            className="bg-primary text-white px-6 py-3 rounded w-max text-lg"
         >
-          {editingNoteId ? "Update Note" : "Add Note"}
+            {editingNoteId ? "Update Note" : "Add Note"}
         </button>
-      </div>
+        </div>
 
       {/* Notes List */}
       <div className="flex flex-wrap gap-4">
