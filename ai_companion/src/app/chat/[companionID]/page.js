@@ -67,6 +67,17 @@ export default function ChatPage() {
     e.preventDefault();
     if (!newMsg) return;
 
+    const messageText = newMsg;   // store message
+    setNewMsg(""); 
+
+    const userMessage = {
+      id: Date.now(),
+      role: "user",
+      content: newMsg,
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) return;
 
@@ -117,7 +128,6 @@ export default function ChatPage() {
       user_id: session.user.id,
     });
 
-    setNewMsg("");
     fetchMessages(conversationId);
   };
 
@@ -153,7 +163,7 @@ export default function ChatPage() {
       </div>
 
       <div className="flex-1 flex flex-col p-4">
-        <div className="flex-1 overflow-y-auto mb-4 space-y-2">
+        <div className="flex flex-col flex-1 overflow-y-auto mb-4 space-y-2">
           {messages.map((msg) => (
             <div
               key={msg.id}
