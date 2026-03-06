@@ -167,13 +167,20 @@ export default function ChatPage() {
           {messages.map((msg) => (
             <div
               key={msg.id}
-              className={`p-2 rounded max-w-xs ${
+              className={`p-2 rounded max-w-[70%] ${
                 msg.role === "user"
                   ? "bg-primary/20 text-primary self-end"
                   : "bg-gray-200 text-gray-800 self-start"
               }`}
             >
-              {msg.content}
+            <div className="whitespace-pre-wrap">
+              {msg.content.split("- ").map((line, index) => (
+                <p key={index}>
+                  {index !== 0 ? "• " : ""}
+                  {line}
+                </p>
+              ))}
+              </div>
             </div>
           ))}
           <div ref={messagesEndRef} />
