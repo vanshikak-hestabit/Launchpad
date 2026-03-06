@@ -2,6 +2,7 @@
 import { useParams } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/lib/supabase/client";
+import { handleAIActions } from "@/lib/aiAutomation";
 
 export default function ChatPage() {
   const params = useParams();
@@ -69,15 +70,10 @@ export default function ChatPage() {
     e.preventDefault();
     if (!newMsg) return;
 
-    const messageText = newMsg; // store message
+    const messageText = newMsg;
     setNewMsg("");
 
-    const userMessage = {
-      id: Date.now(),
-      role: "user",
-      content: newMsg,
-    };
-
+    const userMessage = { id: Date.now(), role: "user", content: messageText };
     setMessages((prev) => [...prev, userMessage]);
 
     const { data: { session } } = await supabase.auth.getSession();
@@ -85,15 +81,12 @@ export default function ChatPage() {
 
     let conversationId = activeConversation.id;
 
-    // If conversation doesn't exist, create it with title
+    // If conversation doesn't exist, create it
     if (!conversationId) {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [{ role: "user", content: messageText }],
-          firstMessage: messageText
-        }),
+        body: JSON.stringify({ messages: [{ role: "user", content: messageText }], firstMessage: messageText }),
       });
 
       const data = await res.json();
@@ -101,19 +94,11 @@ export default function ChatPage() {
 
       const { data: newConv, error } = await supabase
         .from("conversations")
-        .insert({
-          companion_id: companionId,
-          user_id: session.user.id,
-          title: title
-        })
+        .insert({ companion_id: companionId, user_id: session.user.id, title })
         .select()
         .single();
 
-      if (error) {
-        console.error(error);
-        return;
-      }
-
+      if (error) { console.error(error); return; }
       conversationId = newConv.id;
       setActiveConversation(newConv);
       fetchConversations();
@@ -123,11 +108,24 @@ export default function ChatPage() {
     await supabase.from("messages").insert({
       conversation_id: conversationId,
       role: "user",
-      content: newMsg,
+      content: messageText,
       user_id: session.user.id,
     });
 
-    // Fetch last 20 messages for context (including current user message)
+    // first AI automation
+    const { handled, reply: aiReply } = await handleAIActions(messageText, session);
+    if (handled && aiReply) {
+      await supabase.from("messages").insert({
+        conversation_id: conversationId,
+        role: "assistant",
+        content: aiReply,
+        user_id: session.user.id,
+      });
+      fetchMessages(conversationId);
+      return; // skip LLM
+    }
+
+    // Only call LLM if AI automation did NOT handle it 
     let { data: lastMsgs } = await supabase
       .from("messages")
       .select("*")
@@ -135,12 +133,8 @@ export default function ChatPage() {
       .order("created_at", { ascending: false })
       .limit(20);
 
-    const contextMessages = lastMsgs.reverse().map(msg => ({
-      role: msg.role,
-      content: msg.content
-    }));
+    const contextMessages = lastMsgs.reverse().map(msg => ({ role: msg.role, content: msg.content }));
 
-    // Send context to LLM
     const llmRes = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -149,7 +143,7 @@ export default function ChatPage() {
 
     const llmData = await llmRes.json();
 
-    // Insert assistant message
+    // Insert LLM reply
     await supabase.from("messages").insert({
       conversation_id: conversationId,
       role: "assistant",
