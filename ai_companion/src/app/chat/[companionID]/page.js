@@ -170,17 +170,47 @@ export default function ChatPage() {
 
         <div className="flex-1 overflow-y-auto space-y-2">
           {conversations.map((conv) => (
-            <button
+            <div
               key={conv.id}
               onClick={() => setActiveConversation(conv)}
-              className={`w-full text-left p-2 rounded ${
-                activeConversation?.id === conv.id
-                  ? "bg-primary/20"
-                  : "bg-gray-100"
+              className={`flex justify-between items-center w-full rounded p-2 mb-1 cursor-pointer ${
+                activeConversation?.id === conv.id ? "bg-primary/20" : "bg-gray-100"
               }`}
             >
-              {conv.title || `Conversation ${conv.id.slice(0, 6)}`}
-            </button>
+              <span className="flex-1 text-left">
+                {conv.title || `Conversation ${conv.id.slice(0, 6)}`}
+              </span>
+
+              <button
+                onClick={async (e) => {
+                  e.stopPropagation(); // prevent activating conversation
+                  // delete all messages of this conversation first
+                  const { error: msgError } = await supabase
+                    .from("messages")
+                    .delete()
+                    .eq("conversation_id", conv.id);
+
+                  if (msgError) {
+                    console.error("Error deleting messages:", msgError.message);
+                    return;
+                  }
+
+                  // delete the conversation itself
+                  const { error: convError } = await supabase
+                    .from("conversations")
+                    .delete()
+                    .eq("id", conv.id);
+
+                  if (convError) console.error("Error deleting conversation:", convError.message);
+                  else setConversations(conversations.filter(c => c.id !== conv.id));
+
+                  if (activeConversation?.id === conv.id) startTempConversation();
+                }}
+                className="text-gray-500 font-bold px-2"
+              >
+                x
+              </button>
+            </div>
           ))}
         </div>
       </div>
