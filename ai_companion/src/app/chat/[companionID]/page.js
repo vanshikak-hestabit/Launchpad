@@ -138,7 +138,10 @@ export default function ChatPage() {
     const llmRes = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: contextMessages }),
+      body: JSON.stringify({
+        messages: contextMessages,
+        companionId: companionId
+      })
     });
 
     const llmData = await llmRes.json();
