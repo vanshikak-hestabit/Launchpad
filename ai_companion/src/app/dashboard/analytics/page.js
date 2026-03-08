@@ -17,14 +17,17 @@ export default function AnalyticsPage() {
     if (!user) return;
 
     const { data, error } = await supabase
-    .from("conversations")
+    .from("messages")
     .select(`
         *,
+        conversations (
+        companion_id,
         companions (
-        name
+            name
+        )
         )
     `)
-    .eq("user_id", user.id);
+    .eq("user_id", user.id)
 
     if (!error && data) {
       setConversations(data);
