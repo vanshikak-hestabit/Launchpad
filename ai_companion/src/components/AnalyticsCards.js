@@ -37,19 +37,26 @@ function StatCard({ title, value, icon, description }) {
 
 export default function AnalyticsCards({ conversations }) {
 
-  const totalConversations = conversations.length
+    const userMessages = conversations.filter(
+        (msg) => msg.role === "user"
+    )
 
-  const totalDuration = conversations.reduce(
-    (sum, c) => sum + (c.duration || 0),
-    0
-  )
+    const totalMessages = userMessages.length
 
-  const avgDuration =
+    const totalConversations = new Set(
+    conversations.map((m) => m.conversation_id)
+    ).size
+
+    const avgMessages =
     totalConversations > 0
-      ? Math.floor(totalDuration / totalConversations)
-      : 0
+        ? Math.floor(userMessages.length / totalConversations)
+        : 0
 
-  const totalMinutes = Math.floor(totalDuration / 60)
+    const activeCompanions = new Set(
+    conversations
+        .map((m) => m.conversations?.companion_id)
+        .filter(Boolean)
+    ).size
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -62,27 +69,25 @@ export default function AnalyticsCards({ conversations }) {
       />
 
       <StatCard
-        title="Total Minutes"
-        value={totalMinutes}
+        title="Total Messages"
+        value={totalMessages}
         icon={<Clock className="h-5 w-5 text-primary" />}
-        description="Total chat duration"
+        description="Messages exchanged"
       />
 
       <StatCard
-        title="Average Duration"
-        value={avgDuration}
+        title="Avg Messages"
+        value={avgMessages}
         icon={<BarChart3 className="h-5 w-5 text-primary" />}
         description="Per conversation"
       />
 
-      <StatCard
+        <StatCard
         title="Active Companions"
-        value={
-          new Set(conversations.map((c) => c.companion_id)).size
-        }
+        value={activeCompanions}
         icon={<Users className="h-5 w-5 text-primary" />}
         description="Used in chats"
-      />
+        />
 
     </div>
   )

@@ -14,8 +14,12 @@ import {
 
 export default function AnalyticsGraphs({ conversations }) {
 
+    const userMessages = conversations.filter(
+       (msg) => msg.role === "user"
+    )
+
   // Conversations per day
-  const groupedByDate = conversations.reduce((acc, convo) => {
+  const groupedByDate = userMessages.reduce((acc, convo) => {
 
     const date = new Date(convo.created_at).toLocaleDateString()
     acc[date] = (acc[date] || 0) + 1
@@ -30,9 +34,9 @@ export default function AnalyticsGraphs({ conversations }) {
   )
 
   // Conversations per companion
-    const groupedByCompanion = conversations.reduce((acc, convo) => {
+    const groupedByCompanion = userMessages.reduce((acc, convo) => {
 
-        const companion = convo.companions?.name || "Unknown"
+        const companion = convo.conversations?.companions?.name || "Unknown"
         acc[companion] = (acc[companion] || 0) + 1
         return acc
     }, {})
