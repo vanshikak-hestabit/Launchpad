@@ -109,19 +109,31 @@ export function LandingNavbar() {
 }
 
 /* voice waveform */
-function VoiceWaveform() {
-  const bars = 40
+function VoiceWaveform({ bars = 40 }) {
+  const [waveData, setWaveData] = useState([])
+
+  useEffect(() => {
+    const data = Array.from({ length: bars }).map((_, i) => ({
+      height: Math.random() * 60 + 20,
+      delay: i * 0.06,
+      duration: Math.random() * 0.8 + 0.8,
+    }))
+
+    setWaveData(data)
+  }, [bars])
+
+  if (waveData.length === 0) return null
 
   return (
     <div className="flex h-32 items-center justify-center gap-[3px]" aria-hidden="true">
-      {Array.from({ length: bars }).map((_, i) => (
+      {waveData.map((bar, i) => (
         <div
           key={i}
           className="w-[3px] rounded-full bg-primary/80 animate-wave"
           style={{
-            height: `${20 + Math.random() * 60}%`,
-            animationDelay: `${i * 0.06}s`,
-            animationDuration: `${0.8 + Math.random() * 0.8}s`,
+            height: `${bar.height}%`,
+            animationDelay: `${bar.delay}s`,
+            animationDuration: `${bar.duration}s`,
           }}
         />
       ))}
