@@ -41,7 +41,7 @@ export function LandingNavbar() {
             <Mic className="h-5 w-5 text-primary-foreground" />
           </div>
           <span className="font-display text-lg font-bold tracking-tight text-foreground">
-            AI Companion
+            SoulChat
           </span>
         </Link>
 
@@ -108,34 +108,26 @@ export function LandingNavbar() {
   )
 }
 
-/* voice waveform */
-function VoiceWaveform({ bars = 40 }) {
-  const [waveData, setWaveData] = useState([])
 
-  useEffect(() => {
-    const data = Array.from({ length: bars }).map((_, i) => ({
-      height: Math.random() * 60 + 20,
-      delay: i * 0.06,
-      duration: Math.random() * 0.8 + 0.8,
-    }))
-
-    setWaveData(data)
-  }, [bars])
-
-  if (waveData.length === 0) return null
+/* companion avatars */
+function CompanionAvatars() {
+  const companions = [
+    { name: "Luna", emoji: "👩🏻‍💻" },
+    { name: "Nova", emoji: "🧠" },
+    { name: "Kai", emoji: "👩🏻‍🔬" },
+    { name: "Zara", emoji: "🤖" },
+    { name: "Orion", emoji: "👩🏻‍⚕" },
+  ]
 
   return (
-    <div className="flex h-32 items-center justify-center gap-[3px]" aria-hidden="true">
-      {waveData.map((bar, i) => (
+    <div className="flex h-32 items-center justify-center gap-6">
+      {companions.map((c, i) => (
         <div
           key={i}
-          className="w-[3px] rounded-full bg-primary/80 animate-wave"
-          style={{
-            height: `${bar.height}%`,
-            animationDelay: `${bar.delay}s`,
-            animationDuration: `${bar.duration}s`,
-          }}
-        />
+          className="flex h-14 w-14 items-center justify-center rounded-full bg-black text-white text-xl shadow-md animate-float"
+        >
+          {c.emoji}
+        </div>
       ))}
     </div>
   )
@@ -179,7 +171,7 @@ export function HeroSection() {
         </div>
 
         <div className="mx-auto mt-16 max-w-lg">
-          <VoiceWaveform />
+          <CompanionAvatars />
         </div>
 
         {/* Stats strip */}
@@ -498,7 +490,7 @@ export function Footer() {
                 <Mic className="h-5 w-5 text-primary-foreground" />
               </div>
               <span className="font-display text-lg font-bold tracking-tight text-foreground">
-                VoiceAgent
+                SoulChat
               </span>
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
@@ -527,7 +519,7 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
           <p className="text-sm text-muted-foreground">
-            2026 VoiceAgent. All rights reserved.
+            2026 SoulChat. All rights reserved.
           </p>
           <div className="flex gap-6">
             {["Twitter", "LinkedIn", "GitHub"].map((s) => (
