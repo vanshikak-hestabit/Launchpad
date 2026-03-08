@@ -53,24 +53,38 @@ export default function DashboardPage() {
           key={c.id}
           className="border rounded-xl p-4 shadow-sm bg-white flex flex-col justify-between"
         >
-        <div>
+      <div>
+        <div className="flex items-center gap-3 mb-2">
+          {c.avatar_url ? (
+            <img
+              src={c.avatar_url}
+              alt={c.name}
+              className="w-10 h-10 rounded-full object-cover"
+            />
+          ) : (
+            <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-sm font-semibold">
+              {c.name?.charAt(0)}
+            </div>
+          )}
+
           <h2 className="text-lg font-semibold">{c.name}</h2>
-
-          <p className="text-sm text-gray-600 mt-3">
-            Personality: {c.personality_traits || "Not set"}
-          </p>
-
-          <p className="text-sm text-gray-600 mt-1">
-            Communication: {c.communications_style || "Not set"}
-          </p>
-
-          <p className="text-sm text-gray-600 mt-1">
-            System Prompt:{" "}
-            {c.system_prompt
-              ? c.system_prompt.slice(0, 20) + (c.system_prompt.length > 20 ? "..." : "")
-              : "Not set"}
-          </p>
         </div>
+
+        <p className="text-sm text-gray-600 mt-3">
+          Personality: {c.personality_traits || "Not set"}
+        </p>
+
+        <p className="text-sm text-gray-600 mt-1">
+          Communication: {c.communications_style || "Not set"}
+        </p>
+
+        <p className="text-sm text-gray-600 mt-1">
+          System Prompt:{" "}
+          {c.system_prompt
+            ? c.system_prompt.slice(0, 20) + (c.system_prompt.length > 20 ? "..." : "")
+            : "Not set"}
+        </p>
+      </div>
 
           <div className="flex gap-2 mt-7">
             <Link href={`/chat/${c.id}`}>
