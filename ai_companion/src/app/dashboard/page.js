@@ -47,36 +47,53 @@ export default function DashboardPage() {
         </div>
 
         {/* List */}
-<ul className="flex flex-col gap-2">
-  {companions.map((c) => (
-    <li
-      key={c.id}
-      className="border p-2 rounded flex justify-between items-center max-w-md"
-    >
-      <span>{c.name}</span>
-      <div className="flex flex-col gap-1">
-        <Link
-          href={`/chat/${c.id}`}
-          className="text-sm text-primary hover:underline"
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {companions.map((c) => (
+        <div
+          key={c.id}
+          className="border rounded-xl p-4 shadow-sm bg-white flex flex-col justify-between"
         >
-          Chat
-        </Link>
-        <Link
-          href={`/dashboard/companion/${c.id}`}
-          className="text-sm text-primary hover:underline"
-        >
-          Edit
-        </Link>
-        <button
-          onClick={() => handleDelete(c.id)}
-          className="text-sm text-destructive hover:underline"
-        >
-          Delete
-        </button>
-      </div>
-    </li>
-  ))}
-</ul>
+        <div>
+          <h2 className="text-lg font-semibold">{c.name}</h2>
+
+          <p className="text-sm text-gray-600 mt-3">
+            Personality: {c.personality_traits || "Not set"}
+          </p>
+
+          <p className="text-sm text-gray-600 mt-1">
+            Communication: {c.communications_style || "Not set"}
+          </p>
+
+          <p className="text-sm text-gray-600 mt-1">
+            System Prompt:{" "}
+            {c.system_prompt
+              ? c.system_prompt.slice(0, 20) + (c.system_prompt.length > 20 ? "..." : "")
+              : "Not set"}
+          </p>
+        </div>
+
+          <div className="flex gap-2 mt-7">
+            <Link href={`/chat/${c.id}`}>
+              <Button size="sm">Chat</Button>
+            </Link>
+
+            <Link href={`/dashboard/companion/${c.id}`}>
+              <Button size="sm" variant="secondary">
+                Edit
+              </Button>
+            </Link>
+
+            <Button
+              size="sm"
+              variant="destructive"
+              onClick={() => handleDelete(c.id)}
+            >
+              Delete
+            </Button>
+          </div>
+        </div>
+      ))}
+    </div>
         </div>
     </div>
   )
