@@ -1,7 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
 import { useRouter, useParams } from "next/navigation"
-import DashboardNavbar from "@/components/dashboardNav"
 import CompanionForm from "@/components/CompanionForm"
 import { supabase } from "@/lib/supabase/client"
 
@@ -30,7 +29,6 @@ export default function EditCompanionPage() {
 
   return (
     <div>
-      <DashboardNavbar />
       <div className="p-4">
         <h1 className="text-xl font-bold mb-4">Edit Companion</h1>
         {companion && (
