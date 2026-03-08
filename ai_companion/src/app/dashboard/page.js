@@ -22,6 +22,20 @@ export default function DashboardPage() {
     fetchCompanions()
   }, [])
 
+  const handleDelete = async (id) => {
+    const { error } = await supabase
+      .from("companions")
+      .delete()
+      .eq("id", id)
+
+    if (error) {
+      console.error(error)
+      return
+    }
+
+    setCompanions((prev) => prev.filter((c) => c.id !== id))
+  }
+
   return (
     <div>
         <div className="p-4">
