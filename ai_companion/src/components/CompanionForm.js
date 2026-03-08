@@ -10,6 +10,7 @@ export default function CompanionForm({ companion = null, onSuccess }) {
   const [systemPrompt, setSystemPrompt] = useState(companion?.system_prompt || "")
   const [backgroundStory, setBackgroundStory] = useState(companion?.background_story || "")
   const [relationshipStory, setRelationshipStory] = useState(companion?.relationship_story || "")
+  const [avatarUrl, setAvatarUrl] = useState(companion?.avatar_url || "")
 
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState("")
@@ -34,6 +35,29 @@ export default function CompanionForm({ companion = null, onSuccess }) {
     "Straightforward"
   ]
 
+  async function handleAvatarUpload(e) {
+    const file = e.target.files[0]
+    if (!file) return
+
+    const fileName = `${Date.now()}-${file.name}`
+
+    const { error } = await supabase.storage
+      .from("avatars")
+      .upload(fileName, file)
+
+    if (error) {
+      console.error(error)
+      setMessage("Image upload failed")
+      return
+    }
+
+    const { data } = supabase.storage
+      .from("avatars")
+      .getPublicUrl(fileName)
+
+    setAvatarUrl(data.publicUrl)
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -47,6 +71,7 @@ export default function CompanionForm({ companion = null, onSuccess }) {
       system_prompt: systemPrompt,
       background_story: backgroundStory,
       relationship_story: relationshipStory,
+      avatar_url: avatarUrl,
       user_id: user.id
     }
 
@@ -75,6 +100,13 @@ export default function CompanionForm({ companion = null, onSuccess }) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-md">
+
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleAvatarUpload}
+        className="border p-2 rounded"
+      />
 
       <input
         type="text"
