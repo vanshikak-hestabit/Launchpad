@@ -21,7 +21,7 @@ export async function POST(req) {
     ${companion?.personality_traits || ""}
 
     Communication style:
-    ${companion?.communication_style || ""}
+    ${companion?.communications_style || ""}
 
     Background story:
     ${companion?.background_story || ""}
