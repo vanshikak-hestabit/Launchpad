@@ -6,7 +6,7 @@ export default function CompanionForm({ companion = null, onSuccess }) {
 
   const [name, setName] = useState(companion?.name || "")
   const [traits, setTraits] = useState(companion?.personality_traits || "")
-  const [communicationStyle, setCommunicationStyle] = useState(companion?.communication_style || "")
+  const [communicationStyle, setCommunicationStyle] = useState(companion?.communications_style || "")
   const [systemPrompt, setSystemPrompt] = useState(companion?.system_prompt || "")
   const [backgroundStory, setBackgroundStory] = useState(companion?.background_story || "")
   const [relationshipStory, setRelationshipStory] = useState(companion?.relationship_story || "")
