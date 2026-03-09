@@ -53,8 +53,8 @@ export default function DashboardNavbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-card/80 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Logo */}
+    <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 relative">  {/* Left: Logo */}
+      <div className="flex items-center flex-1">
         <Link href="/dashboard" className="flex items-center gap-2.5">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
             <LayoutDashboard className="h-5 w-5 text-primary-foreground" />
@@ -63,16 +63,17 @@ export default function DashboardNavbar() {
             AI Companion
           </span>
         </Link>
+      </div>
 
-        {/* Desktop Nav Links */}
-        <nav className="hidden items-center gap-1 md:flex">
-          <Link
-            href="/dashboard"
-            className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-          >
-            Overview
-          </Link>
-        </nav>
+    {/* Center: Nav */}
+    <nav className="absolute left-1/2 top-0 h-full flex items-center gap-1 -translate-x-1/2">
+      <Link
+        href="/dashboard"
+        className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+      >
+        Overview
+      </Link>
+    </nav>
 
         {/* Right side */}
         <div className="flex items-center gap-3">
