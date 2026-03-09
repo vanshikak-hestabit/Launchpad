@@ -27,23 +27,31 @@ export default function DashboardNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [user, setUser] = useState(null)
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-      if (session?.user) {
-        setUser(session.user)
-      }
-    }
+useEffect(() => {
+  const fetchUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
 
-    fetchUser()
+    if (user) {
+      setUser({
+        email: user.email,
+        name: user.user_metadata?.full_name || user.user_metadata?.display_name || user.email.split("@")[0] || "User"
+      });
+    }
+  };
+
+  fetchUser()
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
-    })
+      const user = session?.user;
+      if (user) {
+        setUser({
+          email: user.email,
+          name: user.user_metadata?.full_name || user.user_metadata?.display_name || user.email.split("@")[0] || "User"
+        });
+      }
+    });
 
-    return () => {
-      listener.subscription.unsubscribe()
-    }
-  }, [])
+  return () => listener.subscription.unsubscribe()
+}, [])
 
   // logout
   const handleLogout = async () => {
@@ -102,14 +110,13 @@ export default function DashboardNavbar() {
                     {user?.email?.[0]?.toUpperCase() ?? ""}
                   </AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col">
-                  <span className="text-sm font-medium text-foreground">
-                    {user?.email ?? ""}
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    {user?.email ?? ""}
-                  </span>
-                </div>
+            <div className="flex flex-col truncate max-w-[150px]">
+              {user?.name && (
+                <span className="text-sm font-medium text-foreground truncate">
+                  {user.name}
+                </span>
+              )}
+            </div>
               </div>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="cursor-pointer gap-2">
@@ -174,14 +181,13 @@ export default function DashboardNavbar() {
                 {user?.email?.[0]?.toUpperCase() ?? ""}
               </AvatarFallback>
             </Avatar>
-            <div className="flex flex-1 flex-col">
-              <span className="text-sm font-medium text-foreground">
-                {user?.email ?? ""}
+          <div className="flex flex-1 flex-col truncate max-w-[150px]">
+            {user?.name && (
+              <span className="text-sm font-medium text-foreground truncate">
+                {user.name}
               </span>
-              <span className="text-xs text-muted-foreground">
-                {user?.email ?? ""}
-              </span>
-            </div>
+            )}
+          </div>
           </div>
           <Button
             variant="ghost"
