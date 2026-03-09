@@ -65,7 +65,7 @@ export default function CompanionForm({ companion = null, onSuccess }) {
     e.preventDefault()
     setLoading(true)
 
-    const { data: { user } } = await supabase.auth.getUser()
+    const { data: { user } } = await supabase.auth.getUser() // gets logged-in user info
 
     const payload = {
       name,
