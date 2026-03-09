@@ -1,6 +1,8 @@
 "use client"
 import { useState } from "react"
+import { User } from "lucide-react"
 import { supabase } from "@/lib/supabase/client"
+import { useRouter } from "next/navigation"
 
 export default function CompanionForm({ companion = null, onSuccess }) {
 
@@ -11,9 +13,10 @@ export default function CompanionForm({ companion = null, onSuccess }) {
   const [backgroundStory, setBackgroundStory] = useState(companion?.background_story || "")
   const [relationshipStory, setRelationshipStory] = useState(companion?.relationship_story || "")
   const [avatarUrl, setAvatarUrl] = useState(companion?.avatar_url || "")
-
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState("")
+
+  const router = useRouter()
 
   const personalityOptions = [
     "Friendly",
@@ -95,18 +98,39 @@ export default function CompanionForm({ companion = null, onSuccess }) {
     } else {
       setMessage("Companion saved successfully")
       onSuccess?.()
+      router.push("/dashboard")
     }
   }
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-md">
 
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleAvatarUpload}
-        className="border p-2 rounded"
+{/* Avatar Upload UI */}
+<div className="flex items-center gap-4">
+
+  <div className="w-20 h-20 rounded-full overflow-hidden border flex items-center justify-center bg-gray-100">
+    {avatarUrl ? (
+      <img
+        src={avatarUrl}
+        alt="avatar"
+        className="w-full h-full object-cover"
       />
+    ) : (
+      <User className="w-8 h-8 text-gray-400" />
+    )}
+  </div>
+
+  <label className="bg-black text-white px-4 py-2 rounded-md cursor-pointer text-sm">
+    Upload Avatar
+    <input
+      type="file"
+      accept="image/*"
+      onChange={handleAvatarUpload}
+      className="hidden"
+    />
+  </label>
+
+</div>
 
       <input
         type="text"
@@ -165,7 +189,7 @@ export default function CompanionForm({ companion = null, onSuccess }) {
         disabled={loading}
         className="bg-primary text-white py-2 rounded"
       >
-        {loading ? "Saving..." : "Save Companion"}
+        {loading ? "Saving..." : "Save Companion"}        
       </button>
 
       {message && <p className="text-sm">{message}</p>}
