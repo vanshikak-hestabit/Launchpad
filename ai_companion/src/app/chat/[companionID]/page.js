@@ -28,7 +28,8 @@ export default function ChatPage() {
     if (error) console.error(error);
     if (data) setConversations(data);
   };
-
+ 
+  // gets last 20 messages (session memory)
   const fetchMessages = async (conversationId) => {
     if (!conversationId) return;
 
@@ -43,6 +44,7 @@ export default function ChatPage() {
     if (data) setMessages(data.reverse()); 
   };
 
+  // new convo + fetching
   useEffect(() => {
     const init = async () => {
       await fetchConversations();
@@ -51,6 +53,7 @@ export default function ChatPage() {
     init();
   }, [companionId]);
 
+  // selected convo
   useEffect(() => {
     if (activeConversation && activeConversation.id) {
       fetchMessages(activeConversation.id);
@@ -61,11 +64,13 @@ export default function ChatPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // creating a new conversation that doesn’t exist in the database yet.
   const startTempConversation = () => {
     setActiveConversation({ id: null });
     setMessages([]);
   };
 
+  // adds messages, created convo
   const handleSend = async (e) => {
     e.preventDefault();
     if (!newMsg) return;

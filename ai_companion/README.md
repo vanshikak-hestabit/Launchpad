@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AI Companion Dashboard
 
-## Getting Started
+A web application to create and chat with AI companions. Built with **Next.js**, **Supabase**, and **Groq AI**.
 
-First, run the development server:
+## Features
 
+- Create, update, and delete AI companions
+- Assign personality traits, communication style, and background story
+- Upload companion avatars
+- Chat with companions with AI-generated responses
+- Automatic to-do and note handling via AI commands
+- Manage conversations and messages
+
+## Tech Stack
+
+- **Frontend:** Next.js, React, Tailwind CSS, Lucide Icons  
+- **Backend:** Supabase (Authentication, Database, Storage)  
+- **AI:** Groq API (Llama 3.1 Instant)  
+
+## Setup
+
+- Clone the repository  
 ```bash
+git clone <your-repo-url>
+
+## Install dependencies
+
+npm install
+
+## Setup environment variables in .env.local
+
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+GROQ_API_KEY=your-groq-api-key
+
+## Run the development server
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Folder Structure
+/app
+  /dashboard
+    page.js
+  /companions
+    CompanionForm.js
+/lib
+  supabase
+    client.js
+    server.js
+  groq_client.js
+/components
+  ChatPage.js
+  DashboardCards.js
+  DashboardActivity.js
+  VoiceModal.js
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Go to /dashboard to view companions
 
-## Learn More
+Click Create Companion to add a new AI companion
 
-To learn more about Next.js, take a look at the following resources:
+Chat with companions and manage conversations
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Use commands like add buy milk to todo or add meeting note to trigger AI automation
